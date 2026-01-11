@@ -1,0 +1,140 @@
+.article-slider {
+  padding: 4rem 0;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slider-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.view-all {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: gap 0.3s;
+}
+
+.view-all:hover {
+  gap: 0.75rem;
+}
+
+.view-all::after {
+  content: '→';
+}
+
+.slider-wrapper {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.slider-container {
+  overflow: hidden;
+}
+
+.slider-track {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.slider-item {
+  flex: 0 0 calc(33.333% - 1rem);
+  min-width: calc(33.333% - 1rem);
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.slider-arrow svg {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text);
+}
+
+.slider-arrow:hover:not(:disabled) {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.slider-arrow:hover:not(:disabled) svg {
+  color: var(--color-white);
+}
+
+.slider-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.slider-arrow.prev {
+  left: 0;
+}
+
+.slider-arrow.next {
+  right: 0;
+}
+
+@media (max-width: 1024px) {
+  .slider-item {
+    flex: 0 0 calc(50% - 0.75rem);
+    min-width: calc(50% - 0.75rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-wrapper {
+    padding: 0 1rem;
+  }
+
+  .slider-header {
+    padding: 0 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .slider-title {
+    font-size: 1.5rem;
+  }
+
+  .slider-item {
+    flex: 0 0 calc(100% - 1rem);
+    min-width: calc(100% - 1rem);
+  }
+
+  .slider-arrow {
+    display: none;
+  }
+}
+

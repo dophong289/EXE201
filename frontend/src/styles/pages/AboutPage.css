@@ -1,0 +1,238 @@
+.about-page {
+  background: var(--color-bg);
+}
+
+/* Hero Section */
+.about-hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  padding: 6rem 2rem;
+  text-align: center;
+  color: var(--color-white);
+}
+
+.about-hero h1 {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.about-hero .tagline {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Story Section */
+.about-story {
+  padding: 5rem 0;
+}
+
+.story-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.story-text h2 {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+}
+
+.story-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 1.25rem;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Values Section */
+.about-values {
+  background: var(--color-bg-alt);
+  padding: 5rem 0;
+}
+
+.about-values h2 {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--color-text);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.value-card {
+  background: var(--color-white);
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s;
+}
+
+.value-card:hover {
+  transform: translateY(-5px);
+}
+
+.value-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.value-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.value-card p {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+/* Ingredients Section */
+.about-ingredients {
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.about-ingredients h2 {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.ingredients-intro {
+  max-width: 700px;
+  margin: 0 auto 3rem;
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  line-height: 1.7;
+}
+
+.ingredients-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.ingredient-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ingredient-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.ingredient-item:hover img {
+  transform: scale(1.08);
+}
+
+.ingredient-item h4 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--color-white);
+  padding: 2rem 1rem 1rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* CTA Section */
+.about-cta {
+  background: linear-gradient(135deg, var(--color-bg-alt) 0%, #ebe6df 100%);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.about-cta h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.about-cta p {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .values-grid,
+  .ingredients-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 4rem 1.5rem;
+  }
+
+  .about-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-hero .tagline {
+    font-size: 1.1rem;
+  }
+
+  .story-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .story-text h2 {
+    font-size: 1.75rem;
+  }
+
+  .about-story,
+  .about-values,
+  .about-ingredients {
+    padding: 3rem 0;
+  }
+
+  .about-values h2,
+  .about-ingredients h2 {
+    font-size: 1.75rem;
+  }
+
+  .values-grid,
+  .ingredients-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .about-cta {
+    padding: 3rem 1.5rem;
+  }
+}
+

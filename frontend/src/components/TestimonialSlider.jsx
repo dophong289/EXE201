@@ -1,0 +1,65 @@
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import '../styles/components/TestimonialSlider.css'
+
+const testimonials = [
+  {
+    id: 1,
+    quote: '"Gói Mây – Mỹ phẩm thuần chay cho nét đẹp thuần Việt"',
+    source: 'elle vietnam'
+  },
+  {
+    id: 2,
+    quote: '"Gói Mây Vietnam – Từ mầm xanh làm đẹp đến giải thưởng danh giá tại ELLE Beauty Awards"',
+    source: 'elle vietnam'
+  }
+]
+
+function TestimonialSlider() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % testimonials.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  return (
+    <div className="testimonial-slider">
+      <div className="testimonial-container">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            className="testimonial-item"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.5 }}
+          >
+            <blockquote className="testimonial-quote">
+              {testimonials[currentIndex].quote}
+            </blockquote>
+            <cite className="testimonial-source">
+              {testimonials[currentIndex].source}
+            </cite>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="testimonial-dots">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              className={`dot ${index === currentIndex ? 'active' : ''}`}
+              onClick={() => setCurrentIndex(index)}
+              aria-label={`Slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default TestimonialSlider
+
