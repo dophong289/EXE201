@@ -2,6 +2,13 @@
   background: var(--color-bg);
 }
 
+/* Page Subtitle */
+.articles-page .page-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
 /* Featured Section */
 .articles-page .featured-section {
   padding: 3rem 0 2rem;

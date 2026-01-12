@@ -32,38 +32,38 @@ function HomePage() {
       // Fallback data
       setFeaturedArticle({
         id: 1,
-        title: 'Gói Mây x AAF: Ký kết hợp tác "Chung tay cứu trợ chó mèo lang thang" lần II',
-        slug: 'goi-may-x-aaf-ky-ket-hop-tac',
-        summary: 'Thông qua việc duy trì chương trình "Chung tay cứu trợ chó mèo lang thang" cùng AAF, Gói Mây mong muốn được góp thêm một phần nhỏ bé trong việc cung cấp nguồn lực cho các trạm cứu hộ.',
-        thumbnail: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800'
+        title: 'Gói Mây hợp tác cùng 50 làng nghề truyền thống - Hành trình gìn giữ văn hóa Việt',
+        slug: 'goi-may-hop-tac-lang-nghe',
+        summary: 'Thông qua việc hợp tác với các làng nghề truyền thống trên khắp Việt Nam, Gói Mây mong muốn góp phần bảo tồn nghề thủ công và tạo sinh kế bền vững cho cộng đồng nghệ nhân.',
+        thumbnail: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=800'
       })
       setArticles([
         {
           id: 2,
-          title: 'Vài "tip" giúp bạn tận hưởng trọn vẹn từng giây phút làm sạch da chết',
-          slug: 'tip-lam-sach-da-chet',
-          summary: 'Hãy thử áp dụng một vài tip sau để gia tăng thêm những trải nghiệm thật "chill".',
-          thumbnail: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-10-01T10:00:00'
+          title: 'Khám phá làng nghề mây tre đan Phú Vinh - Nơi lưu giữ tinh hoa 400 năm',
+          slug: 'lang-nghe-phu-vinh',
+          summary: 'Làng nghề Phú Vinh (Hà Nội) với hơn 400 năm lịch sử là nơi sản xuất những sản phẩm mây tre đan tinh xảo nhất Việt Nam.',
+          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
+          categoryName: 'Làng nghề',
+          publishedAt: '2026-01-10T10:00:00'
         },
         {
           id: 3,
-          title: '3 bước tẩy da chết hiệu quả dành cho mặt từ cà phê Đắk Lắk',
-          slug: '3-buoc-tay-da-chet',
-          summary: 'Việc tẩy da chết tuy chỉ mất từ 10 – 15s nhưng nó sẽ giúp bạn loại bỏ các tế bào da chết.',
-          thumbnail: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-09-22T10:00:00'
+          title: 'Đặc sản vùng miền - Tinh túy ẩm thực Việt trong mỗi set quà',
+          slug: 'dac-san-vung-mien',
+          summary: 'Từ cà phê Đắk Lắk đến chè Thái Nguyên, từ mắm Phú Quốc đến kẹo dừa Bến Tre - Gói Mây mang đặc sản khắp vùng miền vào set quà ý nghĩa.',
+          thumbnail: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800',
+          categoryName: 'Đặc sản',
+          publishedAt: '2026-01-08T10:00:00'
         },
         {
           id: 4,
-          title: 'Da dầu, mụn sẽ "ăn chay" như thế nào?',
-          slug: 'da-dau-mun-an-chay',
-          summary: 'Giống như các loại da khác, da dầu cũng sẽ đạt được trạng thái khỏe mạnh.',
-          thumbnail: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-09-22T09:00:00'
+          title: 'Nghệ nhân 70 tuổi và những chiếc giỏ mây mang hồn Việt',
+          slug: 'nghe-nhan-gio-may',
+          summary: 'Câu chuyện về bà Nguyễn Thị Lan - người nghệ nhân 70 tuổi vẫn miệt mài gìn giữ nghề đan mây truyền thống của làng Phú Vinh.',
+          thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800',
+          categoryName: 'Nghệ nhân',
+          publishedAt: '2026-01-05T09:00:00'
         }
       ])
     } finally {
@@ -79,8 +79,8 @@ function HomePage() {
     )
   }
 
-  const lamDepArticles = articles.filter(a => a.categoryName === 'Làm đẹp' || !a.categoryName)
-  const goimayArticles = articles.filter(a => a.categoryName === 'Gói Mây')
+  const langNgheArticles = articles.filter(a => a.categoryName === 'Làng nghề' || a.categoryName === 'Nghệ nhân')
+  const dacSanArticles = articles.filter(a => a.categoryName === 'Đặc sản' || a.categoryName === 'Set quà')
 
   return (
     <div className="home-page">
@@ -92,8 +92,16 @@ function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Bài viết
+            Câu chuyện văn hóa
           </motion.h1>
+          <motion.p
+            className="hero-tagline"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Khám phá hành trình gìn giữ nghề thủ công truyền thống
+          </motion.p>
         </div>
       </section>
 
@@ -106,19 +114,19 @@ function HomePage() {
         </section>
       )}
 
-      {/* Làm đẹp Section */}
+      {/* Làng nghề Section */}
       <section className="articles-section">
         <ArticleSlider 
-          articles={lamDepArticles.length > 0 ? lamDepArticles : articles.slice(0, 3)} 
-          title="Làm đẹp" 
+          articles={langNgheArticles.length > 0 ? langNgheArticles : articles.slice(0, 3)} 
+          title="Làng nghề & Nghệ nhân" 
         />
       </section>
 
-      {/* Gói Mây Section */}
+      {/* Đặc sản Section */}
       <section className="articles-section cocoon-section">
         <ArticleSlider 
-          articles={goimayArticles.length > 0 ? goimayArticles : articles.slice(0, 3)} 
-          title="Gói Mây" 
+          articles={dacSanArticles.length > 0 ? dacSanArticles : articles.slice(0, 3)} 
+          title="Đặc sản & Set quà" 
         />
       </section>
 
@@ -129,4 +137,3 @@ function HomePage() {
 }
 
 export default HomePage
-

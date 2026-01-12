@@ -16,6 +16,13 @@
   color: var(--color-text);
 }
 
+.hero-tagline {
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+  margin-top: 1rem;
+  font-weight: 300;
+}
+
 /* Featured Section */
 .featured-section {
   padding: 4rem 0 2rem;

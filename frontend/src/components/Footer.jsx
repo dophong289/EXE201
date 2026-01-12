@@ -6,8 +6,8 @@ function Footer() {
     <footer className="footer">
       <div className="footer-newsletter">
         <div className="newsletter-container">
-          <h3>Đăng ký để nhận thông tin khuyến mãi sớm nhất từ Gói Mây</h3>
-          <p>Đăng ký để nhận thông tin liên lạc về các sản phẩm, dịch vụ, cửa hàng, sự kiện và các vấn đề đáng quan tâm của Gói Mây.</p>
+          <h3>Đăng ký nhận thông tin từ Gói Mây</h3>
+          <p>Khám phá bộ sưu tập quà tặng văn hóa Việt Nam, ưu đãi độc quyền và câu chuyện từ các làng nghề truyền thống.</p>
           <form className="newsletter-form">
             <input type="email" placeholder="Nhập email của bạn" />
             <button type="submit">Đăng ký</button>
@@ -21,23 +21,23 @@ function Footer() {
             <h4>Đặt hàng & Hỗ trợ</h4>
             <ul>
               <li><Link to="/hoi-dap">Hỏi đáp</Link></li>
-              <li><Link to="/huong-dan-mua-hang">Hướng dẫn mua hàng</Link></li>
-              <li><Link to="/chinh-sach-ban-hang">Chính sách bán hàng</Link></li>
+              <li><Link to="/huong-dan-mua-hang">Hướng dẫn đặt hàng</Link></li>
+              <li><Link to="/chinh-sach-ban-hang">Chính sách giao hàng</Link></li>
               <li><Link to="/dieu-khoan-bao-mat">Điều khoản bảo mật</Link></li>
-              <li><Link to="/dieu-kien-chung">Điều kiện chung</Link></li>
+              <li><Link to="/qua-tang-doanh-nghiep">Quà tặng doanh nghiệp</Link></li>
               <li><Link to="/lien-he">Liên hệ chúng tôi</Link></li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h4>Shop</h4>
+            <h4>Bộ sưu tập</h4>
             <ul>
-              <li><Link to="/san-pham/moi">Sản Phẩm Mới</Link></li>
-              <li><Link to="/san-pham/duong-da">Dưỡng Da</Link></li>
-              <li><Link to="/san-pham/cham-soc-toc">Chăm Sóc Tóc</Link></li>
-              <li><Link to="/san-pham/tam-duong-the">Tắm & Dưỡng Thể</Link></li>
-              <li><Link to="/san-pham/duong-moi">Dưỡng Môi</Link></li>
-              <li><Link to="/san-pham/combo">Combo / Bộ Sản Phẩm</Link></li>
+              <li><Link to="/san-pham/tet">Set quà Tết</Link></li>
+              <li><Link to="/san-pham/dac-san">Đặc sản vùng miền</Link></li>
+              <li><Link to="/san-pham/thu-cong">Đồ thủ công mỹ nghệ</Link></li>
+              <li><Link to="/san-pham/qua-tang">Quà tặng dịp lễ</Link></li>
+              <li><Link to="/san-pham/combo">Combo tiết kiệm</Link></li>
+              <li><Link to="/san-pham/moi">Sản phẩm mới</Link></li>
             </ul>
           </div>
 
@@ -45,9 +45,9 @@ function Footer() {
             <h4>Về Gói Mây</h4>
             <ul>
               <li><Link to="/ve-goi-may">Câu chuyện thương hiệu</Link></li>
-              <li><Link to="/gia-tri-cot-loi">Giá trị cốt lõi</Link></li>
-              <li><Link to="/trach-nhiem-cong-dong">Trách nhiệm cộng đồng</Link></li>
-              <li><Link to="/nguyen-lieu">Tìm hiểu nguyên liệu</Link></li>
+              <li><Link to="/lang-nghe">Làng nghề hợp tác</Link></li>
+              <li><Link to="/nghe-nhan">Nghệ nhân</Link></li>
+              <li><Link to="/ben-vung">Cam kết bền vững</Link></li>
             </ul>
           </div>
 
@@ -80,9 +80,9 @@ function Footer() {
       <div className="footer-bottom">
         <div className="footer-container">
           <div className="company-info">
-            <p><strong>WEBSITE THUỘC QUYỀN CÔNG TY CỔ PHẦN Y&B</strong></p>
-            <p>GCNĐKKD: 0315803699 | PHÒNG ĐĂNG KÝ KINH DOANH - SỞ TÀI CHÍNH THÀNH PHỐ HỒ CHÍ MINH</p>
-            <p>14D1, KHU PHỐ 1A, ĐƯỜNG QUỐC LỘ 1A, PHƯỜNG TÂN THỚI HIỆP, TP. HỒ CHÍ MINH, VIỆT NAM</p>
+            <p><strong>GÓI MÂY - QUÀ TẶNG VĂN HÓA VIỆT NAM</strong></p>
+            <p>Kết hợp đặc sản địa phương và bao bì thủ công truyền thống</p>
+            <p>Hướng đến trải nghiệm ý nghĩa – bền vững – mang bản sắc Việt</p>
             <p>ĐIỆN THOẠI: 19009300 – EMAIL: CONTACT@GOIMAY.VN</p>
           </div>
           <div className="copyright">
@@ -95,4 +95,3 @@ function Footer() {
 }
 
 export default Footer
-

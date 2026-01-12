@@ -28,12 +28,12 @@ function ArticleDetailPage() {
       // Fallback
       setArticle({
         id: 1,
-        title: 'Cocoon x AAF: Ký kết hợp tác "Chung tay cứu trợ chó mèo lang thang" lần II',
+        title: 'Gói Mây x AAF: Ký kết hợp tác "Chung tay cứu trợ chó mèo lang thang" lần II',
         slug: slug,
-        content: '<p>Thông qua việc duy trì chương trình "Chung tay cứu trợ chó mèo lang thang" cùng AAF, Cocoon mong muốn được góp thêm một phần nhỏ bé trong việc cung cấp nguồn lực cho các trạm cứu hộ, giúp duy trì và nâng cao phúc lợi của chó mèo lang thang, đồng thời, lan tỏa sự khích lệ và sẻ chia từ cộng đồng đến với những cá nhân, tập thể đang điều hành trạm và thực hiện công tác cứu hộ chó mèo.</p><p>Cocoon luôn tin rằng, mỗi hành động nhỏ bé đều có thể tạo nên những thay đổi tích cực cho cộng đồng và môi trường xung quanh chúng ta.</p>',
+        content: '<p>Thông qua việc duy trì chương trình "Chung tay cứu trợ chó mèo lang thang" cùng AAF, Gói Mây mong muốn được góp thêm một phần nhỏ bé trong việc cung cấp nguồn lực cho các trạm cứu hộ, giúp duy trì và nâng cao phúc lợi của chó mèo lang thang, đồng thời, lan tỏa sự khích lệ và sẻ chia từ cộng đồng đến với những cá nhân, tập thể đang điều hành trạm và thực hiện công tác cứu hộ chó mèo.</p><p>Gói Mây luôn tin rằng, mỗi hành động nhỏ bé đều có thể tạo nên những thay đổi tích cực cho cộng đồng và môi trường xung quanh chúng ta.</p>',
         thumbnail: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200',
-        author: 'Cocoon Vietnam',
-        categoryName: 'Cocoon',
+        author: 'Gói Mây Vietnam',
+        categoryName: 'Gói Mây',
         publishedAt: '2025-12-03T10:00:00'
       })
     } finally {
@@ -81,7 +81,7 @@ function ArticleDetailPage() {
               <span>/</span>
               <Link to="/bai-viet">Bài viết</Link>
               <span>/</span>
-              <span>{article.categoryName || 'Cocoon'}</span>
+              <span>{article.categoryName || 'Gói Mây'}</span>
             </div>
             
             <motion.h1
@@ -93,7 +93,7 @@ function ArticleDetailPage() {
             </motion.h1>
             
             <div className="article-meta">
-              <span className="category">{article.categoryName || 'Cocoon'}</span>
+              <span className="category">{article.categoryName || 'Gói Mây'}</span>
               <span className="date">{formatDate(article.publishedAt)}</span>
               {article.author && <span className="author">bởi {article.author}</span>}
             </div>

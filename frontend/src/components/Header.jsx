@@ -8,16 +8,16 @@ function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const navItems = [
-    { path: '/san-pham', label: 'Sản phẩm' },
-    { path: '/khuyen-mai', label: 'Khuyến mãi' },
-    { path: '/ve-goi-may', label: 'Gói Mây' },
-    { path: '/bai-viet', label: 'Bài viết' },
+    { path: '/san-pham', label: 'Bộ sưu tập' },
+    { path: '/khuyen-mai', label: 'Ưu đãi' },
+    { path: '/ve-goi-may', label: 'Về Gói Mây' },
+    { path: '/bai-viet', label: 'Câu chuyện' },
   ]
 
   return (
     <header className="header">
       <div className="header-top">
-        <p>Tận hưởng giao hàng miễn phí toàn quốc với hoá đơn từ 99.000 đ</p>
+        <p>🎋 Miễn phí giao hàng toàn quốc cho đơn từ 299.000đ – Quà tặng ý nghĩa, gói trọn yêu thương</p>
       </div>
       
       <nav className="header-main">
@@ -118,7 +118,7 @@ function Header() {
               <div className="search-input-wrapper">
                 <input 
                   type="text" 
-                  placeholder="Nhập từ khóa bạn muốn tìm kiếm"
+                  placeholder="Tìm set quà, đặc sản, quà tặng..."
                   autoFocus
                 />
                 <button className="search-submit">
@@ -131,9 +131,9 @@ function Header() {
               <div className="search-suggestions">
                 <p>Gợi ý tìm kiếm:</p>
                 <div className="suggestion-tags">
-                  <span>Sữa rửa mặt</span>
-                  <span>Nước tẩy trang</span>
-                  <span>Gel tắm</span>
+                  <span>Set quà Tết</span>
+                  <span>Đặc sản Đà Lạt</span>
+                  <span>Giỏ mây thủ công</span>
                 </div>
               </div>
             </div>
@@ -145,4 +145,3 @@ function Header() {
 }
 
 export default Header
-

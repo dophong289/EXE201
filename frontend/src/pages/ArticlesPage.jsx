@@ -29,9 +29,11 @@ function ArticlesPage() {
     } catch (error) {
       console.error('Error loading categories:', error)
       setCategories([
-        { id: 1, name: 'Làm đẹp', slug: 'lam-dep' },
-        { id: 2, name: 'Gói Mây', slug: 'goi-may' },
-        { id: 3, name: 'Chăm sóc tóc', slug: 'cham-soc-toc' }
+        { id: 1, name: 'Làng nghề', slug: 'lang-nghe' },
+        { id: 2, name: 'Nghệ nhân', slug: 'nghe-nhan' },
+        { id: 3, name: 'Đặc sản', slug: 'dac-san' },
+        { id: 4, name: 'Set quà', slug: 'set-qua' },
+        { id: 5, name: 'Văn hóa Việt', slug: 'van-hoa-viet' }
       ])
     }
     loadArticles()
@@ -51,61 +53,79 @@ function ArticlesPage() {
       setPage(0)
     } catch (error) {
       console.error('Error loading articles:', error)
-      // Fallback data
+      // Fallback data - Câu chuyện về văn hóa, làng nghề, nghệ nhân
       setArticles([
         {
           id: 1,
-          title: 'Gói Mây x AAF: Ký kết hợp tác "Chung tay cứu trợ chó mèo lang thang" lần II',
-          slug: 'goi-may-x-aaf-ky-ket-hop-tac',
-          summary: 'Thông qua việc duy trì chương trình cùng AAF, Gói Mây mong muốn góp phần cung cấp nguồn lực cho các trạm cứu hộ.',
-          thumbnail: 'https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800',
-          categoryName: 'Gói Mây',
-          publishedAt: '2025-12-03T10:00:00'
+          title: 'Gói Mây hợp tác cùng 50 làng nghề truyền thống - Hành trình gìn giữ văn hóa Việt',
+          slug: 'goi-may-hop-tac-lang-nghe',
+          summary: 'Thông qua việc hợp tác với các làng nghề truyền thống, Gói Mây mong muốn góp phần bảo tồn nghề thủ công và tạo sinh kế bền vững cho nghệ nhân.',
+          thumbnail: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=800',
+          categoryName: 'Làng nghề',
+          publishedAt: '2026-01-10T10:00:00'
         },
         {
           id: 2,
-          title: 'Vài "tip" giúp bạn tận hưởng trọn vẹn từng giây phút làm sạch da chết',
-          slug: 'tip-lam-sach-da-chet',
-          summary: 'Hãy thử áp dụng một vài tip sau để gia tăng thêm những trải nghiệm thật "chill".',
-          thumbnail: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-10-01T10:00:00'
+          title: 'Làng nghề mây tre đan Phú Vinh - 400 năm gìn giữ tinh hoa',
+          slug: 'lang-nghe-phu-vinh',
+          summary: 'Làng Phú Vinh (Chương Mỹ, Hà Nội) với hơn 400 năm lịch sử là cái nôi của nghề đan mây tre tinh xảo nhất Việt Nam.',
+          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
+          categoryName: 'Làng nghề',
+          publishedAt: '2026-01-08T10:00:00'
         },
         {
           id: 3,
-          title: '3 bước tẩy da chết hiệu quả dành cho mặt từ cà phê Đắk Lắk',
-          slug: '3-buoc-tay-da-chet',
-          summary: 'Việc tẩy da chết tuy chỉ mất từ 10 – 15s nhưng nó sẽ giúp bạn loại bỏ các tế bào da chết.',
-          thumbnail: 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-09-22T10:00:00'
+          title: 'Nghệ nhân Nguyễn Văn Trung và những chiếc giỏ mây mang hồn Việt',
+          slug: 'nghe-nhan-nguyen-van-trung',
+          summary: 'Câu chuyện về người nghệ nhân 70 tuổi vẫn miệt mài gìn giữ nghề đan mây truyền thống của cha ông.',
+          thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800',
+          categoryName: 'Nghệ nhân',
+          publishedAt: '2026-01-05T10:00:00'
         },
         {
           id: 4,
-          title: 'Da dầu, mụn sẽ "ăn chay" như thế nào?',
-          slug: 'da-dau-mun-an-chay',
-          summary: 'Giống như các loại da khác, da dầu cũng sẽ đạt được trạng thái khỏe mạnh.',
-          thumbnail: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800',
-          categoryName: 'Làm đẹp',
-          publishedAt: '2021-09-22T09:00:00'
+          title: 'Đặc sản vùng miền - Tinh túy ẩm thực Việt trong mỗi set quà',
+          slug: 'dac-san-vung-mien',
+          summary: 'Từ cà phê Đắk Lắk đến chè Thái Nguyên, từ mắm Phú Quốc đến kẹo dừa Bến Tre - hương vị Việt trong từng set quà.',
+          thumbnail: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800',
+          categoryName: 'Đặc sản',
+          publishedAt: '2026-01-03T09:00:00'
         },
         {
           id: 5,
-          title: 'Chương trình "Thu hồi pin cũ - Bảo vệ trái đất xanh" năm 2025',
-          slug: 'chuong-trinh-thu-hoi-pin-cu',
-          summary: 'Gói Mây và Trường ĐH Sư phạm TP.HCM phát động chương trình lần thứ 4.',
-          thumbnail: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800',
-          categoryName: 'Gói Mây',
-          publishedAt: '2025-10-24T10:00:00'
+          title: 'Làng cói Kim Sơn (Ninh Bình) - Nơi sản sinh những sản phẩm cói tinh tế',
+          slug: 'lang-coi-kim-son',
+          summary: 'Kim Sơn là vùng đất nổi tiếng với nghề dệt cói truyền thống, tạo ra những sản phẩm thủ công mỹ nghệ độc đáo.',
+          thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800',
+          categoryName: 'Làng nghề',
+          publishedAt: '2025-12-28T10:00:00'
         },
         {
           id: 6,
-          title: 'Gói Mây đã có mặt tại Nhật Bản',
-          slug: 'goi-may-da-co-mat-tai-nhat-ban',
-          summary: 'Cột mốc đánh dấu nấc thang mới trên hành trình vươn xa của thương hiệu.',
-          thumbnail: 'https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800',
-          categoryName: 'Gói Mây',
-          publishedAt: '2025-08-20T10:00:00'
+          title: 'Bền vững từ gốc rễ - Triết lý xanh của Gói Mây',
+          slug: 'ben-vung-tu-goc-re',
+          summary: 'Cam kết sử dụng 100% nguyên liệu tự nhiên, có thể tái chế và phân hủy sinh học, góp phần bảo vệ môi trường.',
+          thumbnail: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800',
+          categoryName: 'Văn hóa Việt',
+          publishedAt: '2025-12-20T10:00:00'
+        },
+        {
+          id: 7,
+          title: 'Set quà Tết 2026 - Gói trọn yêu thương, đậm đà bản sắc',
+          slug: 'set-qua-tet-2026',
+          summary: 'Bộ sưu tập quà Tết với giỏ mây thủ công kết hợp đặc sản các vùng miền - món quà ý nghĩa dành tặng người thân.',
+          thumbnail: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800',
+          categoryName: 'Set quà',
+          publishedAt: '2025-12-15T10:00:00'
+        },
+        {
+          id: 8,
+          title: 'Nghề đan lát - Di sản văn hóa phi vật thể cần được gìn giữ',
+          slug: 'nghe-dan-lat-di-san',
+          summary: 'Nghề đan lát truyền thống không chỉ là sinh kế mà còn là di sản văn hóa quý báu của dân tộc Việt Nam.',
+          thumbnail: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800',
+          categoryName: 'Văn hóa Việt',
+          publishedAt: '2025-12-10T10:00:00'
         }
       ])
     } finally {
@@ -138,7 +158,8 @@ function ArticlesPage() {
     <div className="articles-page">
       {/* Page Header */}
       <section className="page-header">
-        <h1>Bài viết</h1>
+        <h1>Câu chuyện văn hóa</h1>
+        <p className="page-subtitle">Khám phá hành trình gìn giữ nghề thủ công truyền thống Việt Nam</p>
       </section>
 
       {/* Featured Article */}
@@ -214,4 +235,3 @@ function ArticlesPage() {
 }
 
 export default ArticlesPage
-

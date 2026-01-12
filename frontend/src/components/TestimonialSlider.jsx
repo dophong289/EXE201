@@ -5,13 +5,23 @@ import '../styles/components/TestimonialSlider.css'
 const testimonials = [
   {
     id: 1,
-    quote: '"Gói Mây – Mỹ phẩm thuần chay cho nét đẹp thuần Việt"',
-    source: 'elle vietnam'
+    quote: '"Gói Mây – Quà tặng văn hóa Việt Nam, gói trọn yêu thương và bản sắc dân tộc"',
+    source: 'VnExpress'
   },
   {
     id: 2,
-    quote: '"Gói Mây Vietnam – Từ mầm xanh làm đẹp đến giải thưởng danh giá tại ELLE Beauty Awards"',
-    source: 'elle vietnam'
+    quote: '"Mỗi set quà từ Gói Mây không chỉ là món quà – mà là câu chuyện của làng nghề, của nghệ nhân, của văn hóa Việt"',
+    source: 'Thanh Niên'
+  },
+  {
+    id: 3,
+    quote: '"Khi tặng Gói Mây, bạn đang góp phần bảo tồn nghề thủ công truyền thống và tạo sinh kế cho cộng đồng làng nghề"',
+    source: 'Dân Trí'
+  },
+  {
+    id: 4,
+    quote: '"Sự kết hợp hoàn hảo giữa đặc sản địa phương và bao bì thủ công – một xu hướng quà tặng bền vững đáng trân trọng"',
+    source: 'Forbes Vietnam'
   }
 ]
 
@@ -62,4 +72,3 @@ function TestimonialSlider() {
 }
 
 export default TestimonialSlider
-

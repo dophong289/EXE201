@@ -4,24 +4,24 @@ import '../styles/pages/AboutPage.css'
 function AboutPage() {
   const values = [
     {
-      icon: '🌿',
-      title: 'Thuần chay 100%',
-      description: 'Tất cả sản phẩm Gói Mây không chứa thành phần từ động vật và không thử nghiệm trên động vật.'
+      icon: '🎋',
+      title: 'Thủ công truyền thống',
+      description: 'Mỗi sản phẩm được làm thủ công bởi các nghệ nhân làng nghề, gìn giữ tinh hoa văn hóa Việt qua từng đường đan, nét tết.'
     },
     {
       icon: '🇻🇳',
-      title: 'Nguyên liệu Việt Nam',
-      description: 'Tự hào sử dụng các nguyên liệu thiên nhiên đặc trưng của Việt Nam trong mỗi sản phẩm.'
+      title: 'Bản sắc Việt Nam',
+      description: 'Kết hợp đặc sản địa phương với bao bì thủ công từ tre, mây, nan - mang đậm hồn Việt trong từng set quà.'
     },
     {
       icon: '🌱',
-      title: 'Thân thiện môi trường',
-      description: 'Cam kết sử dụng bao bì có thể tái chế và giảm thiểu tác động đến môi trường.'
+      title: 'Bền vững với môi trường',
+      description: 'Sử dụng 100% nguyên liệu tự nhiên, có thể tái chế và phân hủy sinh học, góp phần bảo vệ môi trường.'
     },
     {
-      icon: '💚',
-      title: 'Trách nhiệm cộng đồng',
-      description: 'Đồng hành cùng các hoạt động xã hội và bảo vệ động vật.'
+      icon: '💝',
+      title: 'Trải nghiệm ý nghĩa',
+      description: 'Mỗi set quà không chỉ là món quà - mà là câu chuyện văn hóa, là tình cảm được gửi gắm qua bàn tay nghệ nhân.'
     }
   ]
 
@@ -36,7 +36,7 @@ function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <h1>Gói Mây</h1>
-            <p className="tagline">Mỹ phẩm thuần chay cho nét đẹp thuần Việt</p>
+            <p className="tagline">Quà tặng văn hóa Việt Nam – Ý nghĩa, Bền vững, Bản sắc</p>
           </motion.div>
         </div>
       </section>
@@ -54,18 +54,18 @@ function AboutPage() {
             >
               <h2>Câu chuyện thương hiệu</h2>
               <p>
-                Gói Mây được ra đời với sứ mệnh mang đến những sản phẩm chăm sóc da và tóc 
-                thuần chay, an toàn và hiệu quả. Chúng tôi tin rằng vẻ đẹp thực sự đến từ 
-                sự hài hòa với thiên nhiên.
+                <strong>Gói Mây</strong> ra đời từ tình yêu với những làng nghề truyền thống Việt Nam - 
+                nơi đôi bàn tay khéo léo của các nghệ nhân đã tạo nên những tác phẩm từ tre, mây, nan 
+                qua hàng trăm năm lịch sử.
               </p>
               <p>
-                Mỗi sản phẩm Gói Mây đều được nghiên cứu và phát triển với tâm huyết, 
-                sử dụng các nguyên liệu thiên nhiên đặc trưng của Việt Nam như cà phê 
-                Đắk Lắk, nghệ Hưng Yên, bưởi Năm Roi, và nhiều hơn nữa.
+                Chúng tôi kết nối tinh hoa thủ công truyền thống với đặc sản vùng miền, tạo nên những 
+                set quà tặng độc đáo - nơi mỗi chiếc giỏ mây, hộp tre, túi cói đều mang trong mình 
+                câu chuyện của người thợ làng nghề Phú Vinh, Chương Mỹ, Ninh Bình...
               </p>
               <p>
-                Chúng tôi cam kết không thử nghiệm trên động vật và không sử dụng 
-                các thành phần có nguồn gốc từ động vật trong bất kỳ sản phẩm nào.
+                Với Gói Mây, tặng quà không chỉ là trao đi một món đồ - mà là gửi gắm văn hóa, 
+                là lan tỏa giá trị truyền thống Việt Nam đến mọi người, mọi nơi trên thế giới.
               </p>
             </motion.div>
             <motion.div
@@ -76,8 +76,8 @@ function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600" 
-                alt="Gói Mây products"
+                src="https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600" 
+                alt="Sản phẩm thủ công Gói Mây"
               />
             </motion.div>
           </div>
@@ -107,7 +107,7 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Ingredients Section */}
+      {/* Materials Section */}
       <section className="about-ingredients">
         <div className="container">
           <motion.div
@@ -116,30 +116,69 @@ function AboutPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2>Nguyên liệu thiên nhiên Việt Nam</h2>
+            <h2>Chất liệu thủ công truyền thống</h2>
             <p className="ingredients-intro">
-              Gói Mây tự hào sử dụng các nguyên liệu thiên nhiên đặc trưng của Việt Nam, 
-              mang đến những trải nghiệm làm đẹp độc đáo và hiệu quả.
+              Gói Mây tự hào sử dụng các nguyên liệu tự nhiên từ làng nghề Việt Nam, 
+              mỗi sản phẩm là một tác phẩm nghệ thuật mang đậm bản sắc văn hóa dân tộc.
             </p>
           </motion.div>
           
           <div className="ingredients-grid">
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=300" alt="Cà phê Đắk Lắk" />
-              <h4>Cà phê Đắk Lắk</h4>
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300" alt="Mây tre đan" />
+              <h4>Mây tre đan</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=300" alt="Nghệ Hưng Yên" />
-              <h4>Nghệ Hưng Yên</h4>
+              <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300" alt="Cói tự nhiên" />
+              <h4>Cói tự nhiên</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1587735243615-c03f25aaff15?w=300" alt="Bưởi Năm Roi" />
-              <h4>Bưởi Năm Roi</h4>
+              <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300" alt="Gỗ tre" />
+              <h4>Gỗ tre</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1518882605630-8eb579795938?w=300" alt="Hoa hồng" />
-              <h4>Hoa hồng</h4>
+              <img src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300" alt="Lá chuối khô" />
+              <h4>Lá chuối khô</h4>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Artisans Section */}
+      <section className="about-story" style={{ background: 'var(--color-bg-alt)' }}>
+        <div className="container">
+          <div className="story-content">
+            <motion.div
+              className="story-image"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600" 
+                alt="Nghệ nhân làng nghề"
+              />
+            </motion.div>
+            <motion.div
+              className="story-text"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <h2>Nghệ nhân làng nghề</h2>
+              <p>
+                Gói Mây hợp tác với hơn 50 hộ gia đình nghệ nhân tại các làng nghề truyền thống 
+                như <strong>Phú Vinh (Hà Nội)</strong>, <strong>Chương Mỹ (Hà Nội)</strong>, 
+                <strong>Kim Sơn (Ninh Bình)</strong> - những nơi lưu giữ tinh hoa nghề đan lát 
+                hàng trăm năm tuổi.
+              </p>
+              <p>
+                Mỗi set quà của Gói Mây không chỉ mang giá trị vật chất, mà còn góp phần 
+                bảo tồn nghề thủ công truyền thống và tạo sinh kế bền vững cho cộng đồng làng nghề.
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -147,8 +186,8 @@ function AboutPage() {
       {/* CTA Section */}
       <section className="about-cta">
         <div className="container">
-          <h2>Khám phá sản phẩm Gói Mây</h2>
-          <p>Bắt đầu hành trình làm đẹp thuần chay cùng chúng tôi</p>
+          <h2>Khám phá bộ sưu tập quà tặng</h2>
+          <p>Gửi gắm yêu thương qua những set quà mang đậm bản sắc Việt</p>
           <a href="/san-pham" className="btn btn-primary">Xem sản phẩm</a>
         </div>
       </section>
@@ -157,4 +196,3 @@ function AboutPage() {
 }
 
 export default AboutPage
-

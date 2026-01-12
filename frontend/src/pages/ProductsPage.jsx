@@ -10,10 +10,10 @@ function ProductsPage() {
 
   const categories = [
     { id: 'all', name: 'Tất cả' },
-    { id: 'Chăm Sóc Da', name: 'Chăm Sóc Da' },
-    { id: 'Tắm & Dưỡng Thể', name: 'Tắm & Dưỡng Thể' },
-    { id: 'Chăm Sóc Tóc', name: 'Chăm Sóc Tóc' },
-    { id: 'Dưỡng Môi', name: 'Dưỡng Môi' }
+    { id: 'Set quà Tết', name: 'Set quà Tết' },
+    { id: 'Đặc sản vùng miền', name: 'Đặc sản vùng miền' },
+    { id: 'Thủ công mỹ nghệ', name: 'Thủ công mỹ nghệ' },
+    { id: 'Quà doanh nghiệp', name: 'Quà doanh nghiệp' }
   ]
 
   useEffect(() => {
@@ -32,40 +32,80 @@ function ProductsPage() {
       setProducts(response.data.content || response.data)
     } catch (error) {
       console.error('Error loading products:', error)
-      // Fallback data
+      // Fallback data - Set quà tặng thủ công
       setProducts([
         {
           id: 1,
-          name: 'Cà phê Đắk Lắk làm sạch da chết cơ thể',
-          slug: 'ca-phe-dak-lak-lam-sach-da-chet',
-          price: 165000,
-          thumbnail: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400',
-          productCategory: 'Tắm & Dưỡng Thể'
+          name: 'Set quà Tết An Khang - Giỏ mây tre đan',
+          slug: 'set-qua-tet-an-khang',
+          price: 850000,
+          thumbnail: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=400',
+          productCategory: 'Set quà Tết',
+          description: 'Giỏ mây tre đan thủ công kết hợp đặc sản: Trà Thái Nguyên, Cà phê Đắk Lắk, Bánh đậu xanh Hải Dương'
         },
         {
           id: 2,
-          name: 'Sữa rửa mặt nghệ Hưng Yên',
-          slug: 'sua-rua-mat-nghe-hung-yen',
-          price: 145000,
-          thumbnail: 'https://images.unsplash.com/photo-1570194065650-d99fb4b8ccb0?w=400',
-          productCategory: 'Chăm Sóc Da'
+          name: 'Set quà Phú Quý - Hộp tre truyền thống',
+          slug: 'set-qua-phu-quy',
+          price: 1250000,
+          salePrice: 999000,
+          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
+          productCategory: 'Set quà Tết',
+          description: 'Hộp tre khắc hoa văn truyền thống, đựng: Mật ong Hưng Yên, Hạt điều Bình Phước, Trà sen Tây Hồ'
         },
         {
           id: 3,
-          name: 'Nước tẩy trang hoa hồng',
-          slug: 'nuoc-tay-trang-hoa-hong',
-          price: 175000,
-          salePrice: 149000,
-          thumbnail: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400',
-          productCategory: 'Chăm Sóc Da'
+          name: 'Giỏ mây đan Phú Vinh - Size L',
+          slug: 'gio-may-dan-phu-vinh-l',
+          price: 450000,
+          thumbnail: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400',
+          productCategory: 'Thủ công mỹ nghệ',
+          description: 'Giỏ mây đan thủ công từ làng nghề Phú Vinh, Hà Nội - 400 năm truyền thống'
         },
         {
           id: 4,
-          name: 'Dầu gội bưởi Việt Nam',
-          slug: 'dau-goi-buoi-viet-nam',
-          price: 185000,
-          thumbnail: 'https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400',
-          productCategory: 'Chăm Sóc Tóc'
+          name: 'Túi cói Kim Sơn - Handmade',
+          slug: 'tui-coi-kim-son',
+          price: 280000,
+          thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=400',
+          productCategory: 'Thủ công mỹ nghệ',
+          description: 'Túi cói đan tay từ làng nghề Kim Sơn, Ninh Bình'
+        },
+        {
+          id: 5,
+          name: 'Set đặc sản Đà Lạt - Hộp gỗ tre',
+          slug: 'set-dac-san-da-lat',
+          price: 650000,
+          thumbnail: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=400',
+          productCategory: 'Đặc sản vùng miền',
+          description: 'Mứt dâu tây, Atiso sấy, Trà hoa cúc Đà Lạt trong hộp gỗ tre khắc laser'
+        },
+        {
+          id: 6,
+          name: 'Set đặc sản Tây Bắc - Giỏ mây',
+          slug: 'set-dac-san-tay-bac',
+          price: 720000,
+          thumbnail: 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=400',
+          productCategory: 'Đặc sản vùng miền',
+          description: 'Mật ong rừng, Thịt trâu gác bếp, Chè Shan tuyết trong giỏ mây thủ công'
+        },
+        {
+          id: 7,
+          name: 'Set quà Doanh nghiệp Premium',
+          slug: 'set-qua-doanh-nghiep-premium',
+          price: 2500000,
+          thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400',
+          productCategory: 'Quà doanh nghiệp',
+          description: 'Bộ quà cao cấp với hộp tre khắc logo doanh nghiệp, đặc sản và sản phẩm thủ công'
+        },
+        {
+          id: 8,
+          name: 'Bộ ấm trà tre nứa thủ công',
+          slug: 'bo-am-tra-tre-nua',
+          price: 380000,
+          thumbnail: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400',
+          productCategory: 'Thủ công mỹ nghệ',
+          description: 'Ấm trà và 6 chén làm từ tre nứa tự nhiên, thân thiện môi trường'
         }
       ])
     } finally {
@@ -80,7 +120,8 @@ function ProductsPage() {
   return (
     <div className="products-page">
       <section className="page-header">
-        <h1>Sản phẩm</h1>
+        <h1>Bộ sưu tập quà tặng</h1>
+        <p className="page-subtitle">Quà tặng văn hóa Việt Nam - Ý nghĩa, Bền vững, Bản sắc</p>
       </section>
 
       {/* Category Filter */}
@@ -120,12 +161,15 @@ function ProductsPage() {
                   <div className="product-image">
                     <img src={product.thumbnail} alt={product.name} />
                     {product.salePrice && (
-                      <span className="sale-badge">Giảm giá</span>
+                      <span className="sale-badge">Ưu đãi</span>
                     )}
                   </div>
                   <div className="product-info">
                     <span className="product-category">{product.productCategory}</span>
                     <h3 className="product-name">{product.name}</h3>
+                    {product.description && (
+                      <p className="product-description">{product.description}</p>
+                    )}
                     <div className="product-price">
                       {product.salePrice ? (
                         <>
@@ -144,9 +188,36 @@ function ProductsPage() {
           )}
         </div>
       </section>
+
+      {/* Features Section */}
+      <section className="features-section">
+        <div className="container">
+          <div className="features-grid">
+            <div className="feature-item">
+              <span className="feature-icon">🎋</span>
+              <h4>Thủ công 100%</h4>
+              <p>Mỗi sản phẩm được làm bởi nghệ nhân làng nghề</p>
+            </div>
+            <div className="feature-item">
+              <span className="feature-icon">🌱</span>
+              <h4>Nguyên liệu tự nhiên</h4>
+              <p>Tre, mây, cói - thân thiện với môi trường</p>
+            </div>
+            <div className="feature-item">
+              <span className="feature-icon">🎁</span>
+              <h4>Gói quà miễn phí</h4>
+              <p>Đóng gói tinh tế, sẵn sàng làm quà tặng</p>
+            </div>
+            <div className="feature-item">
+              <span className="feature-icon">🚚</span>
+              <h4>Giao hàng toàn quốc</h4>
+              <p>Miễn phí với đơn từ 299.000đ</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
 
 export default ProductsPage
-
