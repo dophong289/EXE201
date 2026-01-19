@@ -51,9 +51,10 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<Page<ProductDTO>> searchProducts(
             @RequestParam String keyword,
+            @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
-        return ResponseEntity.ok(productService.searchProducts(keyword, page, size));
+        return ResponseEntity.ok(productService.searchProducts(keyword, category, page, size));
     }
     
     @PostMapping

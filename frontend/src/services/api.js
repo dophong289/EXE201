@@ -47,6 +47,30 @@ export const userApi = {
   changePassword: (data) => api.post('/user/change-password', data),
 }
 
+// Favorite API
+export const favoriteApi = {
+  getAll: () => api.get('/favorites'),
+  getIds: () => api.get('/favorites/ids'),
+  toggle: (productId) => api.post(`/favorites/toggle/${productId}`),
+  check: (productId) => api.get(`/favorites/check/${productId}`),
+  count: () => api.get('/favorites/count'),
+}
+
+// Order API (User)
+export const orderApi = {
+  create: (data) => api.post('/orders', data),
+  myOrders: () => api.get('/orders/my'),
+  myOrderById: (orderId) => api.get(`/orders/my/${orderId}`),
+  markReceived: (orderId) => api.put(`/orders/my/${orderId}/received`),
+}
+
+// Order API (Admin)
+export const adminOrderApi = {
+  getAll: () => api.get('/admin/orders'),
+  confirm: (orderId) => api.put(`/admin/orders/${orderId}/confirm`),
+  cancel: (orderId) => api.put(`/admin/orders/${orderId}/cancel`),
+}
+
 // Upload API
 export const uploadApi = {
   uploadImage: (file) => {
@@ -192,8 +216,15 @@ export const productApi = {
   getSale: () => 
     api.get('/products/sale'),
   
-  search: (keyword, page = 0, size = 12) => 
-    api.get(`/products/search?keyword=${keyword}&page=${page}&size=${size}`),
+  search: (keyword, category = null, page = 0, size = 12) => {
+    const params = new URLSearchParams({
+      keyword: keyword ?? '',
+      page: String(page),
+      size: String(size),
+    })
+    if (category) params.set('category', category)
+    return api.get(`/products/search?${params.toString()}`)
+  },
   
   // Admin APIs
   create: (data) =>

@@ -1,21 +1,63 @@
 import { useState, useEffect } from 'react'
+import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { productApi, productCategoryApi } from '../services/api'
+import { productApi, productCategoryApi, favoriteApi } from '../services/api'
+import { addToCart } from '../services/cart'
 import '../styles/pages/ProductsPage.css'
 
 function ProductsPage() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeCategory, setActiveCategory] = useState('all')
+  const [favoriteIds, setFavoriteIds] = useState([])
+  const [user, setUser] = useState(null)
+  const [searchInput, setSearchInput] = useState(searchParams.get('q') || '')
+  const [debouncedSearch, setDebouncedSearch] = useState(searchParams.get('q') || '')
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
+    }
     loadCategories()
   }, [])
 
+  // Keep local state in sync if user changes URL manually
+  useEffect(() => {
+    const q = searchParams.get('q') || ''
+    setSearchInput(q)
+    setDebouncedSearch(q)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
+
+  // Debounce typing so search feels smooth
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchInput), 300)
+    return () => clearTimeout(t)
+  }, [searchInput])
+
+  // Reflect debounced search to URL (so Header search can navigate here)
+  useEffect(() => {
+    const q = (debouncedSearch || '').trim()
+    const next = new URLSearchParams(searchParams)
+    if (q) next.set('q', q)
+    else next.delete('q')
+    setSearchParams(next, { replace: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  useEffect(() => {
+    if (user) {
+      loadFavoriteIds()
+    }
+  }, [user])
+
   useEffect(() => {
     loadProducts()
-  }, [activeCategory])
+  }, [activeCategory, debouncedSearch])
 
   const loadCategories = async () => {
     try {
@@ -26,11 +68,23 @@ function ProductsPage() {
     }
   }
 
+  const loadFavoriteIds = async () => {
+    try {
+      const response = await favoriteApi.getIds()
+      setFavoriteIds(response.data || [])
+    } catch (error) {
+      console.error('Error loading favorites:', error)
+    }
+  }
+
   const loadProducts = async () => {
     setLoading(true)
     try {
       let response
-      if (activeCategory === 'all') {
+      const keyword = (debouncedSearch || '').trim()
+      if (keyword) {
+        response = await productApi.search(keyword, activeCategory === 'all' ? null : activeCategory, 0, 12)
+      } else if (activeCategory === 'all') {
         response = await productApi.getAll(0, 12)
       } else {
         response = await productApi.getByCategory(activeCategory, 0, 12)
@@ -65,20 +119,77 @@ function ProductsPage() {
     }
   }
 
+  const toggleFavorite = async (productId, e) => {
+    e.stopPropagation()
+    
+    if (!user) {
+      navigate('/dang-nhap')
+      return
+    }
+
+    try {
+      const response = await favoriteApi.toggle(productId)
+      if (response.data.isFavorite) {
+        setFavoriteIds([...favoriteIds, productId])
+      } else {
+        setFavoriteIds(favoriteIds.filter(id => id !== productId))
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error)
+    }
+  }
+
+  const isFavorite = (productId) => {
+    return favoriteIds.includes(productId)
+  }
+
+  const handleAddToCart = (product, e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    addToCart(product, 1)
+  }
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN').format(price) + ' đ'
   }
 
+  const clearSearch = () => setSearchInput('')
+
   return (
     <div className="products-page">
       <section className="page-header">
-        <h1>Bộ sưu tập quà tặng</h1>
+        <h1>Danh Sách Sản Phẩm</h1>
         <p className="page-subtitle">Quà tặng văn hóa Việt Nam - Ý nghĩa, Bền vững, Bản sắc</p>
       </section>
 
       {/* Category Filter */}
       <section className="category-section">
         <div className="container">
+          <div className="products-search-bar">
+            <div className="products-search-input">
+              <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Tìm sản phẩm theo tên..."
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+              {searchInput.trim() && (
+                <button className="clear-search" onClick={clearSearch} aria-label="Xóa tìm kiếm" type="button">
+                  ×
+                </button>
+              )}
+            </div>
+            {debouncedSearch.trim() && (
+              <div className="products-search-hint">
+                Kết quả cho: <strong>{debouncedSearch.trim()}</strong>
+              </div>
+            )}
+          </div>
+
           <div className="category-tabs">
             <button
               className={`category-tab ${activeCategory === 'all' ? 'active' : ''}`}
@@ -108,7 +219,7 @@ function ProductsPage() {
             </div>
           ) : products.length === 0 ? (
             <div className="no-products">
-              <p>Chưa có sản phẩm trong danh mục này</p>
+              <p>{debouncedSearch.trim() ? 'Không tìm thấy sản phẩm phù hợp' : 'Chưa có sản phẩm trong danh mục này'}</p>
             </div>
           ) : (
             <div className="products-grid">
@@ -120,29 +231,44 @@ function ProductsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                 >
-                  <div className="product-image">
-                    <img src={product.thumbnail} alt={product.name} />
-                    {product.salePrice && (
-                      <span className="sale-badge">Ưu đãi</span>
-                    )}
-                  </div>
-                  <div className="product-info">
-                    <span className="product-category">{product.productCategory}</span>
-                    <h3 className="product-name">{product.name}</h3>
-                    {product.description && (
-                      <p className="product-description">{product.description}</p>
-                    )}
-                    <div className="product-price">
-                      {product.salePrice ? (
-                        <>
-                          <span className="price-sale">{formatPrice(product.salePrice)}</span>
-                          <span className="price-original">{formatPrice(product.price)}</span>
-                        </>
-                      ) : (
-                        <span className="price">{formatPrice(product.price)}</span>
+                  <Link to={`/san-pham/${product.slug}`} className="product-link">
+                    <div className="product-image">
+                      <img src={product.thumbnail} alt={product.name} />
+                      {product.salePrice && (
+                        <span className="sale-badge">Ưu đãi</span>
                       )}
                     </div>
-                    <button className="add-to-cart-btn">Thêm vào giỏ</button>
+                    <div className="product-info">
+                      <span className="product-category">{product.productCategory}</span>
+                      <h3 className="product-name">{product.name}</h3>
+                      {product.description && (
+                        <p className="product-description">{product.description}</p>
+                      )}
+                      <div className="product-price">
+                        {product.salePrice ? (
+                          <>
+                            <span className="price-sale">{formatPrice(product.salePrice)}</span>
+                            <span className="price-original">{formatPrice(product.price)}</span>
+                          </>
+                        ) : (
+                          <span className="price">{formatPrice(product.price)}</span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                  <div className="product-actions">
+                    <button 
+                      className={`favorite-btn ${isFavorite(product.id) ? 'active' : ''}`}
+                      onClick={(e) => toggleFavorite(product.id, e)}
+                      title={isFavorite(product.id) ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
+                    >
+                      <svg viewBox="0 0 24 24" fill={isFavorite(product.id) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                      </svg>
+                    </button>
+                    <button className="add-to-cart-btn" onClick={(e) => handleAddToCart(product, e)}>
+                      Thêm vào giỏ
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -163,7 +289,7 @@ function ProductsPage() {
             <div className="feature-item">
               <span className="feature-icon">🌱</span>
               <h4>Nguyên liệu tự nhiên</h4>
-              <p>Tre, mây, cói - thân thiện với môi trường</p>
+              <p>Tre, mây, lá chuối khô - thân thiện với môi trường</p>
             </div>
             <div className="feature-item">
               <span className="feature-icon">🎁</span>
@@ -173,7 +299,7 @@ function ProductsPage() {
             <div className="feature-item">
               <span className="feature-icon">🚚</span>
               <h4>Giao hàng toàn quốc</h4>
-              <p>Miễn phí với đơn từ 299.000đ</p>
+              <p>Miễn phí với đơn từ 1.000.000đ</p>
             </div>
           </div>
         </div>

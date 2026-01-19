@@ -17,12 +17,12 @@ function AdminSiteSettingsPage() {
   const settingsConfig = [
     {
       category: 'about',
-      title: 'Trang Về Gói Mây',
+      title: 'Trang Gói Mây',
       items: [
         { key: 'about_story_image', label: 'Ảnh câu chuyện thương hiệu', description: 'Ảnh hiển thị bên phải phần "Câu chuyện thương hiệu"' },
         { key: 'about_artisan_image', label: 'Ảnh nghệ nhân làng nghề', description: 'Ảnh hiển thị bên trái phần "Nghệ nhân làng nghề"' },
         { key: 'about_material_1', label: 'Ảnh chất liệu 1 - Mây tre đan', description: 'Ảnh đầu tiên trong phần chất liệu' },
-        { key: 'about_material_2', label: 'Ảnh chất liệu 2 - Cói tự nhiên', description: 'Ảnh thứ hai trong phần chất liệu' },
+        { key: 'about_material_2', label: 'Ảnh chất liệu 2 - Mứt', description: 'Ảnh thứ hai trong phần chất liệu' },
         { key: 'about_material_3', label: 'Ảnh chất liệu 3 - Gỗ tre', description: 'Ảnh thứ ba trong phần chất liệu' },
         { key: 'about_material_4', label: 'Ảnh chất liệu 4 - Lá chuối khô', description: 'Ảnh thứ tư trong phần chất liệu' },
       ]

@@ -26,6 +26,7 @@ function AdminProductsPage() {
     price: '',
     salePrice: '',
     thumbnail: '',
+    images: [],
     productCategory: '',
     stock: '',
     active: true
@@ -134,7 +135,8 @@ function AdminProductsPage() {
       const imageUrl = 'http://localhost:8080' + response.data.url
       setFormData({
         ...formData,
-        thumbnail: imageUrl
+        thumbnail: imageUrl,
+        images: (formData.images && formData.images.length > 0) ? formData.images : [imageUrl]
       })
     } catch (err) {
       setError(err.response?.data?.message || 'Lỗi khi upload ảnh')
@@ -147,6 +149,45 @@ function AdminProductsPage() {
     }
   }
 
+  const handleMultiImageUpload = async (e) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
+
+    setUploading(true)
+    setError('')
+    try {
+      const uploadedUrls = []
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) continue
+        if (file.size > 5 * 1024 * 1024) continue
+        const res = await uploadApi.uploadImage(file)
+        uploadedUrls.push('http://localhost:8080' + res.data.url)
+      }
+
+      const nextImages = [...(formData.images || []), ...uploadedUrls].filter(Boolean)
+      setFormData({
+        ...formData,
+        images: nextImages,
+        thumbnail: formData.thumbnail || nextImages[0] || ''
+      })
+    } catch (err) {
+      setError(err.response?.data?.message || 'Lỗi khi upload ảnh')
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  const removeGalleryImage = (url) => {
+    const nextImages = (formData.images || []).filter((u) => u !== url)
+    const nextThumbnail = formData.thumbnail === url ? (nextImages[0] || '') : formData.thumbnail
+    setFormData({ ...formData, images: nextImages, thumbnail: nextThumbnail })
+  }
+
+  const setThumbnailFromGallery = (url) => {
+    setFormData({ ...formData, thumbnail: url })
+  }
+
   const openAddModal = () => {
     setModalMode('add')
     setFormData({
@@ -156,6 +197,7 @@ function AdminProductsPage() {
       price: '',
       salePrice: '',
       thumbnail: '',
+      images: [],
       productCategory: '',
       stock: '',
       active: true
@@ -173,6 +215,7 @@ function AdminProductsPage() {
       price: product.price || '',
       salePrice: product.salePrice || '',
       thumbnail: product.thumbnail || '',
+      images: product.images || (product.thumbnail ? [product.thumbnail] : []),
       productCategory: product.productCategory || '',
       stock: product.stock || '',
       active: product.active !== false
@@ -477,6 +520,14 @@ function AdminProductsPage() {
                         style={{ display: 'none' }}
                         id="image-upload"
                       />
+                      <input
+                        type="file"
+                        onChange={handleMultiImageUpload}
+                        accept="image/*"
+                        multiple
+                        style={{ display: 'none' }}
+                        id="images-upload"
+                      />
                       <button
                         type="button"
                         className="btn-upload"
@@ -496,6 +547,28 @@ function AdminProductsPage() {
                               <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                             Tải ảnh lên
+                          </>
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-upload"
+                        onClick={() => document.getElementById('images-upload')?.click()}
+                        disabled={uploading}
+                      >
+                        {uploading ? (
+                          <>
+                            <span className="spinner small"></span>
+                            Đang tải...
+                          </>
+                        ) : (
+                          <>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                              <circle cx="8.5" cy="8.5" r="1.5"/>
+                              <polyline points="21 15 16 10 5 21"/>
+                            </svg>
+                            Tải nhiều ảnh
                           </>
                         )}
                       </button>
@@ -522,6 +595,27 @@ function AdminProductsPage() {
                             <line x1="6" y1="6" x2="18" y2="18"/>
                           </svg>
                         </button>
+                      </div>
+                    )}
+
+                    {(formData.images || []).length > 0 && (
+                      <div className="gallery-preview">
+                        <div className="gallery-title">Thư viện ảnh (bấm ảnh để đặt làm thumbnail)</div>
+                        <div className="gallery-grid">
+                          {(formData.images || []).map((url) => (
+                            <div key={url} className={`gallery-item ${formData.thumbnail === url ? 'active' : ''}`}>
+                              <button type="button" className="gallery-pick" onClick={() => setThumbnailFromGallery(url)} title="Đặt làm ảnh đại diện">
+                                <img src={url} alt="Gallery" />
+                              </button>
+                              <button type="button" className="remove-image" onClick={() => removeGalleryImage(url)} title="Xóa ảnh">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <line x1="18" y1="6" x2="6" y2="18"/>
+                                  <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

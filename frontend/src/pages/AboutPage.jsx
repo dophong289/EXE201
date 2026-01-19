@@ -3,6 +3,21 @@ import { motion } from 'framer-motion'
 import { siteSettingApi } from '../services/api'
 import '../styles/pages/AboutPage.css'
 
+function VietnamFlagIcon() {
+  // Cờ Việt Nam (đỏ + sao vàng) bằng SVG để hiển thị ổn định trên mọi thiết bị
+  return (
+    <span className="flag-icon" aria-label="Cờ Việt Nam" title="Cờ Việt Nam">
+      <svg viewBox="0 0 30 20" role="img" aria-hidden="true">
+        <rect width="30" height="20" fill="#DA251D" />
+        <path
+          d="M15 4.2l1.763 5.428h5.707l-4.617 3.352 1.763 5.428L15 15.056l-4.616 3.352 1.763-5.428-4.617-3.352h5.707L15 4.2z"
+          fill="#FFCD00"
+        />
+      </svg>
+    </span>
+  )
+}
+
 function AboutPage() {
   const [settings, setSettings] = useState({})
 
@@ -35,7 +50,7 @@ function AboutPage() {
       description: 'Mỗi sản phẩm được làm thủ công bởi các nghệ nhân làng nghề, gìn giữ tinh hoa văn hóa Việt qua từng đường đan, nét tết.'
     },
     {
-      icon: '🇻🇳',
+      icon: <VietnamFlagIcon />,
       title: 'Bản sắc Việt Nam',
       description: 'Kết hợp đặc sản địa phương với bao bì thủ công từ tre, mây, nan - mang đậm hồn Việt trong từng set quà.'
     },
@@ -64,8 +79,18 @@ function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1>Gói Mây</h1>
-            <p className="tagline">Quà tặng văn hóa Việt Nam – Ý nghĩa, Bền vững, Bản sắc</p>
+            <h1 className="about-brand">
+              <img
+                className="about-logo"
+                src="/Logo-Gói-Mây.png"
+                alt="Logo Gói Mây"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+              <span>Gói Mây</span>
+            </h1>
+            <p className="tagline">Gói quà mây tre, kết tinh từ làng nghề và bàn tay người Việt!</p>
           </motion.div>
         </div>
       </section>
@@ -90,7 +115,7 @@ function AboutPage() {
               <p>
                 Chúng tôi kết nối tinh hoa thủ công truyền thống với đặc sản vùng miền, tạo nên những 
                 set quà tặng độc đáo - nơi mỗi chiếc giỏ mây, hộp tre, túi cói đều mang trong mình 
-                câu chuyện của người thợ làng nghề Phú Vinh, Chương Mỹ, Ninh Bình...
+                câu chuyện của người thợ làng nghề Chương Mỹ. 
               </p>
               <p>
                 Với Gói Mây, tặng quà không chỉ là trao đi một món đồ - mà là gửi gắm văn hóa, 
@@ -155,29 +180,45 @@ function AboutPage() {
           <div className="ingredients-grid">
             <div className="ingredient-item">
               <img 
-                src={getImage('about_material_1', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300')} 
+                src={getImage('about_material_1', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300')}
                 alt="Mây tre đan" 
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300'
+                }}
               />
               <h4>Mây tre đan</h4>
             </div>
             <div className="ingredient-item">
               <img 
-                src={getImage('about_material_2', 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300')} 
-                alt="Cói tự nhiên" 
+                src={getImage('about_material_2', 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300')}
+                alt="Mứt" 
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300'
+                }}
               />
-              <h4>Cói tự nhiên</h4>
+              <h4>Mứt</h4>
             </div>
             <div className="ingredient-item">
               <img 
-                src={getImage('about_material_3', 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300')} 
+                src={getImage('about_material_3', 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300')}
                 alt="Gỗ tre" 
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300'
+                }}
               />
               <h4>Gỗ tre</h4>
             </div>
             <div className="ingredient-item">
               <img 
-                src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')} 
+                src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')}
                 alt="Lá chuối khô" 
+                onError={(e) => {
+                  e.currentTarget.onerror = null
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300'
+                }}
               />
               <h4>Lá chuối khô</h4>
             </div>
@@ -210,9 +251,8 @@ function AboutPage() {
             >
               <h2>Nghệ nhân làng nghề</h2>
               <p>
-                Gói Mây hợp tác với hơn 50 hộ gia đình nghệ nhân tại các làng nghề truyền thống 
-                như <strong>Phú Vinh (Hà Nội)</strong>, <strong>Chương Mỹ (Hà Nội)</strong>, 
-                <strong>Kim Sơn (Ninh Bình)</strong> - những nơi lưu giữ tinh hoa nghề đan lát 
+                Gói Mây hợp tác với hơn 50 hộ gia đình nghệ nhân tại các làng nghề truyền thống như
+                - <strong>Chương Mỹ (Hà Nội)</strong> - những nơi lưu giữ tinh hoa nghề đan lát 
                 hàng trăm năm tuổi.
               </p>
               <p>

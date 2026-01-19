@@ -20,9 +20,9 @@ public class FileController {
     
     private final Path uploadPath;
     
-    public FileController() {
-        // Tạo thư mục uploads trong thư mục gốc của project
-        this.uploadPath = Paths.get("uploads").toAbsolutePath().normalize();
+    public FileController(@Value("${app.upload-dir:${user.home}/goimay/uploads}") String uploadDir) {
+        // Lưu ở thư mục ổn định (không phụ thuộc cwd/target) để tránh “restart là mất”
+        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.uploadPath);
         } catch (IOException e) {

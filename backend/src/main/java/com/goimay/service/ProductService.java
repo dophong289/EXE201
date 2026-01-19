@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,12 @@ public class ProductService {
     
     public Page<ProductDTO> searchProducts(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return productRepository.searchProducts(keyword, pageable).map(this::convertToDTO);
+        return productRepository.searchProducts(keyword, null, pageable).map(this::convertToDTO);
+    }
+
+    public Page<ProductDTO> searchProducts(String keyword, String category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        return productRepository.searchProducts(keyword, category, pageable).map(this::convertToDTO);
     }
     
     @Transactional
@@ -90,6 +96,29 @@ public class ProductService {
         product.setProductCategory(dto.getProductCategory());
         product.setStock(dto.getStock());
         product.setActive(dto.isActive());
+
+        // Sync multiple images if provided
+        if (dto.getImages() != null) {
+            product.getImages().clear();
+            List<String> urls = dto.getImages().stream()
+                    .filter(u -> u != null && !u.trim().isEmpty())
+                    .collect(Collectors.toList());
+            for (int i = 0; i < urls.size(); i++) {
+                com.goimay.model.ProductImage img = new com.goimay.model.ProductImage();
+                img.setProduct(product);
+                img.setUrl(urls.get(i).trim());
+                img.setDisplayOrder(i);
+                product.getImages().add(img);
+            }
+
+            // If thumbnail is empty, use first image as thumbnail
+            if ((product.getThumbnail() == null || product.getThumbnail().trim().isEmpty()) && !urls.isEmpty()) {
+                product.setThumbnail(urls.get(0).trim());
+            }
+        } else {
+            // Backward compatibility: if there is a thumbnail but no images in DB yet, keep as is
+            // (images will be derived when converting to DTO)
+        }
     }
     
     private ProductDTO convertToDTO(Product product) {
@@ -104,6 +133,19 @@ public class ProductService {
         dto.setProductCategory(product.getProductCategory());
         dto.setStock(product.getStock());
         dto.setActive(product.isActive());
+
+        List<String> images = new ArrayList<>();
+        if (product.getImages() != null) {
+            images.addAll(product.getImages().stream()
+                    .map(img -> img.getUrl())
+                    .filter(u -> u != null && !u.trim().isEmpty())
+                    .collect(Collectors.toList()));
+        }
+        // Fallback: if no images stored, at least return thumbnail as 1st image for gallery
+        if (images.isEmpty() && product.getThumbnail() != null && !product.getThumbnail().trim().isEmpty()) {
+            images.add(product.getThumbnail().trim());
+        }
+        dto.setImages(images);
         return dto;
     }
 }

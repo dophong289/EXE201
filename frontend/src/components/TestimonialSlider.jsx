@@ -13,16 +13,6 @@ const testimonials = [
     quote: '"Mỗi set quà từ Gói Mây không chỉ là món quà – mà là câu chuyện của làng nghề, của nghệ nhân, của văn hóa Việt"',
     source: 'Thanh Niên'
   },
-  {
-    id: 3,
-    quote: '"Khi tặng Gói Mây, bạn đang góp phần bảo tồn nghề thủ công truyền thống và tạo sinh kế cho cộng đồng làng nghề"',
-    source: 'Dân Trí'
-  },
-  {
-    id: 4,
-    quote: '"Sự kết hợp hoàn hảo giữa đặc sản địa phương và bao bì thủ công – một xu hướng quà tặng bền vững đáng trân trọng"',
-    source: 'Forbes Vietnam'
-  }
 ]
 
 function TestimonialSlider() {
