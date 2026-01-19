@@ -1,18 +1,18 @@
 /* ===== CSS Variables ===== */
 :root {
-  /* Colors */
-  --color-primary: #2d5a27;
-  --color-primary-dark: #1e3d1a;
-  --color-primary-light: #4a8c3f;
-  --color-accent: #c4a574;
-  --color-accent-dark: #a68a5b;
+  /* Colors - Bảng màu nâu/be truyền thống */
+  --color-primary: #8B6914;         /* Nâu vàng đậm - màu tre già */
+  --color-primary-dark: #6B5210;    /* Nâu đậm hơn */
+  --color-primary-light: #A68B3D;   /* Nâu vàng nhạt */
+  --color-accent: #D4A574;          /* Màu mây tự nhiên */
+  --color-accent-dark: #B8956A;     /* Màu mây đậm */
   
-  --color-text: #1a1a1a;
-  --color-text-light: #6b6b6b;
+  --color-text: #3D3428;            /* Nâu đen */
+  --color-text-light: #7A6E5D;      /* Nâu xám */
   --color-white: #ffffff;
-  --color-bg: #ffffff;
-  --color-bg-alt: #f8f6f3;
-  --color-border: #e8e4df;
+  --color-bg: #FDFBF7;              /* Kem nhạt */
+  --color-bg-alt: #F5F0E8;          /* Be nhạt */
+  --color-border: #E8DFD0;          /* Viền be */
   
   /* Fonts */
   --font-heading: 'Cormorant Garamond', Georgia, serif;
@@ -255,7 +255,7 @@ a:hover {
 
 /* ===== Page Header ===== */
 .page-header {
-  background: linear-gradient(135deg, var(--color-bg-alt) 0%, #ebe6df 100%);
+  background: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-border) 100%);
   padding: 3rem 2rem;
   text-align: center;
 }

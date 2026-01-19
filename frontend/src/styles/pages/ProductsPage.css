@@ -9,9 +9,16 @@
 
 .products-page .category-tabs {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+}
+
+.products-page .category-tab-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .products-page .category-tab {
@@ -24,6 +31,7 @@
   cursor: pointer;
   transition: all 0.3s;
   color: var(--color-text);
+  font-family: var(--font-body);
 }
 
 .products-page .category-tab:hover {
@@ -35,6 +43,72 @@
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-white);
+}
+
+/* Category Edit Button */
+.category-edit-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  opacity: 0;
+  transform: scale(0.8);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.category-edit-btn svg {
+  width: 12px;
+  height: 12px;
+  color: var(--color-text-light);
+}
+
+.category-tab-wrapper:hover .category-edit-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.category-edit-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.category-edit-btn:hover svg {
+  color: white;
+}
+
+/* Add Category Button */
+.add-category-btn {
+  padding: 0.75rem !important;
+  border-style: dashed !important;
+}
+
+.add-category-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.add-category-btn:hover {
+  background: rgba(139, 105, 20, 0.1) !important;
+}
+
+/* No Products */
+.no-products {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--color-text-light);
+}
+
+.no-products p {
+  font-size: 1.1rem;
 }
 
 /* Products Section */
@@ -84,7 +158,7 @@
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: #e74c3c;
+  background: #C45C3B;
   color: var(--color-white);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;

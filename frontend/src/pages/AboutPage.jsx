@@ -1,7 +1,33 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { siteSettingApi } from '../services/api'
 import '../styles/pages/AboutPage.css'
 
 function AboutPage() {
+  const [settings, setSettings] = useState({})
+
+  useEffect(() => {
+    loadSettings()
+  }, [])
+
+  const loadSettings = async () => {
+    try {
+      const response = await siteSettingApi.getMapByCategory('about')
+      setSettings(response.data || {})
+    } catch (error) {
+      console.error('Error loading settings:', error)
+      // Use default images if API fails
+      setSettings({
+        about_story_image: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600',
+        about_artisan_image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600',
+        about_material_1: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300',
+        about_material_2: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300',
+        about_material_3: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300',
+        about_material_4: 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300'
+      })
+    }
+  }
+
   const values = [
     {
       icon: '🎋',
@@ -24,6 +50,9 @@ function AboutPage() {
       description: 'Mỗi set quà không chỉ là món quà - mà là câu chuyện văn hóa, là tình cảm được gửi gắm qua bàn tay nghệ nhân.'
     }
   ]
+
+  // Helper to get image with fallback
+  const getImage = (key, fallback) => settings[key] || fallback
 
   return (
     <div className="about-page">
@@ -76,7 +105,7 @@ function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600" 
+                src={getImage('about_story_image', 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600')} 
                 alt="Sản phẩm thủ công Gói Mây"
               />
             </motion.div>
@@ -125,19 +154,31 @@ function AboutPage() {
           
           <div className="ingredients-grid">
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300" alt="Mây tre đan" />
+              <img 
+                src={getImage('about_material_1', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300')} 
+                alt="Mây tre đan" 
+              />
               <h4>Mây tre đan</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300" alt="Cói tự nhiên" />
+              <img 
+                src={getImage('about_material_2', 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300')} 
+                alt="Cói tự nhiên" 
+              />
               <h4>Cói tự nhiên</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300" alt="Gỗ tre" />
+              <img 
+                src={getImage('about_material_3', 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300')} 
+                alt="Gỗ tre" 
+              />
               <h4>Gỗ tre</h4>
             </div>
             <div className="ingredient-item">
-              <img src="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300" alt="Lá chuối khô" />
+              <img 
+                src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')} 
+                alt="Lá chuối khô" 
+              />
               <h4>Lá chuối khô</h4>
             </div>
           </div>
@@ -156,7 +197,7 @@ function AboutPage() {
               transition={{ duration: 0.6 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600" 
+                src={getImage('about_artisan_image', 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600')} 
                 alt="Nghệ nhân làng nghề"
               />
             </motion.div>
