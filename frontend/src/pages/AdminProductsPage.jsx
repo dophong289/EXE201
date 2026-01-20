@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { productApi, uploadApi, productCategoryApi } from '../services/api'
+import { productApi, uploadApi, productCategoryApi, resolveMediaUrl, normalizeApiPath } from '../services/api'
 import '../styles/pages/AdminPage.css'
 
 function AdminProductsPage() {
@@ -132,11 +132,12 @@ function AdminProductsPage() {
 
     try {
       const response = await uploadApi.uploadImage(file)
-      const imageUrl = 'http://localhost:8080' + response.data.url
+      // Lưu path tương đối để không dính localhost khi deploy
+      const imagePath = response.data?.url || uploadApi.getImagePath(response.data.filename)
       setFormData({
         ...formData,
-        thumbnail: imageUrl,
-        images: (formData.images && formData.images.length > 0) ? formData.images : [imageUrl]
+        thumbnail: imagePath,
+        images: (formData.images && formData.images.length > 0) ? formData.images : [imagePath]
       })
     } catch (err) {
       setError(err.response?.data?.message || 'Lỗi khi upload ảnh')
@@ -161,7 +162,7 @@ function AdminProductsPage() {
         if (!file.type.startsWith('image/')) continue
         if (file.size > 5 * 1024 * 1024) continue
         const res = await uploadApi.uploadImage(file)
-        uploadedUrls.push('http://localhost:8080' + res.data.url)
+        uploadedUrls.push(res.data?.url || uploadApi.getImagePath(res.data.filename))
       }
 
       const nextImages = [...(formData.images || []), ...uploadedUrls].filter(Boolean)
@@ -208,14 +209,19 @@ function AdminProductsPage() {
   const openEditModal = (product) => {
     setModalMode('edit')
     setSelectedProduct(product)
+    const normalize = (v) => normalizeApiPath(v || '')
+
     setFormData({
       name: product.name || '',
       slug: product.slug || '',
       description: product.description || '',
       price: product.price || '',
       salePrice: product.salePrice || '',
-      thumbnail: product.thumbnail || '',
-      images: product.images || (product.thumbnail ? [product.thumbnail] : []),
+      thumbnail: normalize(product.thumbnail),
+      images: (product.images && product.images.length > 0
+        ? product.images
+        : (product.thumbnail ? [product.thumbnail] : [])
+      ).map(normalize),
       productCategory: product.productCategory || '',
       stock: product.stock || '',
       active: product.active !== false
@@ -237,6 +243,8 @@ function AdminProductsPage() {
     try {
       const productData = {
         ...formData,
+        thumbnail: normalizeApiPath(formData.thumbnail),
+        images: (formData.images || []).map((u) => normalizeApiPath(u)),
         price: parseFloat(formData.price) || 0,
         salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
         stock: parseInt(formData.stock) || 0
@@ -384,7 +392,7 @@ function AdminProductsPage() {
                     <td>
                       <div className="product-thumb">
                         {product.thumbnail ? (
-                          <img src={product.thumbnail} alt={product.name} />
+                          <img src={resolveMediaUrl(product.thumbnail)} alt={product.name} />
                         ) : (
                           <div className="no-image">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -584,7 +592,7 @@ function AdminProductsPage() {
                     </div>
                     {formData.thumbnail && (
                       <div className="image-preview">
-                        <img src={formData.thumbnail} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
+                        <img src={resolveMediaUrl(formData.thumbnail)} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
                         <button 
                           type="button" 
                           className="remove-image"
@@ -605,7 +613,7 @@ function AdminProductsPage() {
                           {(formData.images || []).map((url) => (
                             <div key={url} className={`gallery-item ${formData.thumbnail === url ? 'active' : ''}`}>
                               <button type="button" className="gallery-pick" onClick={() => setThumbnailFromGallery(url)} title="Đặt làm ảnh đại diện">
-                                <img src={url} alt="Gallery" />
+                                <img src={resolveMediaUrl(url)} alt="Gallery" />
                               </button>
                               <button type="button" className="remove-image" onClick={() => removeGalleryImage(url)} title="Xóa ảnh">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

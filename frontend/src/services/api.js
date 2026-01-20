@@ -29,6 +29,21 @@ export const resolveMediaUrl = (value) => {
   return v
 }
 
+// Chuẩn hoá URL ảnh về path tương đối (bỏ host như http://localhost:8080)
+export const normalizeApiPath = (value) => {
+  if (!value || typeof value !== 'string') return value
+  const v = value.trim()
+  if (!v) return v
+
+  // Nếu là absolute URL, lấy phần path + query
+  try {
+    const u = new URL(v)
+    return u.pathname + (u.search || '')
+  } catch {
+    return v
+  }
+}
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
