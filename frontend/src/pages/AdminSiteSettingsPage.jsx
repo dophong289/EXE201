@@ -288,55 +288,6 @@ function AdminSiteSettingsPage() {
               'Lưu tất cả thay đổi'
             )}
           </button>
-          <button 
-            className="btn-sync-code" 
-            onClick={handleSyncToCode}
-            disabled={saving}
-            style={{ 
-              marginLeft: '10px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '5px',
-              cursor: saving ? 'not-allowed' : 'pointer',
-              opacity: saving ? 0.6 : 1
-            }}
-          >
-            {saving ? (
-              <>
-                <span className="spinner small"></span>
-                Đang đồng bộ...
-              </>
-            ) : (
-              '🔄 Đồng bộ Site Settings'
-            )}
-          </button>
-          <button 
-            className="btn-sync-all-code" 
-            onClick={handleSyncAllToCode}
-            disabled={saving}
-            style={{ 
-              marginLeft: '10px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '5px',
-              cursor: saving ? 'not-allowed' : 'pointer',
-              opacity: saving ? 0.6 : 1,
-              fontWeight: 'bold'
-            }}
-          >
-            {saving ? (
-              <>
-                <span className="spinner small"></span>
-                Đang đồng bộ...
-              </>
-            ) : (
-              '🚀 Đồng bộ TẤT CẢ vào Code'
-            )}
-          </button>
         </div>
       </div>
     </div>
