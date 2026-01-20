@@ -76,7 +76,8 @@ function Footer() {
             <p><strong>GÓI MÂY - QUÀ TẶNG VĂN HÓA VIỆT NAM</strong></p>
             <p>Kết hợp đặc sản địa phương và bao bì thủ công truyền thống</p>
             <p>Hướng đến trải nghiệm ý nghĩa – bền vững – mang bản sắc Việt</p>
-            <p>ĐIỆN THOẠI: 098 552 39 82 – EMAIL: goimayvn@gmail.com</p>
+            <p>Điện thoại: 098 552 39 82 </p>
+            <p>Email: goimayvn@gmail.com</p>
           </div>
           <div className="copyright">
             <p>© 2026 Gói Mây Vietnam. All rights reserved.</p>
