@@ -5,7 +5,8 @@ function Footer() {
   const location = useLocation()
   const isProductsPage = location.pathname === '/san-pham'
   const isAboutPage = location.pathname === '/ve-goi-may'
-  const hideNewsletter = isProductsPage || isAboutPage
+  const isArticlesPage = location.pathname.startsWith('/bai-viet')
+  const hideNewsletter = isProductsPage || isAboutPage || isArticlesPage
   
   return (
     <footer className="footer">

@@ -99,7 +99,7 @@
 }
 
 .footer-column a:hover {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .social-links {
@@ -125,8 +125,8 @@
 }
 
 .social-links a:hover {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
+  border-color: #7A2E2E;
+  background: #7A2E2E;
 }
 
 .social-links a:hover svg {
