@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { resolveMediaUrl } from '../services/api'
 import {
   clearCart,
   getCart,
@@ -101,7 +102,7 @@ function CartPage() {
                         <Link to={`/san-pham/${it.slug || ''}`} className="cart-item-product">
                           <div className="thumb">
                             {it.thumbnail ? (
-                              <img src={it.thumbnail} alt={it.name} />
+                              <img src={resolveMediaUrl(it.thumbnail)} alt={it.name} />
                             ) : (
                               <div className="thumb-placeholder">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { productApi, favoriteApi } from '../services/api'
+import { productApi, favoriteApi, resolveMediaUrl } from '../services/api'
 import { addToCart } from '../services/cart'
 import '../styles/pages/ProductDetailPage.css'
 
@@ -123,7 +123,9 @@ function ProductDetailPage() {
   }
 
   // Gallery: ưu tiên images[] từ DB, fallback về thumbnail
-  const images = (product.images && product.images.length > 0 ? product.images : [product.thumbnail]).filter(Boolean)
+  const images = (product.images && product.images.length > 0 ? product.images : [product.thumbnail])
+    .filter(Boolean)
+    .map((u) => resolveMediaUrl(u))
 
   return (
     <div className="product-detail-page">

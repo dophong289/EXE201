@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { articleApi, categoryApi, uploadApi } from '../services/api'
+import { articleApi, categoryApi, uploadApi, resolveMediaUrl, normalizeApiPath } from '../services/api'
 import '../styles/pages/AdminPage.css'
 
 function AdminArticlesPage() {
@@ -102,9 +102,14 @@ function AdminArticlesPage() {
         slug: generateSlug(value)
       })
     } else {
+      const nextValue =
+        name === 'thumbnail'
+          ? normalizeApiPath(value)
+          : (type === 'checkbox' ? checked : value)
+
       setFormData({
         ...formData,
-        [name]: type === 'checkbox' ? checked : value
+        [name]: nextValue
       })
     }
   }
@@ -128,10 +133,10 @@ function AdminArticlesPage() {
 
     try {
       const response = await uploadApi.uploadImage(file)
-      const imageUrl = 'http://localhost:8080' + response.data.url
+      const imagePath = response.data?.url || uploadApi.getImagePath(response.data.filename)
       setFormData({
         ...formData,
-        thumbnail: imageUrl
+        thumbnail: imagePath
       })
     } catch (err) {
       setError(err.response?.data?.message || 'Lỗi khi upload ảnh')
@@ -167,7 +172,7 @@ function AdminArticlesPage() {
       slug: article.slug || '',
       summary: article.summary || '',
       content: article.content || '',
-      thumbnail: article.thumbnail || '',
+      thumbnail: normalizeApiPath(article.thumbnail || ''),
       author: article.author || '',
       categoryId: article.categoryId || '',
       featured: article.featured || false,
@@ -190,6 +195,7 @@ function AdminArticlesPage() {
     try {
       const articleData = {
         ...formData,
+        thumbnail: normalizeApiPath(formData.thumbnail),
         categoryId: formData.categoryId ? parseInt(formData.categoryId) : null
       }
 
@@ -340,8 +346,8 @@ function AdminArticlesPage() {
                   <tr key={article.id}>
                     <td>
                       <div className="product-thumb">
-                        {article.thumbnail ? (
-                          <img src={article.thumbnail} alt={article.title} />
+                      {article.thumbnail ? (
+                        <img src={resolveMediaUrl(article.thumbnail)} alt={article.title} />
                         ) : (
                           <div className="no-image">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -524,7 +530,7 @@ function AdminArticlesPage() {
                     </div>
                     {formData.thumbnail && (
                       <div className="image-preview">
-                        <img src={formData.thumbnail} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
+                        <img src={resolveMediaUrl(formData.thumbnail)} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
                         <button 
                           type="button" 
                           className="remove-image"
