@@ -4,7 +4,7 @@
 }
 
 .footer-newsletter {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: #7A2E2E;
   padding: 4rem 2rem;
   text-align: center;
 }

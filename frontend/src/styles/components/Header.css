@@ -129,13 +129,13 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-primary);
+  background: #7A2E2E;
   transition: width 0.3s;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .nav-link:hover::after,

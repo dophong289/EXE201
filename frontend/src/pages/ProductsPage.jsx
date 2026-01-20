@@ -287,34 +287,6 @@ function ProductsPage() {
           )}
         </div>
       </section>
-
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="container">
-          <div className="features-grid">
-            <div className="feature-item">
-              <span className="feature-icon">🎋</span>
-              <h4>Thủ công 100%</h4>
-              <p>Mỗi sản phẩm được làm bởi nghệ nhân làng nghề</p>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🌱</span>
-              <h4>Nguyên liệu tự nhiên</h4>
-              <p>Tre, mây, lá chuối khô - thân thiện với môi trường</p>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🎁</span>
-              <h4>Gói quà miễn phí</h4>
-              <p>Đóng gói tinh tế, sẵn sàng làm quà tặng</p>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🚚</span>
-              <h4>Giao hàng toàn quốc</h4>
-              <p>Miễn phí với đơn từ 1.000.000đ</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

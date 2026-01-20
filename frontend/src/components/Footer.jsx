@@ -1,10 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import '../styles/components/Footer.css'
 
 function Footer() {
+  const location = useLocation()
+  const isProductsPage = location.pathname === '/san-pham'
+  
   return (
     <footer className="footer">
-      <div className="footer-newsletter">
+      {!isProductsPage && (
+        <div className="footer-newsletter">
         <div className="newsletter-container">
           <h3>Đăng ký nhận thông tin từ Gói Mây</h3>
           <p>Khám phá bộ sưu tập quà tặng văn hóa Việt Nam, ưu đãi độc quyền và câu chuyện từ các làng nghề truyền thống.</p>
@@ -14,6 +18,7 @@ function Footer() {
           </form>
         </div>
       </div>
+      )}
 
       <div className="footer-main">
         <div className="footer-container">
