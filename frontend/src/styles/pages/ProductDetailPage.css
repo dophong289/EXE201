@@ -31,7 +31,7 @@
 }
 
 .not-found a {
-  color: var(--color-primary);
+  color: #7A2E2E;
   text-decoration: none;
   font-weight: 600;
 }
@@ -64,7 +64,7 @@
 }
 
 .breadcrumb a:hover {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .breadcrumb .separator {
@@ -175,7 +175,7 @@
 
 .image-thumbnails .thumb.active,
 .image-thumbnails .thumb:hover {
-  border-color: var(--color-primary);
+  border-color: #7A2E2E;
 }
 
 /* Product Info */
@@ -221,7 +221,7 @@
 .product-price-box .price-sale {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #dc2626;
+  color: #7A2E2E;
 }
 
 .product-price-box .price-original {
@@ -369,7 +369,7 @@
   justify-content: center;
   gap: 0.75rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: #7A2E2E;
   color: white;
   border: none;
   border-radius: 12px;
@@ -386,7 +386,7 @@
 
 .btn-add-cart:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 105, 20, 0.35);
+  box-shadow: 0 8px 25px rgba(122, 46, 46, 0.35);
 }
 
 .btn-add-cart:disabled {
@@ -445,7 +445,7 @@
 .extra-info .info-item svg {
   width: 24px;
   height: 24px;
-  color: var(--color-primary);
+  color: #7A2E2E;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -592,7 +592,7 @@
 
 .related-price .price-sale {
   font-weight: 600;
-  color: #dc2626;
+  color: #7A2E2E;
 }
 
 .related-price .price-old {

@@ -56,8 +56,8 @@
 }
 
 .products-search-input .clear-search:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: #7A2E2E;
+  color: #7A2E2E;
 }
 
 .products-search-hint {
@@ -147,8 +147,8 @@
 }
 
 .category-edit-btn:hover {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: #7A2E2E;
+  border-color: #7A2E2E;
 }
 
 .category-edit-btn:hover svg {
@@ -167,7 +167,7 @@
 }
 
 .add-category-btn:hover {
-  background: rgba(139, 105, 20, 0.1) !important;
+  background: rgba(122, 46, 46, 0.1) !important;
 }
 
 /* No Products */
@@ -302,7 +302,7 @@
 
 .product-card .product-category {
   font-size: 0.8rem;
-  color: var(--color-primary);
+  color: #7A2E2E;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 500;
@@ -344,7 +344,7 @@
 .product-price .price-sale {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .product-price .price-original {

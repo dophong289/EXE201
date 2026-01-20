@@ -22,7 +22,7 @@
 
 /* ===== Left Side - Branding ===== */
 .auth-branding {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: #7A2E2E;
   padding: 3rem;
   display: flex;
   flex-direction: column;
@@ -223,14 +223,14 @@
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: #7A2E2E;
   background: var(--color-white);
-  box-shadow: 0 0 0 4px rgba(139, 105, 20, 0.1);
+  box-shadow: 0 0 0 4px rgba(122, 46, 46, 0.1);
 }
 
 .input-wrapper input:focus + svg,
 .input-wrapper:focus-within svg {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .input-wrapper input::placeholder {
@@ -279,8 +279,8 @@
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: #7A2E2E;
+  border-color: #7A2E2E;
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
@@ -291,13 +291,13 @@
 }
 
 .checkbox-wrapper a {
-  color: var(--color-primary);
+  color: #7A2E2E;
   text-decoration: underline;
 }
 
 .forgot-link {
   font-size: 0.9rem;
-  color: var(--color-primary);
+  color: #7A2E2E;
   font-weight: 500;
 }
 
@@ -313,7 +313,7 @@
   font-weight: 600;
   font-family: var(--font-body);
   color: var(--color-white);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: #7A2E2E;
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -323,7 +323,7 @@
 
 .auth-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 105, 20, 0.35);
+  box-shadow: 0 8px 25px rgba(122, 46, 46, 0.35);
 }
 
 .auth-submit-btn:active:not(:disabled) {
@@ -409,7 +409,7 @@
 }
 
 .social-btn:hover {
-  border-color: var(--color-primary);
+  border-color: #7A2E2E;
   background: var(--color-bg);
 }
 
@@ -428,7 +428,7 @@
 }
 
 .auth-footer a {
-  color: var(--color-primary);
+  color: #7A2E2E;
   font-weight: 600;
 }
 
@@ -449,7 +449,7 @@
   }
 
   .brand-logo {
-    margin-left: 0;
+    margin-left: 120px;
   }
 
   .brand-logo-image {
@@ -478,7 +478,7 @@
 @media (max-width: 480px) {
   .brand-logo {
     gap: 10px;
-    margin-left: 0;
+    margin-left: 120px;
   }
 
   .brand-logo-image {

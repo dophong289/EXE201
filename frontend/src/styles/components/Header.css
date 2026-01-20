@@ -171,7 +171,7 @@
 }
 
 .icon-btn:hover svg {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .language-btn {
@@ -185,8 +185,8 @@
 }
 
 .language-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: #7A2E2E;
+  color: #7A2E2E;
 }
 
 /* Login Button */
@@ -227,7 +227,7 @@
 }
 
 .user-btn:hover {
-  border-color: var(--color-primary);
+  border-color: #7A2E2E;
   background: var(--color-bg);
 }
 
@@ -268,7 +268,7 @@
 }
 
 .user-btn:hover .chevron {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 /* User Dropdown */
@@ -338,11 +338,11 @@
 
 .dropdown-item:hover {
   background: var(--color-bg);
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .dropdown-item:hover svg {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .dropdown-item.logout {
@@ -350,16 +350,16 @@
 }
 
 .dropdown-item.admin-link {
-  color: var(--color-primary);
+  color: #7A2E2E;
   font-weight: 500;
 }
 
 .dropdown-item.admin-link svg {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .dropdown-item.admin-link:hover {
-  background: rgba(139, 105, 20, 0.1);
+  background: rgba(122, 46, 46, 0.1);
 }
 
 .dropdown-item.logout svg {
@@ -431,7 +431,7 @@
 }
 
 .close-search:hover {
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .search-container h3 {
@@ -443,7 +443,7 @@
 
 .search-input-wrapper {
   display: flex;
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: 2px solid #7A2E2E;
   padding-bottom: 0.5rem;
 }
 
@@ -470,7 +470,7 @@
 .search-submit svg {
   width: 24px;
   height: 24px;
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .search-suggestions {
@@ -606,7 +606,7 @@
 }
 
 .favorites-empty a {
-  color: var(--color-primary);
+  color: #7A2E2E;
   font-weight: 600;
   text-decoration: none;
 }
@@ -681,7 +681,7 @@
 .favorite-price {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: #7A2E2E;
 }
 
 .remove-favorite {
@@ -720,7 +720,7 @@
   display: block;
   padding: 1rem;
   text-align: center;
-  color: var(--color-primary);
+  color: #7A2E2E;
   font-weight: 600;
   text-decoration: none;
   border-top: 1px solid var(--color-border);
@@ -775,7 +775,7 @@
     width: 28px;
     height: 28px;
     border-radius: 7px;
-    transform: translateY(2px);
+    transform: translateY(20px);
   }
 
   .brand-text {
