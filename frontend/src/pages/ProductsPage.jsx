@@ -246,7 +246,7 @@ function ProductsPage() {
                     <div className="product-image">
                       <img src={resolveMediaUrl(product.thumbnail)} alt={product.name} />
                       {product.salePrice && (
-                        <span className="sale-badge">Ưu đãi</span>
+                        <span className="sale-badge">Giảm giá</span>
                       )}
                     </div>
                     <div className="product-info">
