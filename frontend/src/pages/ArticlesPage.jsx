@@ -64,69 +64,7 @@ function ArticlesPage() {
           categoryName: 'Làng nghề',
           publishedAt: '2026-01-10T10:00:00'
         },
-        {
-          id: 2,
-          title: 'Làng nghề mây tre đan Phú Vinh - 400 năm gìn giữ tinh hoa',
-          slug: 'lang-nghe-phu-vinh',
-          summary: 'Làng Phú Vinh (Chương Mỹ, Hà Nội) với hơn 400 năm lịch sử là cái nôi của nghề đan mây tre tinh xảo nhất Việt Nam.',
-          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-          categoryName: 'Làng nghề',
-          publishedAt: '2026-01-08T10:00:00'
-        },
-        {
-          id: 3,
-          title: 'Nghệ nhân Nguyễn Văn Trung và những chiếc giỏ mây mang hồn Việt',
-          slug: 'nghe-nhan-nguyen-van-trung',
-          summary: 'Câu chuyện về người nghệ nhân 70 tuổi vẫn miệt mài gìn giữ nghề đan mây truyền thống của cha ông.',
-          thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800',
-          categoryName: 'Nghệ nhân',
-          publishedAt: '2026-01-05T10:00:00'
-        },
-        {
-          id: 4,
-          title: 'Đặc sản vùng miền - Tinh túy ẩm thực Việt trong mỗi set quà',
-          slug: 'dac-san-vung-mien',
-          summary: 'Từ cà phê Đắk Lắk đến chè Thái Nguyên, từ mắm Phú Quốc đến kẹo dừa Bến Tre - hương vị Việt trong từng set quà.',
-          thumbnail: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800',
-          categoryName: 'Đặc sản',
-          publishedAt: '2026-01-03T09:00:00'
-        },
-        {
-          id: 5,
-          title: 'Làng cói Kim Sơn (Ninh Bình) - Nơi sản sinh những sản phẩm cói tinh tế',
-          slug: 'lang-coi-kim-son',
-          summary: 'Kim Sơn là vùng đất nổi tiếng với nghề dệt cói truyền thống, tạo ra những sản phẩm thủ công mỹ nghệ độc đáo.',
-          thumbnail: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800',
-          categoryName: 'Làng nghề',
-          publishedAt: '2025-12-28T10:00:00'
-        },
-        {
-          id: 6,
-          title: 'Bền vững từ gốc rễ - Triết lý xanh của Gói Mây',
-          slug: 'ben-vung-tu-goc-re',
-          summary: 'Cam kết sử dụng 100% nguyên liệu tự nhiên, có thể tái chế và phân hủy sinh học, góp phần bảo vệ môi trường.',
-          thumbnail: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800',
-          categoryName: 'Văn hóa Việt',
-          publishedAt: '2025-12-20T10:00:00'
-        },
-        {
-          id: 7,
-          title: 'Set quà Tết 2026 - Gói trọn yêu thương, đậm đà bản sắc',
-          slug: 'set-qua-tet-2026',
-          summary: 'Bộ sưu tập quà Tết với giỏ mây thủ công kết hợp đặc sản các vùng miền - món quà ý nghĩa dành tặng người thân.',
-          thumbnail: 'https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800',
-          categoryName: 'Set quà',
-          publishedAt: '2025-12-15T10:00:00'
-        },
-        {
-          id: 8,
-          title: 'Nghề đan lát - Di sản văn hóa phi vật thể cần được gìn giữ',
-          slug: 'nghe-dan-lat-di-san',
-          summary: 'Nghề đan lát truyền thống không chỉ là sinh kế mà còn là di sản văn hóa quý báu của dân tộc Việt Nam.',
-          thumbnail: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800',
-          categoryName: 'Văn hóa Việt',
-          publishedAt: '2025-12-10T10:00:00'
-        }
+        
       ])
     } finally {
       setLoading(false)

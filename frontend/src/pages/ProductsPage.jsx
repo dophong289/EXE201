@@ -96,22 +96,33 @@ function ProductsPage() {
       setProducts([
         {
           id: 1,
-          name: 'Set quà Tết An Khang - Giỏ mây tre đan',
-          slug: 'set-qua-tet-an-khang',
-          price: 850000,
+          name: 'Set Quà Tự Phúc',
+          slug: 'set-qua-tu-phuc',
+          price: 750000,
+          salePrice: 585000,
           thumbnail: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=400',
           productCategory: 'Set quà Tết',
           description: 'Giỏ mây tre đan thủ công kết hợp đặc sản'
         },
         {
           id: 2,
-          name: 'Set quà Phú Quý - Hộp tre truyền thống',
-          slug: 'set-qua-phu-quy',
-          price: 1250000,
-          salePrice: 999000,
+          name: 'Set Quà Đoàn Viên',
+          slug: 'set-qua-doan-vien',
+          price: 800000,
+          salePrice: 660000,
           thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
           productCategory: 'Set quà Tết',
-          description: 'Hộp tre khắc hoa văn truyền thống'
+          description: 'Set quà đoàn viên'
+        },
+        {
+          id: 3,
+          name: 'Set Quà Khai Xuân',
+          slug: 'set-qua-khai-xuan',
+          price: 1050000,
+          salePrice: 800000,
+          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
+          productCategory: 'Set quà Tết',
+          description: 'Set quà khai xuân'
         }
       ])
     } finally {

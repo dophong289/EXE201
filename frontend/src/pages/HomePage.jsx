@@ -38,33 +38,7 @@ function HomePage() {
         thumbnail: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=800'
       })
       setArticles([
-        {
-          id: 2,
-          title: 'Khám phá làng nghề mây tre đan Phú Vinh - Nơi lưu giữ tinh hoa 400 năm',
-          slug: 'lang-nghe-phu-vinh',
-          summary: 'Làng nghề Phú Vinh (Hà Nội) với hơn 400 năm lịch sử là nơi sản xuất những sản phẩm mây tre đan tinh xảo nhất Việt Nam.',
-          thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
-          categoryName: 'Làng nghề',
-          publishedAt: '2026-01-10T10:00:00'
-        },
-        {
-          id: 3,
-          title: 'Đặc sản vùng miền - Tinh túy ẩm thực Việt trong mỗi set quà',
-          slug: 'dac-san-vung-mien',
-          summary: 'Từ cà phê Đắk Lắk đến chè Thái Nguyên, từ mắm Phú Quốc đến kẹo dừa Bến Tre - Gói Mây mang đặc sản khắp vùng miền vào set quà ý nghĩa.',
-          thumbnail: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800',
-          categoryName: 'Đặc sản',
-          publishedAt: '2026-01-08T10:00:00'
-        },
-        {
-          id: 4,
-          title: 'Nghệ nhân 70 tuổi và những chiếc giỏ mây mang hồn Việt',
-          slug: 'nghe-nhan-gio-may',
-          summary: 'Câu chuyện về bà Nguyễn Thị Lan - người nghệ nhân 70 tuổi vẫn miệt mài gìn giữ nghề đan mây truyền thống của làng Phú Vinh.',
-          thumbnail: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=800',
-          categoryName: 'Nghệ nhân',
-          publishedAt: '2026-01-05T09:00:00'
-        }
+        
       ])
     } finally {
       setLoading(false)

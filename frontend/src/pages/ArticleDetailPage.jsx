@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { articleApi } from '../services/api'
+import { articleApi, resolveMediaUrl } from '../services/api'
 import '../styles/pages/ArticleDetailPage.css'
 
 function ArticleDetailPage() {
@@ -104,7 +104,7 @@ function ArticleDetailPage() {
         {article.thumbnail && (
           <div className="article-image">
             <motion.img 
-              src={article.thumbnail} 
+              src={resolveMediaUrl(article.thumbnail)} 
               alt={article.title}
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -152,7 +152,7 @@ function ArticleDetailPage() {
                 {relatedArticles.map(related => (
                   <Link key={related.id} to={`/bai-viet/${related.slug}`} className="related-card">
                     <div className="related-image">
-                      <img src={related.thumbnail} alt={related.title} />
+                      <img src={resolveMediaUrl(related.thumbnail)} alt={related.title} />
                     </div>
                     <h4>{related.title}</h4>
                   </Link>

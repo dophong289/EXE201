@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { resolveMediaUrl } from '../services/api'
 import '../styles/components/ArticleCard.css'
 
 function ArticleCard({ article, featured = false }) {
@@ -23,7 +24,7 @@ function ArticleCard({ article, featured = false }) {
         <Link to={`/bai-viet/${article.slug}`}>
           <div className="article-image">
             <img 
-              src={article.thumbnail || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
+              src={resolveMediaUrl(article.thumbnail) || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
               alt={article.title}
             />
             <div className="article-overlay">
@@ -50,7 +51,7 @@ function ArticleCard({ article, featured = false }) {
       <Link to={`/bai-viet/${article.slug}`}>
         <div className="article-image">
           <img 
-            src={article.thumbnail || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
+            src={resolveMediaUrl(article.thumbnail) || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
             alt={article.title}
           />
         </div>
