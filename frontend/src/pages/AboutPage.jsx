@@ -66,8 +66,12 @@ function AboutPage() {
     }
   ]
 
-  // Helper to get image with fallback
-  const getImage = (key, fallback) => resolveMediaUrl(settings[key] || fallback)
+  // Helper lấy ảnh từ site settings
+  // Không dùng ảnh fallback Unsplash để tránh nháy ảnh cũ khi reload
+  const getImage = (key) => {
+    const value = settings[key]
+    return value ? resolveMediaUrl(value) : null
+  }
 
   return (
     <div className="about-page">
@@ -129,10 +133,12 @@ function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <img 
-                src={getImage('about_story_image', 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600')} 
-                alt="Sản phẩm thủ công Gói Mây"
-              />
+              {getImage('about_story_image') && (
+                <img 
+                  src={getImage('about_story_image')} 
+                  alt="Sản phẩm thủ công Gói Mây"
+                />
+              )}
             </motion.div>
           </div>
         </div>
