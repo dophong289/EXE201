@@ -20,13 +20,29 @@ public class FileController {
     
     private final Path uploadPath;
     
-    public FileController(@Value("${app.upload-dir:${user.home}/goimay/uploads}") String uploadDir) {
-        // Lưu ở thư mục ổn định (không phụ thuộc cwd/target) để tránh “restart là mất”
-        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+    public FileController(@Value("${app.upload-dir:uploads}") String uploadDir) {
+        // Lưu trong thư mục project để có thể commit vào git và đồng bộ giữa các máy
+        String projectRoot = System.getProperty("user.dir");
+        Path currentDir = Paths.get(projectRoot).toAbsolutePath();
+        
+        // Nếu đang ở trong thư mục backend, uploads sẽ ở backend/uploads
+        // Nếu đang ở root project, uploads sẽ ở backend/uploads
+        if (currentDir.getFileName().toString().equals("backend")) {
+            this.uploadPath = currentDir.resolve(uploadDir).toAbsolutePath().normalize();
+        } else {
+            Path backendDir = currentDir.resolve("backend");
+            if (Files.exists(backendDir) && Files.isDirectory(backendDir)) {
+                this.uploadPath = backendDir.resolve(uploadDir).toAbsolutePath().normalize();
+            } else {
+                this.uploadPath = currentDir.resolve(uploadDir).toAbsolutePath().normalize();
+            }
+        }
+        
         try {
             Files.createDirectories(this.uploadPath);
+            System.out.println("Upload directory: " + this.uploadPath.toAbsolutePath());
         } catch (IOException e) {
-            throw new RuntimeException("Không thể tạo thư mục upload", e);
+            throw new RuntimeException("Không thể tạo thư mục upload: " + this.uploadPath, e);
         }
     }
     

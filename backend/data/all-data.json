@@ -1,0 +1,137 @@
+{
+  "siteSettings" : [ {
+    "id" : 2,
+    "settingKey" : "about_story_image",
+    "settingValue" : "http://localhost:8080/api/upload/images/fd19427e-2c5b-40bd-a7f0-6741d2f8e62e.png",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 3,
+    "settingKey" : "about_artisan_image",
+    "settingValue" : "http://localhost:8080/api/upload/images/d2c1f498-8379-404a-826f-aed870f75691.jpg",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 4,
+    "settingKey" : "about_material_1",
+    "settingValue" : "http://localhost:8080/api/upload/images/824f5e06-7b6b-4350-9cf6-2be17da84671.jpg",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 5,
+    "settingKey" : "about_material_2",
+    "settingValue" : "http://localhost:8080/api/upload/images/1cd7a90a-0002-4d76-8905-35b6ba21a3e5.jpg",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 6,
+    "settingKey" : "about_material_3",
+    "settingValue" : "http://localhost:8080/api/upload/images/a81de3ad-8802-4568-a6ba-294fa134f935.jpg",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 7,
+    "settingKey" : "about_material_4",
+    "settingValue" : "http://localhost:8080/api/upload/images/59c76cb5-51ec-44e5-9615-fdece8b5eeb1.jpg",
+    "description" : null,
+    "category" : "about"
+  }, {
+    "id" : 8,
+    "settingKey" : "home_hero_bg",
+    "settingValue" : "http://localhost:8080/api/upload/images/a3065e46-b9b6-4328-8e63-caf95bf3abe8.jpg",
+    "description" : null,
+    "category" : "homepage"
+  } ],
+  "categories" : [ {
+    "id" : 1,
+    "name" : "Làng nghề",
+    "slug" : "lang-nghe",
+    "description" : "Khám phá các làng nghề truyền thống Việt Nam",
+    "articleCount" : 1
+  }, {
+    "id" : 2,
+    "name" : "Nghệ nhân",
+    "slug" : "nghe-nhan",
+    "description" : "Câu chuyện về những nghệ nhân gìn giữ nghề thủ công",
+    "articleCount" : 0
+  }, {
+    "id" : 3,
+    "name" : "Đặc sản",
+    "slug" : "dac-san",
+    "description" : "Đặc sản vùng miền Việt Nam",
+    "articleCount" : 0
+  }, {
+    "id" : 4,
+    "name" : "Set quà",
+    "slug" : "set-qua",
+    "description" : "Bộ sưu tập set quà tặng",
+    "articleCount" : 0
+  }, {
+    "id" : 5,
+    "name" : "Văn hóa Việt",
+    "slug" : "van-hoa-viet",
+    "description" : "Văn hóa và truyền thống Việt Nam",
+    "articleCount" : 0
+  } ],
+  "productCategories" : [ {
+    "id" : 1,
+    "name" : "Set Quà Tết",
+    "slug" : "set-qua-tet",
+    "description" : "",
+    "icon" : "",
+    "displayOrder" : 1,
+    "active" : true
+  } ],
+  "articles" : [ {
+    "id" : 1,
+    "title" : "Gói Mây hợp tác cùng 50 làng nghề truyền thống - Hành trình gìn giữ văn hóa Việt",
+    "slug" : "goi-may-hop-tac-lang-nghe",
+    "summary" : "Thông qua việc hợp tác với các làng nghề truyền thống trên khắp Việt Nam, Gói Mây mong muốn góp phần bảo tồn nghề thủ công và tạo sinh kế bền vững cho cộng đồng nghệ nhân.",
+    "content" : "<p>Gói Mây tự hào kết nối với hơn 50 làng nghề truyền thống trên khắp Việt Nam, từ làng mây tre đan Phú Vinh (Hà Nội), làng cói Kim Sơn (Ninh Bình), đến các làng nghề ở Tây Nguyên và đồng bằng sông Cửu Long.</p><p>Mỗi sản phẩm của Gói Mây không chỉ là món quà - mà còn là cách chúng tôi góp phần gìn giữ và phát triển nghề thủ công truyền thống, đồng thời tạo sinh kế ổn định cho các nghệ nhân làng nghề.</p>",
+    "thumbnail" : "http://localhost:8080/api/upload/images/0274dc78-6e46-4174-a181-fe88cf0f6a51.png",
+    "author" : "Gói Mây Vietnam",
+    "publishedAt" : "2026-01-10T10:00:00",
+    "createdAt" : "2026-01-20T12:19:48.420535",
+    "featured" : true,
+    "published" : true,
+    "categoryName" : "Làng nghề",
+    "categoryId" : 1
+  } ],
+  "products" : [ {
+    "id" : 2,
+    "name" : "Set Quà Khai Xuân",
+    "slug" : "Set-Qua-Khai-Xuan",
+    "description" : "Thiết kế: Hộp gỗ cao cấp, lót vải đỏ may mắn, bên ngoài gói bằng vải gấm xanh thẫm quyền quý theo phong cách truyền thống. Đây là set quà bề thế và đẳng cấp nhất trong bộ sưu tập.\n\nPhù hợp: Dành tặng đối tác quan trọng, cấp trên hoặc những dịp ngoại giao cần sự trang trọng tuyệt đối.\n\nThành phần tiêu chuẩn: 01 chai Rượu Mơ (500ml), 04 hũ Hạt/Trái cây sấy và 02 túi trà Trà Thái Nguyên thượng hạng",
+    "price" : 1200000.00,
+    "salePrice" : 800000.00,
+    "thumbnail" : "http://localhost:8080/api/upload/images/1073459e-ef33-49b7-9caf-52020357bee3.jpg",
+    "images" : [ "http://localhost:8080/api/upload/images/1073459e-ef33-49b7-9caf-52020357bee3.jpg", "http://localhost:8080/api/upload/images/ec717cc1-6664-44fe-b872-9a602a10d4fb.jpg" ],
+    "productCategory" : "Set Quà Tết",
+    "stock" : 30,
+    "active" : true
+  }, {
+    "id" : 7,
+    "name" : "Set Quà Đoàn Viên",
+    "slug" : "Set-Qua-Doan-Vien",
+    "description" : "Thiết kế: Hình dáng hộp tròn độc đáo tượng trưng cho sự viên mãn. Điểm nhấn là lớp vải gấm xanh ngọc lục bảo sang trọng cùng quai xách tre và hoa lan trang trí.\n\nPhù hợp: Quà biếu gia đình, người thân hoặc những mối quan hệ gắn kết lâu năm.\n\nThành phần tiêu chuẩn: 01 chai Rượu Mơ (500ml) và 03 hũ Hạt/Trái cây sấy tự chọn 02 túi trà Trà Thái Nguyên thượng hạng",
+    "price" : 1000000.00,
+    "salePrice" : 660000.00,
+    "thumbnail" : "http://localhost:8080/api/upload/images/67221d86-d83c-488c-9506-91cb6cec212f.jpg",
+    "images" : [ "http://localhost:8080/api/upload/images/67221d86-d83c-488c-9506-91cb6cec212f.jpg", "http://localhost:8080/api/upload/images/50d58df9-85e5-49e8-bc1f-a1cc6e763951.jpg", "http://localhost:8080/api/upload/images/c03a5770-d157-4faa-a80b-e126367cea4b.jpg", "http://localhost:8080/api/upload/images/3a2a9ea0-c54c-40d1-8c44-eca8834a6b8e.jpg" ],
+    "productCategory" : "Set Quà Tết",
+    "stock" : 50,
+    "active" : true
+  }, {
+    "id" : 8,
+    "name" : "Set Quà Tự Phúc",
+    "slug" : "Set-Qua-Tu-Phuc",
+    "description" : "Thiết kế: Sử dụng hộp vuông mây tre đan thủ công, bao bọc bởi lớp vải gấm hoa đào nhã nhặn. Thiết kế mang nét đẹp hoài cổ, ấm cúng và tinh tế.\n\nPhù hợp: Tặng bạn bè, đồng nghiệp hoặc làm quà biếu nhẹ nhàng nhưng giàu ý nghĩa trong các dịp thăm hỏi đầu xuân.\n\nThành phần tiêu chuẩn: 01 chai Rượu đặc sản (500ml), 02 hũ Hạt/Trái cây sấy và 02 túi Trà Thái Nguyên.",
+    "price" : 800000.00,
+    "salePrice" : 585000.00,
+    "thumbnail" : "http://localhost:8080/api/upload/images/3fb46d3b-5ea6-4620-b542-95136014c14a.jpg",
+    "images" : [ "http://localhost:8080/api/upload/images/3fb46d3b-5ea6-4620-b542-95136014c14a.jpg", "http://localhost:8080/api/upload/images/aa1a76b7-cf47-4c03-8641-018a0bb7e297.jpg" ],
+    "productCategory" : "Set Quà Tết",
+    "stock" : 70,
+    "active" : true
+  } ]
+}

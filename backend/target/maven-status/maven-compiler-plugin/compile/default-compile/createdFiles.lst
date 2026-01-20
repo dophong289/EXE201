@@ -8,6 +8,7 @@ com\goimay\service\ProductService.class
 com\goimay\dto\CategoryDTO.class
 com\goimay\model\Category.class
 com\goimay\controller\ProductController.class
+com\goimay\service\DataExportImportService.class
 com\goimay\service\ArticleService.class
 com\goimay\controller\ArticleController.class
 com\goimay\controller\CategoryController.class
@@ -17,3 +18,4 @@ com\goimay\GoimayApplication.class
 com\goimay\dto\ArticleDTO.class
 com\goimay\repository\CategoryRepository.class
 com\goimay\dto\ProductDTO.class
+com\goimay\dto\DataExportDTO.class

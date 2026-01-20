@@ -195,6 +195,12 @@ export const siteSettingApi = {
   initDefaults: () =>
     api.post('/site-settings/init'),
   
+  syncToCode: () =>
+    api.post('/site-settings/admin/sync'),
+  
+  syncAllToCode: () =>
+    api.post('/site-settings/admin/sync-all'),
+  
   delete: (id) =>
     api.delete(`/site-settings/${id}`),
 }

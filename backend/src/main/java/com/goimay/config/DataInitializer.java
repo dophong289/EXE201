@@ -3,11 +3,17 @@ package com.goimay.config;
 import com.goimay.model.Article;
 import com.goimay.model.Category;
 import com.goimay.model.Product;
+import com.goimay.model.Role;
+import com.goimay.model.User;
 import com.goimay.repository.ArticleRepository;
 import com.goimay.repository.CategoryRepository;
 import com.goimay.repository.ProductRepository;
+import com.goimay.repository.UserRepository;
+import com.goimay.service.DataExportImportService;
+import com.goimay.service.SiteSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -20,12 +26,51 @@ public class DataInitializer implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final ArticleRepository articleRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final DataExportImportService dataExportImportService;
+    private final SiteSettingService siteSettingService;
     
     @Override
     public void run(String... args) {
-        initCategories();
-        initArticles();
-        initProducts();
+        initAdminUser();
+        // Import tất cả dữ liệu từ file nếu có (để đồng bộ giữa các máy)
+        dataExportImportService.importAllData();
+        // Import site settings riêng (nếu chưa có trong all-data.json)
+        dataExportImportService.importSiteSettings();
+        // Khởi tạo default settings nếu chưa có
+        siteSettingService.initializeDefaults();
+        // Chỉ khởi tạo dữ liệu mặc định nếu database trống
+        if (categoryRepository.count() == 0) {
+            initCategories();
+        }
+        if (articleRepository.count() == 0) {
+            initArticles();
+        }
+        if (productRepository.count() == 0) {
+            initProducts();
+        }
+    }
+    
+    private void initAdminUser() {
+        // Kiểm tra xem đã có admin chưa
+        if (!userRepository.existsByEmail("admin@goimay.com")) {
+            User admin = User.builder()
+                    .fullName("Administrator")
+                    .email("admin@goimay.com")
+                    .password(passwordEncoder.encode("admin123"))
+                    .phone("0123456789")
+                    .role(Role.ADMIN)
+                    .enabled(true)
+                    .build();
+            
+            userRepository.save(admin);
+            System.out.println("========================================");
+            System.out.println("Đã tạo tài khoản Admin mặc định:");
+            System.out.println("Email: admin@goimay.com");
+            System.out.println("Password: admin123");
+            System.out.println("========================================");
+        }
     }
     
     private void initCategories() {

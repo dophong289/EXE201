@@ -119,6 +119,42 @@ function AdminSiteSettingsPage() {
     }
   }
 
+  const handleSyncToCode = async () => {
+    setSaving(true)
+    setMessage({ type: '', text: '' })
+
+    try {
+      const response = await siteSettingApi.syncToCode()
+      setMessage({ 
+        type: 'success', 
+        text: response.data?.message || 'Đã đồng bộ dữ liệu vào code thành công! Vui lòng commit file data/site-settings.json vào git.' 
+      })
+    } catch (error) {
+      console.error('Sync error:', error)
+      setMessage({ type: 'error', text: 'Có lỗi khi đồng bộ dữ liệu vào code' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleSyncAllToCode = async () => {
+    setSaving(true)
+    setMessage({ type: '', text: '' })
+
+    try {
+      const response = await siteSettingApi.syncAllToCode()
+      setMessage({ 
+        type: 'success', 
+        text: response.data?.message || 'Đã đồng bộ tất cả dữ liệu vào code thành công! Vui lòng commit các file trong thư mục data/ và uploads/ vào git.' 
+      })
+    } catch (error) {
+      console.error('Sync all error:', error)
+      setMessage({ type: 'error', text: 'Có lỗi khi đồng bộ tất cả dữ liệu vào code' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="admin-page">
@@ -249,6 +285,55 @@ function AdminSiteSettingsPage() {
               </>
             ) : (
               'Lưu tất cả thay đổi'
+            )}
+          </button>
+          <button 
+            className="btn-sync-code" 
+            onClick={handleSyncToCode}
+            disabled={saving}
+            style={{ 
+              marginLeft: '10px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: saving ? 'not-allowed' : 'pointer',
+              opacity: saving ? 0.6 : 1
+            }}
+          >
+            {saving ? (
+              <>
+                <span className="spinner small"></span>
+                Đang đồng bộ...
+              </>
+            ) : (
+              '🔄 Đồng bộ Site Settings'
+            )}
+          </button>
+          <button 
+            className="btn-sync-all-code" 
+            onClick={handleSyncAllToCode}
+            disabled={saving}
+            style={{ 
+              marginLeft: '10px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: saving ? 'not-allowed' : 'pointer',
+              opacity: saving ? 0.6 : 1,
+              fontWeight: 'bold'
+            }}
+          >
+            {saving ? (
+              <>
+                <span className="spinner small"></span>
+                Đang đồng bộ...
+              </>
+            ) : (
+              '🚀 Đồng bộ TẤT CẢ vào Code'
             )}
           </button>
         </div>
