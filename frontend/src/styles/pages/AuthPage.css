@@ -39,37 +39,39 @@
 
 .brand-logo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  margin-bottom: 2rem;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  /* Dịch cụm logo + tên sang phải (tránh padding-left quá lớn gây lệch/mất logo) */
+  margin-left: 210px;
 }
 
-.cloud-icon {
-  width: 120px;
+.brand-logo-image {
+  width: 80px;
   height: 80px;
-  color: var(--color-white);
-  margin-bottom: 1rem;
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  align-self: center;
 }
 
 .brand-name {
   font-family: var(--font-heading);
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 600;
   color: var(--color-white);
-  text-align: center;
-  letter-spacing: 2px;
+  text-align: left;
+  letter-spacing: 1.5px;
   text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
   margin: 0;
+  padding: 0;
+  line-height: 1;
+  white-space: nowrap;
+  align-self: center;
 }
 
 .brand-tagline {
@@ -446,13 +448,17 @@
     min-height: auto;
   }
 
-  .brand-name {
-    font-size: 2.5rem;
+  .brand-logo {
+    margin-left: 0;
   }
 
-  .cloud-icon {
-    width: 80px;
-    height: 55px;
+  .brand-logo-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .brand-name {
+    font-size: 2.3rem;
   }
 
   .brand-features {
@@ -470,6 +476,20 @@
 }
 
 @media (max-width: 480px) {
+  .brand-logo {
+    gap: 10px;
+    margin-left: 0;
+  }
+
+  .brand-logo-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .brand-name {
+    font-size: 2rem;
+  }
+
   .auth-page {
     padding: 1rem;
   }
@@ -480,15 +500,6 @@
 
   .auth-branding {
     padding: 1.5rem;
-  }
-
-  .brand-name {
-    font-size: 2rem;
-  }
-
-  .cloud-icon {
-    width: 60px;
-    height: 40px;
   }
 
   .auth-form-container {

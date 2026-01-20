@@ -79,24 +79,14 @@ function RegisterPage() {
         >
           <div className="brand-content">
             <div className="brand-logo">
-              <div className="cloud-icon">
-                <svg viewBox="0 0 100 60" fill="none">
-                  <path 
-                    d="M80 55H25C12 55 5 45 5 35C5 25 12 15 25 15C25 7 35 0 48 0C61 0 72 10 72 20C80 20 95 25 95 40C95 50 88 55 80 55Z" 
-                    fill="currentColor"
-                    opacity="0.3"
-                  />
-                  <path 
-                    d="M75 50H20C10 50 3 42 3 33C3 24 10 16 20 16C20 9 30 3 43 3C56 3 66 12 66 21C74 21 87 25 87 38C87 46 81 50 75 50Z" 
-                    fill="currentColor"
-                    opacity="0.5"
-                  />
-                  <path 
-                    d="M70 45H15C7 45 1 39 1 31C1 23 8 17 15 17C16 11 26 6 38 6C50 6 60 14 60 22C68 22 80 26 80 36C80 43 75 45 70 45Z" 
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
+              <img
+                className="brand-logo-image"
+                src="/Logo-Gói-Mây.png"
+                alt="Logo Gói Mây"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
               <h1 className="brand-name">Gói Mây</h1>
             </div>
             <p className="brand-tagline">
