@@ -352,7 +352,7 @@ function ProductDetailPage() {
                           </svg>
                         </div>
                       )}
-                      {item.salePrice && <span className="sale-tag">Sale</span>}
+                      {item.salePrice && <span className="sale-tag">Giảm giá</span>}
                     </div>
                     <div className="related-info">
                       <span className="related-category">{item.productCategory}</span>
