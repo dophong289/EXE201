@@ -4,10 +4,12 @@ import '../styles/components/Footer.css'
 function Footer() {
   const location = useLocation()
   const isProductsPage = location.pathname === '/san-pham'
+  const isAboutPage = location.pathname === '/ve-goi-may'
+  const hideNewsletter = isProductsPage || isAboutPage
   
   return (
     <footer className="footer">
-      {!isProductsPage && (
+      {!hideNewsletter && (
         <div className="footer-newsletter">
         <div className="newsletter-container">
           <h3>Đăng ký nhận thông tin từ Gói Mây</h3>
