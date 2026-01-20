@@ -1,5 +1,7 @@
 package com.goimay.controller;
 
+import com.goimay.service.CloudinaryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,13 @@ import java.util.UUID;
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class FileController {
     
+    private final CloudinaryService cloudinaryService;
     private final Path uploadPath;
     
-    public FileController(@Value("${app.upload-dir:uploads}") String uploadDir) {
+    public FileController(
+            CloudinaryService cloudinaryService,
+            @Value("${app.upload-dir:uploads}") String uploadDir) {
+        this.cloudinaryService = cloudinaryService;
         // Lưu trong thư mục project để có thể commit vào git và đồng bộ giữa các máy
         String projectRoot = System.getProperty("user.dir");
         Path currentDir = Paths.get(projectRoot).toAbsolutePath();
@@ -65,24 +71,15 @@ public class FileController {
                 return ResponseEntity.badRequest().body(Map.of("message", "File không được vượt quá 5MB"));
             }
             
-            // Generate unique filename
-            String originalFilename = file.getOriginalFilename();
-            String extension = "";
-            if (originalFilename != null && originalFilename.contains(".")) {
-                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            }
-            String newFilename = UUID.randomUUID().toString() + extension;
+            // Upload lên Cloudinary
+            String imageUrl = cloudinaryService.uploadImage(file);
             
-            // Save file
-            Path targetLocation = this.uploadPath.resolve(newFilename);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            
-            // Return URL
-            String fileUrl = "/api/upload/images/" + newFilename;
+            // Lấy filename từ URL Cloudinary (phần cuối của URL)
+            String filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
             
             return ResponseEntity.ok(Map.of(
-                "url", fileUrl,
-                "filename", newFilename,
+                "url", imageUrl,
+                "filename", filename,
                 "message", "Upload thành công"
             ));
             
