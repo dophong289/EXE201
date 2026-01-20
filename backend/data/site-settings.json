@@ -1,43 +1,43 @@
 [ {
   "id" : 2,
   "settingKey" : "about_story_image",
-  "settingValue" : "http://localhost:8080/api/upload/images/fd19427e-2c5b-40bd-a7f0-6741d2f8e62e.png",
+  "settingValue" : "/api/upload/images/fd19427e-2c5b-40bd-a7f0-6741d2f8e62e.png",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 3,
   "settingKey" : "about_artisan_image",
-  "settingValue" : "http://localhost:8080/api/upload/images/d2c1f498-8379-404a-826f-aed870f75691.jpg",
+  "settingValue" : "/api/upload/images/d2c1f498-8379-404a-826f-aed870f75691.jpg",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 4,
   "settingKey" : "about_material_1",
-  "settingValue" : "http://localhost:8080/api/upload/images/824f5e06-7b6b-4350-9cf6-2be17da84671.jpg",
+  "settingValue" : "/api/upload/images/824f5e06-7b6b-4350-9cf6-2be17da84671.jpg",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 5,
   "settingKey" : "about_material_2",
-  "settingValue" : "http://localhost:8080/api/upload/images/1cd7a90a-0002-4d76-8905-35b6ba21a3e5.jpg",
+  "settingValue" : "/api/upload/images/1cd7a90a-0002-4d76-8905-35b6ba21a3e5.jpg",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 6,
   "settingKey" : "about_material_3",
-  "settingValue" : "http://localhost:8080/api/upload/images/a81de3ad-8802-4568-a6ba-294fa134f935.jpg",
+  "settingValue" : "/api/upload/images/a81de3ad-8802-4568-a6ba-294fa134f935.jpg",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 7,
   "settingKey" : "about_material_4",
-  "settingValue" : "http://localhost:8080/api/upload/images/59c76cb5-51ec-44e5-9615-fdece8b5eeb1.jpg",
+  "settingValue" : "/api/upload/images/59c76cb5-51ec-44e5-9615-fdece8b5eeb1.jpg",
   "description" : null,
   "category" : "about"
 }, {
   "id" : 8,
   "settingKey" : "home_hero_bg",
-  "settingValue" : "http://localhost:8080/api/upload/images/a3065e46-b9b6-4328-8e63-caf95bf3abe8.jpg",
+  "settingValue" : "/api/upload/images/a3065e46-b9b6-4328-8e63-caf95bf3abe8.jpg",
   "description" : null,
   "category" : "homepage"
 } ]
