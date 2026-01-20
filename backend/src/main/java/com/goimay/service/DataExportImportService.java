@@ -33,6 +33,7 @@ public class DataExportImportService {
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final SiteSettingRepository siteSettingRepository;
     
     // Initialize ObjectMapper với cấu hình phù hợp
     private ObjectMapper createObjectMapper() {
@@ -273,14 +274,29 @@ public class DataExportImportService {
                 return;
             }
             
-            // Chỉ import nếu database trống
+            // Check biến môi trường để force reload
+            String forceReload = System.getenv("FORCE_DATA_RELOAD");
+            boolean shouldForceReload = "true".equalsIgnoreCase(forceReload);
+            
+            // Chỉ import nếu database trống hoặc có flag force reload
             boolean hasData = !categoryRepository.findAll().isEmpty() || 
                             !productRepository.findAll().isEmpty() ||
                             !articleRepository.findAll().isEmpty();
             
-            if (hasData) {
-                log.info("Database đã có dữ liệu, bỏ qua import. Để cập nhật, hãy xóa dữ liệu cũ trước.");
+            if (hasData && !shouldForceReload) {
+                log.info("Database đã có dữ liệu, bỏ qua import. Set FORCE_DATA_RELOAD=true để force reload.");
                 return;
+            }
+            
+            // Nếu force reload, xóa dữ liệu cũ trước
+            if (shouldForceReload && hasData) {
+                log.warn("⚠️ FORCE_DATA_RELOAD=true: Đang xóa tất cả dữ liệu cũ...");
+                productRepository.deleteAll();
+                articleRepository.deleteAll();
+                categoryRepository.deleteAll();
+                productCategoryRepository.deleteAll();
+                siteSettingRepository.deleteAll();
+                log.info("✅ Đã xóa dữ liệu cũ");
             }
             
             // Import Categories trước
