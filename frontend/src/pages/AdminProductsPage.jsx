@@ -104,9 +104,14 @@ function AdminProductsPage() {
         slug: generateSlug(value)
       })
     } else {
+      const nextValue =
+        name === 'thumbnail'
+          ? normalizeApiPath(value)
+          : (type === 'checkbox' ? checked : value)
+
       setFormData({
         ...formData,
-        [name]: type === 'checkbox' ? checked : value
+        [name]: nextValue
       })
     }
   }
