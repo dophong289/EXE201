@@ -14,6 +14,7 @@ function ArticleCard({ article, featured = false }) {
   }
 
   if (featured) {
+    const thumbnail = resolveMediaUrl(article.thumbnail)
     return (
       <motion.article 
         className="article-card featured"
@@ -23,10 +24,12 @@ function ArticleCard({ article, featured = false }) {
       >
         <Link to={`/bai-viet/${article.slug}`}>
           <div className="article-image">
-            <img 
-              src={resolveMediaUrl(article.thumbnail) || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
-              alt={article.title}
-            />
+            {thumbnail && (
+              <img 
+                src={thumbnail}
+                alt={article.title}
+              />
+            )}
             <div className="article-overlay">
               <span className="read-more">Đọc bài viết</span>
             </div>
@@ -40,6 +43,8 @@ function ArticleCard({ article, featured = false }) {
     )
   }
 
+  const thumbnail = resolveMediaUrl(article.thumbnail)
+
   return (
     <motion.article 
       className="article-card"
@@ -50,10 +55,12 @@ function ArticleCard({ article, featured = false }) {
     >
       <Link to={`/bai-viet/${article.slug}`}>
         <div className="article-image">
-          <img 
-            src={resolveMediaUrl(article.thumbnail) || 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800'} 
-            alt={article.title}
-          />
+          {thumbnail && (
+            <img 
+              src={thumbnail}
+              alt={article.title}
+            />
+          )}
         </div>
         <div className="article-content">
           <div className="article-meta">
