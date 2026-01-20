@@ -342,7 +342,7 @@ function ProductDetailPage() {
                   <Link to={`/san-pham/${item.slug}`} className="related-link">
                     <div className="related-image">
                       {item.thumbnail ? (
-                        <img src={item.thumbnail} alt={item.name} />
+                        <img src={resolveMediaUrl(item.thumbnail)} alt={item.name} />
                       ) : (
                         <div className="no-image-small">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
