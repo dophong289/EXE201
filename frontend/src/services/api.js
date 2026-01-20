@@ -5,6 +5,30 @@ import axios from 'axios'
 const API_ORIGIN = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 const API_BASE_URL = API_ORIGIN ? `${API_ORIGIN}/api` : '/api'
 
+// Resolve media URL that may be stored as:
+// - Absolute URL (https://...)
+// - Relative API path (/api/...)
+// - Old dev URL with localhost:8080
+export const resolveMediaUrl = (value) => {
+  if (!value || typeof value !== 'string') return value
+
+  const v = value.trim()
+  if (!v) return v
+
+  // Already absolute
+  if (/^https?:\/\//i.test(v)) {
+    // If it's an old localhost URL, rewrite to production API origin when available
+    if (API_ORIGIN && /^https?:\/\/localhost:8080\//i.test(v)) {
+      return v.replace(/^https?:\/\/localhost:8080/i, API_ORIGIN)
+    }
+    return v
+  }
+
+  // Relative API path
+  if (API_ORIGIN && v.startsWith('/api/')) return `${API_ORIGIN}${v}`
+  return v
+}
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -85,7 +109,10 @@ export const uploadApi = {
       },
     })
   },
-  getImageUrl: (filename) => `${API_BASE_URL}/upload/images/${filename}`,
+  // Prefer storing relative path so it works across environments
+  getImagePath: (filename) => `/api/upload/images/${filename}`,
+  // For displaying in <img>, resolve to absolute when VITE_API_URL is set
+  getImageUrl: (filename) => resolveMediaUrl(`/api/upload/images/${filename}`),
 }
 
 // Article API

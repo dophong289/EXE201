@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { siteSettingApi } from '../services/api'
+import { siteSettingApi, resolveMediaUrl } from '../services/api'
 import '../styles/pages/AboutPage.css'
 
 function VietnamFlagIcon() {
@@ -35,9 +35,9 @@ function AboutPage() {
       setSettings({
         about_story_image: 'https://images.unsplash.com/photo-1595231712325-9fedecef7575?w=600',
         about_artisan_image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600',
-        about_material_1: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300',
-        about_material_2: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300',
-        about_material_3: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300',
+        about_material_1: 'https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/615564671_122107400307198100_1475565070963309061_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEDBqvyD9utxkBdH9yX9G3O4gQ9gJTcRWviBD2AlNxFayXrQoKh3gBUommmHYZAFSz2nF_0v67-1LXfOoOqDj_3&_nc_ohc=wnurCQQD0BEQ7kNvwHoCwhK&_nc_oc=AdkOONJhbZMtxoeZvpAF1UjTRoMuFT0LPXmkmeEHQyG1rBeMV8aG67TLMrd6yWIlE8M&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=slk3jsgnDJmmMvM5MPqZQg&oh=00_AfqQ9DjYu75oh7fH041dlhttcR758BfRkdqi1IjrrTDokg&oe=6974D67F',
+        about_material_2: 'https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/615564671_122107400307198100_1475565070963309061_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEDBqvyD9utxkBdH9yX9G3O4gQ9gJTcRWviBD2AlNxFayXrQoKh3gBUommmHYZAFSz2nF_0v67-1LXfOoOqDj_3&_nc_ohc=wnurCQQD0BEQ7kNvwHoCwhK&_nc_oc=AdkOONJhbZMtxoeZvpAF1UjTRoMuFT0LPXmkmeEHQyG1rBeMV8aG67TLMrd6yWIlE8M&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=slk3jsgnDJmmMvM5MPqZQg&oh=00_AfqQ9DjYu75oh7fH041dlhttcR758BfRkdqi1IjrrTDokg&oe=6974D67F',
+        about_material_3: 'https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/615564671_122107400307198100_1475565070963309061_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEDBqvyD9utxkBdH9yX9G3O4gQ9gJTcRWviBD2AlNxFayXrQoKh3gBUommmHYZAFSz2nF_0v67-1LXfOoOqDj_3&_nc_ohc=wnurCQQD0BEQ7kNvwHoCwhK&_nc_oc=AdkOONJhbZMtxoeZvpAF1UjTRoMuFT0LPXmkmeEHQyG1rBeMV8aG67TLMrd6yWIlE8M&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=slk3jsgnDJmmMvM5MPqZQg&oh=00_AfqQ9DjYu75oh7fH041dlhttcR758BfRkdqi1IjrrTDokg&oe=6974D67F',
         about_material_4: 'https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/615564671_122107400307198100_1475565070963309061_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEDBqvyD9utxkBdH9yX9G3O4gQ9gJTcRWviBD2AlNxFayXrQoKh3gBUommmHYZAFSz2nF_0v67-1LXfOoOqDj_3&_nc_ohc=wnurCQQD0BEQ7kNvwHoCwhK&_nc_oc=AdkOONJhbZMtxoeZvpAF1UjTRoMuFT0LPXmkmeEHQyG1rBeMV8aG67TLMrd6yWIlE8M&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=slk3jsgnDJmmMvM5MPqZQg&oh=00_AfqQ9DjYu75oh7fH041dlhttcR758BfRkdqi1IjrrTDokg&oe=6974D67F'
       })
     }
@@ -67,7 +67,7 @@ function AboutPage() {
   ]
 
   // Helper to get image with fallback
-  const getImage = (key, fallback) => settings[key] || fallback
+  const getImage = (key, fallback) => resolveMediaUrl(settings[key] || fallback)
 
   return (
     <div className="about-page">

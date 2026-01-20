@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { siteSettingApi, uploadApi } from '../services/api'
+import { siteSettingApi, uploadApi, resolveMediaUrl } from '../services/api'
 import '../styles/pages/AdminPage.css'
 
 function AdminSiteSettingsPage() {
@@ -86,8 +86,9 @@ function AdminSiteSettingsPage() {
     setUploadingKey(key)
     try {
       const response = await uploadApi.uploadImage(file)
-      const imageUrl = uploadApi.getImageUrl(response.data.filename)
-      handleInputChange(key, imageUrl)
+      // Lưu path tương đối để không dính localhost khi deploy
+      const imagePath = response.data?.url || uploadApi.getImagePath(response.data.filename)
+      handleInputChange(key, imagePath)
       setMessage({ type: 'success', text: 'Tải ảnh thành công!' })
     } catch (error) {
       console.error('Upload error:', error)
@@ -247,7 +248,7 @@ function AdminSiteSettingsPage() {
                       {settings[item.key] && (
                         <div className="image-preview-small">
                           <img 
-                            src={settings[item.key]} 
+                            src={resolveMediaUrl(settings[item.key])} 
                             alt={item.label}
                             onError={(e) => e.target.style.display = 'none'}
                           />
