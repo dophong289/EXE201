@@ -12,6 +12,7 @@ import com.goimay.repository.UserRepository;
 import com.goimay.service.DataExportImportService;
 import com.goimay.service.SiteSettingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,18 @@ public class DataInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final DataExportImportService dataExportImportService;
     private final SiteSettingService siteSettingService;
+
+    @Value("${app.admin.email:admin@goimay.com}")
+    private String adminEmail;
+
+    @Value("${app.admin.password:admin123}")
+    private String adminPassword;
+
+    @Value("${app.admin.name:Administrator}")
+    private String adminName;
+
+    @Value("${app.admin.phone:0123456789}")
+    private String adminPhone;
     
     @Override
     public void run(String... args) {
@@ -54,12 +67,12 @@ public class DataInitializer implements CommandLineRunner {
     
     private void initAdminUser() {
         // Kiểm tra xem đã có admin chưa
-        if (!userRepository.existsByEmail("admin@goimay.com")) {
+        if (!userRepository.existsByEmail(adminEmail)) {
             User admin = User.builder()
-                    .fullName("Administrator")
-                    .email("admin@goimay.com")
-                    .password(passwordEncoder.encode("admin123"))
-                    .phone("0123456789")
+                    .fullName(adminName)
+                    .email(adminEmail)
+                    .password(passwordEncoder.encode(adminPassword))
+                    .phone(adminPhone)
                     .role(Role.ADMIN)
                     .enabled(true)
                     .build();
@@ -67,8 +80,8 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(admin);
             System.out.println("========================================");
             System.out.println("Đã tạo tài khoản Admin mặc định:");
-            System.out.println("Email: admin@goimay.com");
-            System.out.println("Password: admin123");
+            System.out.println("Email: " + adminEmail);
+            System.out.println("Password: " + adminPassword);
             System.out.println("========================================");
         }
     }
