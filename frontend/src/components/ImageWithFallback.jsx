@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 
 /**
  * Component hiển thị ảnh với khả năng fallback
@@ -47,16 +46,6 @@ function ImageWithFallback({
       {...props}
     />
   )
-}
-
-ImageWithFallback.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-  fallbackSrc: PropTypes.string,
-  className: PropTypes.string,
-  style: PropTypes.object,
-  onLoad: PropTypes.func,
-  onError: PropTypes.func,
 }
 
 export default ImageWithFallback
