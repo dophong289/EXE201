@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { authApi } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AuthPage.css'
 
 function LoginPage() {
@@ -57,7 +58,7 @@ function LoginPage() {
         >
           <div className="brand-content">
             <div className="brand-logo">
-              <img
+              <ImageWithFallback
                 className="brand-logo-image"
                 src={encodeURI('/Logo-Gói-Mây.png')}
                 alt="Logo Gói Mây"

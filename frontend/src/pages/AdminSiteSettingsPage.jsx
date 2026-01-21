@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { siteSettingApi, uploadApi, resolveMediaUrl } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AdminPage.css'
 
 function AdminSiteSettingsPage() {
@@ -247,7 +248,7 @@ function AdminSiteSettingsPage() {
                       
                       {settings[item.key] && (
                         <div className="image-preview-small">
-                          <img 
+                          <ImageWithFallback 
                             src={resolveMediaUrl(settings[item.key])} 
                             alt={item.label}
                             onError={(e) => e.target.style.display = 'none'}

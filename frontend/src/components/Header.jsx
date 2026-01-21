@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { favoriteApi } from '../services/api'
 import { getCartItemCount } from '../services/cart'
+import ImageWithFallback from './ImageWithFallback'
 import '../styles/components/Header.css'
 
 function Header() {
@@ -130,7 +131,7 @@ function Header() {
           </button>
 
           <Link to="/ve-goi-may" className="logo">
-            <img
+            <ImageWithFallback
               className="brand-logo"
               src="/Logo-Gói-Mây.png"
               alt="Logo Gói Mây"
@@ -223,7 +224,7 @@ function Header() {
                             >
                               <div className="favorite-thumb">
                                 {product.thumbnail ? (
-                                  <img src={product.thumbnail} alt={product.name} />
+                                  <ImageWithFallback src={product.thumbnail} alt={product.name} />
                                 ) : (
                                   <div className="no-thumb">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

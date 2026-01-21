@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, favoriteApi, resolveMediaUrl } from '../services/api'
 import { addToCart } from '../services/cart'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductDetailPage.css'
 
 function ProductDetailPage() {
@@ -153,7 +154,7 @@ function ProductDetailPage() {
             >
               <div className="main-image">
                 {images.length > 0 ? (
-                  <img src={images[activeImage]} alt={product.name} />
+                  <ImageWithFallback src={images[activeImage]} alt={product.name} />
                 ) : (
                   <div className="no-image">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -176,7 +177,7 @@ function ProductDetailPage() {
                       className={`thumb ${activeImage === index ? 'active' : ''}`}
                       onClick={() => setActiveImage(index)}
                     >
-                      <img src={img} alt={`${product.name} - ${index + 1}`} />
+                      <ImageWithFallback src={img} alt={`${product.name} - ${index + 1}`} />
                     </button>
                   ))}
                 </div>
@@ -342,7 +343,7 @@ function ProductDetailPage() {
                   <Link to={`/san-pham/${item.slug}`} className="related-link">
                     <div className="related-image">
                       {item.thumbnail ? (
-                        <img src={resolveMediaUrl(item.thumbnail)} alt={item.name} />
+                        <ImageWithFallback src={resolveMediaUrl(item.thumbnail)} alt={item.name} />
                       ) : (
                         <div className="no-image-small">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

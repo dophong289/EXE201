@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { siteSettingApi, resolveMediaUrl } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AboutPage.css'
 
 function VietnamFlagIcon() {
@@ -84,7 +85,7 @@ function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="about-brand">
-              <img
+              <ImageWithFallback
                 className="about-logo"
                 src="/Logo-Gói-Mây.png"
                 alt="Logo Gói Mây"
@@ -134,7 +135,7 @@ function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               {getImage('about_story_image') && (
-                <img 
+                <ImageWithFallback 
                   src={getImage('about_story_image')} 
                   alt="Sản phẩm thủ công Gói Mây"
                 />
@@ -185,46 +186,34 @@ function AboutPage() {
           
           <div className="ingredients-grid">
             <div className="ingredient-item">
-              <img 
+              <ImageWithFallback 
                 src={getImage('about_material_1', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300')}
                 alt="Mây tre đan" 
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300'
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300"
               />
               <h4>Mây tre đan</h4>
             </div>
             <div className="ingredient-item">
-              <img 
+              <ImageWithFallback 
                 src={getImage('about_material_2', 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300')}
                 alt="Mứt" 
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300'
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300"
               />
               <h4>Mứt</h4>
             </div>
             <div className="ingredient-item">
-              <img 
+              <ImageWithFallback 
                 src={getImage('about_material_3', 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300')}
                 alt="Gỗ tre" 
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300'
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300"
               />
               <h4>Gỗ tre</h4>
             </div>
             <div className="ingredient-item">
-              <img 
+              <ImageWithFallback 
                 src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')}
                 alt="Lá chuối khô" 
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300'
-                }}
+                fallbackSrc="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300"
               />
               <h4>Lá chuối khô</h4>
             </div>
@@ -243,9 +232,10 @@ function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <img 
+              <ImageWithFallback 
                 src={getImage('about_artisan_image', 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600')} 
                 alt="Nghệ nhân làng nghề"
+                fallbackSrc="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600"
               />
             </motion.div>
             <motion.div

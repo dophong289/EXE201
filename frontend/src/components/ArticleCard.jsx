@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { resolveMediaUrl } from '../services/api'
+import ImageWithFallback from './ImageWithFallback'
 import '../styles/components/ArticleCard.css'
 
 function ArticleCard({ article, featured = false }) {
@@ -25,7 +26,7 @@ function ArticleCard({ article, featured = false }) {
         <Link to={`/bai-viet/${article.slug}`}>
           <div className="article-image">
             {thumbnail && (
-              <img 
+              <ImageWithFallback 
                 src={thumbnail}
                 alt={article.title}
               />
@@ -56,7 +57,7 @@ function ArticleCard({ article, featured = false }) {
       <Link to={`/bai-viet/${article.slug}`}>
         <div className="article-image">
           {thumbnail && (
-            <img 
+            <ImageWithFallback 
               src={thumbnail}
               alt={article.title}
             />

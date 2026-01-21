@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, productCategoryApi, favoriteApi, resolveMediaUrl } from '../services/api'
 import { addToCart } from '../services/cart'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductsPage.css'
 
 function ProductsPage() {
@@ -244,7 +245,10 @@ function ProductsPage() {
                 >
                   <Link to={`/san-pham/${product.slug}`} className="product-link">
                     <div className="product-image">
-                      <img src={resolveMediaUrl(product.thumbnail)} alt={product.name} />
+                      <ImageWithFallback 
+                        src={resolveMediaUrl(product.thumbnail)} 
+                        alt={product.name} 
+                      />
                       {product.salePrice && (
                         <span className="sale-badge">Giảm giá</span>
                       )}

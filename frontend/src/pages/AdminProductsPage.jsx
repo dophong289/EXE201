@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { productApi, uploadApi, productCategoryApi, resolveMediaUrl, normalizeApiPath } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AdminPage.css'
 
 function AdminProductsPage() {
@@ -397,7 +398,7 @@ function AdminProductsPage() {
                     <td>
                       <div className="product-thumb">
                         {product.thumbnail ? (
-                          <img src={resolveMediaUrl(product.thumbnail)} alt={product.name} />
+                          <ImageWithFallback src={resolveMediaUrl(product.thumbnail)} alt={product.name} />
                         ) : (
                           <div className="no-image">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -597,7 +598,11 @@ function AdminProductsPage() {
                     </div>
                     {formData.thumbnail && (
                       <div className="image-preview">
-                        <img src={resolveMediaUrl(formData.thumbnail)} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
+                        <ImageWithFallback 
+                          src={resolveMediaUrl(formData.thumbnail)} 
+                          alt="Preview" 
+                          onError={(e) => e.target.style.display = 'none'} 
+                        />
                         <button 
                           type="button" 
                           className="remove-image"
@@ -618,7 +623,7 @@ function AdminProductsPage() {
                           {(formData.images || []).map((url) => (
                             <div key={url} className={`gallery-item ${formData.thumbnail === url ? 'active' : ''}`}>
                               <button type="button" className="gallery-pick" onClick={() => setThumbnailFromGallery(url)} title="Đặt làm ảnh đại diện">
-                                <img src={resolveMediaUrl(url)} alt="Gallery" />
+                                <ImageWithFallback src={resolveMediaUrl(url)} alt="Gallery" />
                               </button>
                               <button type="button" className="remove-image" onClick={() => removeGalleryImage(url)} title="Xóa ảnh">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { articleApi, categoryApi, uploadApi, resolveMediaUrl, normalizeApiPath } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AdminPage.css'
 
 function AdminArticlesPage() {
@@ -347,7 +348,7 @@ function AdminArticlesPage() {
                     <td>
                       <div className="product-thumb">
                       {article.thumbnail ? (
-                        <img src={resolveMediaUrl(article.thumbnail)} alt={article.title} />
+                        <ImageWithFallback src={resolveMediaUrl(article.thumbnail)} alt={article.title} />
                         ) : (
                           <div className="no-image">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -530,7 +531,11 @@ function AdminArticlesPage() {
                     </div>
                     {formData.thumbnail && (
                       <div className="image-preview">
-                        <img src={resolveMediaUrl(formData.thumbnail)} alt="Preview" onError={(e) => e.target.style.display = 'none'} />
+                        <ImageWithFallback 
+                          src={resolveMediaUrl(formData.thumbnail)} 
+                          alt="Preview" 
+                          onError={(e) => e.target.style.display = 'none'} 
+                        />
                         <button 
                           type="button" 
                           className="remove-image"

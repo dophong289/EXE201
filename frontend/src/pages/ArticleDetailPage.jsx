@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { articleApi, resolveMediaUrl } from '../services/api'
+import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ArticleDetailPage.css'
 
 function ArticleDetailPage() {
@@ -102,15 +103,17 @@ function ArticleDetailPage() {
 
         {/* Article Image */}
         {article.thumbnail && (
-          <div className="article-image">
-            <motion.img 
+          <motion.div 
+            className="article-image"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            <ImageWithFallback 
               src={resolveMediaUrl(article.thumbnail)} 
               alt={article.title}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
             />
-          </div>
+          </motion.div>
         )}
 
         {/* Article Content */}
@@ -152,7 +155,7 @@ function ArticleDetailPage() {
                 {relatedArticles.map(related => (
                   <Link key={related.id} to={`/bai-viet/${related.slug}`} className="related-card">
                     <div className="related-image">
-                      <img src={resolveMediaUrl(related.thumbnail)} alt={related.title} />
+                      <ImageWithFallback src={resolveMediaUrl(related.thumbnail)} alt={related.title} />
                     </div>
                     <h4>{related.title}</h4>
                   </Link>
