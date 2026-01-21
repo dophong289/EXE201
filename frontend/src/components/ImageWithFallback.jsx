@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 /**
  * Component hiển thị ảnh với khả năng fallback
@@ -16,6 +16,12 @@ function ImageWithFallback({
 }) {
   const [imgSrc, setImgSrc] = useState(src)
   const [isError, setIsError] = useState(false)
+
+  // Cập nhật imgSrc khi src prop thay đổi
+  useEffect(() => {
+    setImgSrc(src)
+    setIsError(false)
+  }, [src])
 
   const handleError = (e) => {
     if (!isError && imgSrc !== fallbackSrc) {
