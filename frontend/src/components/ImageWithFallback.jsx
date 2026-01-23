@@ -49,6 +49,8 @@ function ImageWithFallback({
       style={style}
       onError={handleError}
       onLoad={handleLoad}
+      loading="lazy"
+      decoding="async"
       {...props}
     />
   )

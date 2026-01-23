@@ -5,6 +5,7 @@ import ArticleCard from '../components/ArticleCard'
 import ArticleSlider from '../components/ArticleSlider'
 import TestimonialSlider from '../components/TestimonialSlider'
 import { articleApi } from '../services/api'
+import { getCache, setCache } from '../services/cache'
 import '../styles/pages/HomePage.css'
 
 function HomePage() {
@@ -18,6 +19,45 @@ function HomePage() {
 
   const loadData = async () => {
     try {
+      // Kiểm tra cache trước
+      const featuredCacheKey = '/articles/featured'
+      const articlesCacheKey = '/articles/latest?limit=6'
+      
+      const cachedFeatured = getCache(featuredCacheKey)
+      const cachedArticles = getCache(articlesCacheKey)
+      
+      if (cachedFeatured && cachedArticles) {
+        // Hiển thị cache ngay
+        if (cachedFeatured.length > 0) {
+          setFeaturedArticle(cachedFeatured[0])
+        }
+        setArticles(cachedArticles)
+        setLoading(false)
+        
+        // Fetch ở background để update cache
+        setTimeout(() => {
+          Promise.all([
+            articleApi.getFeatured(),
+            articleApi.getLatest(6)
+          ])
+            .then(([featuredRes, articlesRes]) => {
+              if (featuredRes?.data) {
+                setCache(featuredCacheKey, featuredRes.data, 5 * 60 * 1000)
+                if (featuredRes.data.length > 0) {
+                  setFeaturedArticle(featuredRes.data[0])
+                }
+              }
+              if (articlesRes?.data) {
+                setCache(articlesCacheKey, articlesRes.data, 5 * 60 * 1000)
+                setArticles(articlesRes.data)
+              }
+            })
+            .catch(() => {})
+        }, 0)
+        return
+      }
+      
+      // Nếu không có cache, fetch bình thường
       const [featuredRes, articlesRes] = await Promise.all([
         articleApi.getFeatured(),
         articleApi.getLatest(6)
@@ -25,8 +65,10 @@ function HomePage() {
       
       if (featuredRes.data.length > 0) {
         setFeaturedArticle(featuredRes.data[0])
+        setCache(featuredCacheKey, featuredRes.data, 5 * 60 * 1000)
       }
       setArticles(articlesRes.data)
+      setCache(articlesCacheKey, articlesRes.data, 5 * 60 * 1000)
     } catch (error) {
       console.error('Error loading data:', error)
       // Fallback data

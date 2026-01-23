@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, productCategoryApi, favoriteApi, resolveMediaUrl } from '../services/api'
+import { getCache, setCache } from '../services/cache'
 import { addToCart } from '../services/cart'
 import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductsPage.css'
@@ -62,8 +63,29 @@ function ProductsPage() {
 
   const loadCategories = async () => {
     try {
+      // Kiểm tra cache trước
+      const cacheKey = '/product-categories/active'
+      const cachedData = getCache(cacheKey)
+      if (cachedData) {
+        setCategories(cachedData || [])
+        // Fetch ở background để update cache
+        setTimeout(() => {
+          productCategoryApi.getActive()
+            .then(response => {
+              if (response?.data) {
+                setCache(cacheKey, response.data, 30 * 60 * 1000) // Cache 30 phút
+                setCategories(response.data || [])
+              }
+            })
+            .catch(() => {})
+        }, 0)
+        return
+      }
+      
       const response = await productCategoryApi.getActive()
-      setCategories(response.data || [])
+      const data = response.data || []
+      setCategories(data)
+      setCache(cacheKey, data, 30 * 60 * 1000) // Cache 30 phút
     } catch (error) {
       console.error('Error loading categories:', error)
     }
@@ -81,16 +103,44 @@ function ProductsPage() {
   const loadProducts = async () => {
     setLoading(true)
     try {
-      let response
       const keyword = (debouncedSearch || '').trim()
+      let cacheKey, apiCall
+      
       if (keyword) {
-        response = await productApi.search(keyword, activeCategory === 'all' ? null : activeCategory, 0, 12)
+        cacheKey = `/products/search?keyword=${keyword}&category=${activeCategory === 'all' ? '' : activeCategory}&page=0&size=12`
+        apiCall = () => productApi.search(keyword, activeCategory === 'all' ? null : activeCategory, 0, 12)
       } else if (activeCategory === 'all') {
-        response = await productApi.getAll(0, 12)
+        cacheKey = '/products?page=0&size=12'
+        apiCall = () => productApi.getAll(0, 12)
       } else {
-        response = await productApi.getByCategory(activeCategory, 0, 12)
+        cacheKey = `/products/category/${activeCategory}?page=0&size=12`
+        apiCall = () => productApi.getByCategory(activeCategory, 0, 12)
       }
-      setProducts(response.data.content || response.data)
+      
+      // Kiểm tra cache trước
+      const cachedData = getCache(cacheKey)
+      if (cachedData) {
+        const products = cachedData.content || cachedData
+        setProducts(products)
+        setLoading(false)
+        // Fetch ở background để update cache
+        setTimeout(() => {
+          apiCall()
+            .then(response => {
+              const products = response.data.content || response.data
+              setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+              setProducts(products)
+            })
+            .catch(() => {})
+        }, 0)
+        return
+      }
+      
+      // Nếu không có cache, fetch bình thường
+      const response = await apiCall()
+      const products = response.data.content || response.data
+      setProducts(products)
+      setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
     } catch (error) {
       console.error('Error loading products:', error)
       // Fallback data

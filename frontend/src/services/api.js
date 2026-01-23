@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getCache, setCache } from './cache'
 
 // Production: set Vercel env var VITE_API_URL = https://<your-backend-domain>
 // Dev: if VITE_API_URL is not set, we fall back to relative "/api" (Vite proxy handles it)
@@ -74,9 +75,21 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-// Handle token expiration
+// Handle token expiration và cache responses
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Lưu cache cho GET requests thành công
+    const config = response.config
+    if (config.method === 'get' && !config.skipCache && response.data) {
+      const cacheKey = `${config.url}${config.params ? '?' + new URLSearchParams(config.params).toString() : ''}`
+      // Cache trong 5 phút cho data thông thường, 30 phút cho static data
+      const ttl = config.url.includes('/categories') || config.url.includes('/site-settings') 
+        ? 30 * 60 * 1000 
+        : 5 * 60 * 1000
+      setCache(cacheKey, response.data, ttl)
+    }
+    return response
+  },
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
@@ -85,6 +98,36 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+/**
+ * Wrapper function để gọi API với cache
+ * Tự động check cache trước khi gọi API
+ */
+export const cachedApiCall = async (apiCall, cacheKey, ttl = 5 * 60 * 1000) => {
+  // Kiểm tra cache trước
+  const cachedData = getCache(cacheKey)
+  if (cachedData) {
+    // Trả về cached data ngay lập tức, nhưng vẫn fetch ở background để update cache
+    setTimeout(() => {
+      apiCall().then(response => {
+        if (response?.data) {
+          setCache(cacheKey, response.data, ttl)
+        }
+      }).catch(() => {
+        // Ignore errors khi fetch background
+      })
+    }, 0)
+    
+    return { data: cachedData }
+  }
+  
+  // Nếu không có cache, gọi API bình thường
+  const response = await apiCall()
+  if (response?.data) {
+    setCache(cacheKey, response.data, ttl)
+  }
+  return response
+}
 
 // Auth API
 export const authApi = {

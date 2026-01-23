@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import ArticleCard from '../components/ArticleCard'
 import TestimonialSlider from '../components/TestimonialSlider'
 import { articleApi, categoryApi } from '../services/api'
+import { getCache, setCache } from '../services/cache'
 import '../styles/pages/ArticlesPage.css'
 
 function ArticlesPage() {
@@ -24,8 +25,27 @@ function ArticlesPage() {
 
   const loadInitialData = async () => {
     try {
-      const categoriesRes = await categoryApi.getAll()
-      setCategories(categoriesRes.data)
+      // Kiểm tra cache trước
+      const cacheKey = '/categories'
+      const cachedData = getCache(cacheKey)
+      if (cachedData) {
+        setCategories(cachedData)
+        // Fetch ở background để update cache
+        setTimeout(() => {
+          categoryApi.getAll()
+            .then(response => {
+              if (response?.data) {
+                setCache(cacheKey, response.data, 30 * 60 * 1000) // Cache 30 phút
+                setCategories(response.data)
+              }
+            })
+            .catch(() => {})
+        }, 0)
+      } else {
+        const categoriesRes = await categoryApi.getAll()
+        setCategories(categoriesRes.data)
+        setCache(cacheKey, categoriesRes.data, 30 * 60 * 1000) // Cache 30 phút
+      }
     } catch (error) {
       console.error('Error loading categories:', error)
       setCategories([
@@ -42,15 +62,44 @@ function ArticlesPage() {
   const loadArticles = async () => {
     setLoading(true)
     try {
-      let response
+      let cacheKey, apiCall
       if (activeCategory === 'all') {
-        response = await articleApi.getAll(0, 12)
+        cacheKey = '/articles?page=0&size=12'
+        apiCall = () => articleApi.getAll(0, 12)
       } else {
-        response = await articleApi.getByCategory(activeCategory, 0, 12)
+        cacheKey = `/articles/category/${activeCategory}?page=0&size=12`
+        apiCall = () => articleApi.getByCategory(activeCategory, 0, 12)
       }
-      setArticles(response.data.content || response.data)
+      
+      // Kiểm tra cache trước
+      const cachedData = getCache(cacheKey)
+      if (cachedData) {
+        const articles = cachedData.content || cachedData
+        setArticles(articles)
+        setHasMore(cachedData.totalPages > 1)
+        setPage(0)
+        setLoading(false)
+        // Fetch ở background để update cache
+        setTimeout(() => {
+          apiCall()
+            .then(response => {
+              const articles = response.data.content || response.data
+              setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+              setArticles(articles)
+              setHasMore(response.data.totalPages > 1)
+            })
+            .catch(() => {})
+        }, 0)
+        return
+      }
+      
+      // Nếu không có cache, fetch bình thường
+      const response = await apiCall()
+      const articles = response.data.content || response.data
+      setArticles(articles)
       setHasMore(response.data.totalPages > 1)
       setPage(0)
+      setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
     } catch (error) {
       console.error('Error loading articles:', error)
       // Fallback data - Câu chuyện về văn hóa, làng nghề, nghệ nhân
