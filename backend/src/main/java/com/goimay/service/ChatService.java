@@ -131,30 +131,39 @@ public class ChatService {
         }
 
         // 2. Logic "Tư vấn" (Giả lập AI)
-        // Kích hoạt nếu: Có ngân sách HOẶC có từ khóa (tư vấn, gợi ý, mua, tìm, cần, thích...)
         if (budget != null || 
             message.contains("tư vấn") || message.contains("gợi ý") || 
             message.contains("mua") || message.contains("tìm") || 
             message.contains("cần") || message.contains("chọn")) {
             
-            List<ChatRequest.ProductInfo> suitableProducts = filterProductsByBudget(products, budget);
+            // Tìm sản phẩm trong khoảng giá gần đúng
+            List<ChatRequest.ProductInfo> suitableProducts = findProductsAroundBudget(products, budget);
+            boolean isAlternativeSuggestion = false;
+
+            if (suitableProducts.isEmpty() && budget != null) {
+                // Nếu không tìm thấy trong khoảng giá -> Tìm sản phẩm rẻ hơn (dưới ngân sách)
+                suitableProducts = findProductsUnderBudget(products, budget);
+                isAlternativeSuggestion = true;
+            }
 
             if (suitableProducts.isEmpty()) {
-                // Nếu có budget mà ko tìm thấy
-                if (budget != null) {
-                    return "Chào bạn, với ngân sách " + formatPrice(budget) + ", hiện tại mình chưa tìm thấy set quà nào khớp hoàn toàn." +
-                           "\nBạn có thể tham khảo thêm trên website hoặc nhắn tin riêng để mình hỗ trợ nhé!";
-                }
-                // Nếu ko có budget -> giới thiệu chung 3 sp đầu
+                // Nếu vẫn chưa tìm thấy hoặc không có budget -> Lấy 3 sản phẩm đầu
                 suitableProducts = products.stream().limit(3).collect(Collectors.toList());
+                isAlternativeSuggestion = (budget != null); // Nếu có budget mà phải fallback về 3 sp đầu thì coi như là gợi ý thay thế
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Chào bạn, mình hiểu bạn đang quan tâm đến quà Tết. ");
-            if (budget != null) {
-                sb.append("Với ngân sách khoảng ").append(formatPrice(budget)).append(", ");
+            
+            if (isAlternativeSuggestion && budget != null) {
+                sb.append("Chào bạn, hiện tại bên mình chưa có set quà đúng mức giá **").append(formatPrice(budget)).append("**.\n");
+                sb.append("Tuy nhiên, mình xin gợi ý vài lựa chọn **giá tốt hơn** và cũng rất chất lượng nha:\n\n");
+            } else {
+                sb.append("Chào bạn, mình hiểu bạn đang quan tâm đến quà Tết. ");
+                if (budget != null) {
+                    sb.append("Với ngân sách khoảng ").append(formatPrice(budget)).append(", ");
+                }
+                sb.append("mình xin gợi ý vài lựa chọn nổi bật:\n\n");
             }
-            sb.append("mình xin gợi ý vài lựa chọn nổi bật:\n\n");
 
             for (ChatRequest.ProductInfo p : suitableProducts) {
                 sb.append("🎁 **").append(p.getName()).append("** - ").append(formatPrice(p.getSalePrice() != null ? p.getSalePrice() : p.getPrice())).append("\n");
@@ -188,21 +197,19 @@ public class ChatService {
     }
 
     private Double extractBudget(String message) {
-        // Tìm số trước chữ "k" hoặc "000"
         try {
-            // Regex đơn giản bắt 500k, 700k
-            java.util.regex.Pattern p = java.util.regex.Pattern.compile("(\\d+)[kK]");
+            // Regex bắt 500k, 700 k, 500K... (có hỗ trợ khoảng trắng)
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile("(\\d+)\\s*[kK]");
             java.util.regex.Matcher m = p.matcher(message);
             if (m.find()) {
                 return Double.parseDouble(m.group(1)) * 1000;
             }
-            // Regex bắt 500.000, 700000
+            // Regex bắt số lớn 500000
             p = java.util.regex.Pattern.compile("(\\d{3,})"); 
-            // Cẩn thận bắt nhầm năm 2024, nhưng tạm chấp nhận cho demo
             m = p.matcher(message);
             while (m.find()) {
                 double val = Double.parseDouble(m.group(1));
-                if (val > 10000) return val; // Giả sử giá > 10k
+                if (val > 10000) return val;
             }
         } catch (Exception e) {
             // ignore
@@ -210,9 +217,9 @@ public class ChatService {
         return null;
     }
 
-    private List<ChatRequest.ProductInfo> filterProductsByBudget(List<ChatRequest.ProductInfo> products, Double budget) {
+    private List<ChatRequest.ProductInfo> findProductsAroundBudget(List<ChatRequest.ProductInfo> products, Double budget) {
         if (products == null) return new ArrayList<>();
-        if (budget == null) return products.stream().limit(3).collect(Collectors.toList());
+        if (budget == null) return new ArrayList<>();
 
         // Lọc sản phẩm trong khoảng budget +/- 20%
         double min = budget * 0.8;
@@ -222,6 +229,25 @@ public class ChatService {
                 .filter(p -> {
                     double price = (p.getSalePrice() != null) ? p.getSalePrice() : p.getPrice();
                     return price >= min && price <= max;
+                })
+                .limit(3)
+                .collect(Collectors.toList());
+    }
+
+    private List<ChatRequest.ProductInfo> findProductsUnderBudget(List<ChatRequest.ProductInfo> products, Double budget) {
+        if (products == null || budget == null) return new ArrayList<>();
+        
+        // Tìm sản phẩm <= budget
+        return products.stream()
+                .filter(p -> {
+                    double price = (p.getSalePrice() != null) ? p.getSalePrice() : p.getPrice();
+                    return price <= budget;
+                })
+                .sorted((p1, p2) -> {
+                     // Sắp xếp giá giảm dần (ưu tiên set gần budget nhất)
+                     double price1 = (p1.getSalePrice() != null) ? p1.getSalePrice() : p1.getPrice();
+                     double price2 = (p2.getSalePrice() != null) ? p2.getSalePrice() : p2.getPrice();
+                     return Double.compare(price2, price1);
                 })
                 .limit(3)
                 .collect(Collectors.toList());
