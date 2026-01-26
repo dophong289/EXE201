@@ -378,7 +378,13 @@ function MenuPage() {
             </div>
           )}
           
-          {!loading && !error && (
+          {!loading && !error && menuData.length === 0 && (
+            <div className="empty-state">
+              <p>Chưa có dữ liệu menu. {isAdmin && 'Vui lòng thêm set mới.'}</p>
+            </div>
+          )}
+          
+          {!loading && !error && menuData.length > 0 && (
             <div className="menu-table-wrapper">
             <table className="menu-table">
               <thead>
