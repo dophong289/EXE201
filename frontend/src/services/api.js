@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCache, setCache } from './cache'
+import { getCache, setCache, setOfflineCache, isOnline } from './cache'
 
 // Production: set Vercel env var VITE_API_URL = https://<your-backend-domain>
 // Dev: if VITE_API_URL is not set, we fall back to relative "/api" (Vite proxy handles it)
@@ -82,15 +82,41 @@ api.interceptors.response.use(
     const config = response.config
     if (config.method === 'get' && !config.skipCache && response.data) {
       const cacheKey = `${config.url}${config.params ? '?' + new URLSearchParams(config.params).toString() : ''}`
-      // Cache trong 5 phút cho data thông thường, 30 phút cho static data
-      const ttl = config.url.includes('/categories') || config.url.includes('/site-settings') 
-        ? 30 * 60 * 1000 
-        : 5 * 60 * 1000
-      setCache(cacheKey, response.data, ttl)
+      
+      // Cache với TTL dài hơn cho offline support
+      // Static data: 30 phút normal cache + 24h offline cache
+      // Dynamic data: 5 phút normal cache + 24h offline cache
+      if (config.url.includes('/categories') || config.url.includes('/site-settings')) {
+        setCache(cacheKey, response.data, 30 * 60 * 1000)
+        setOfflineCache(cacheKey, response.data) // 24h offline cache
+      } else {
+        setCache(cacheKey, response.data, 5 * 60 * 1000)
+        setOfflineCache(cacheKey, response.data) // 24h offline cache
+      }
     }
     return response
   },
   (error) => {
+    // Nếu backend không available, thử lấy từ offline cache
+    if (!error.response && !isOnline()) {
+      const config = error.config
+      if (config && config.method === 'get') {
+        const cacheKey = `${config.url}${config.params ? '?' + new URLSearchParams(config.params).toString() : ''}`
+        const cachedData = getCache(cacheKey, {}, true) // allowExpired = true
+        
+        if (cachedData) {
+          console.log('Using offline cache for', cacheKey)
+          return Promise.resolve({
+            data: cachedData,
+            status: 200,
+            statusText: 'OK (Cached)',
+            headers: {},
+            config: config
+          })
+        }
+      }
+    }
+    
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')

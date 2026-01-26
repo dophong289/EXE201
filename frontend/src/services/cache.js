@@ -5,6 +5,7 @@
 
 const CACHE_PREFIX = 'goimay_cache_'
 const DEFAULT_TTL = 5 * 60 * 1000 // 5 phút mặc định
+const OFFLINE_TTL = 24 * 60 * 60 * 1000 // 24 giờ cho offline support
 
 /**
  * Lấy cache key từ URL và params
@@ -41,9 +42,10 @@ export const setCache = (url, data, ttl = DEFAULT_TTL, params = {}) => {
  * Lấy data từ cache
  * @param {string} url - API endpoint
  * @param {object} params - Query params
+ * @param {boolean} allowExpired - Cho phép trả về cache đã hết hạn nếu không có network (offline mode)
  * @returns {any|null} - Data hoặc null nếu không có hoặc đã hết hạn
  */
-export const getCache = (url, params = {}) => {
+export const getCache = (url, params = {}, allowExpired = true) => {
   try {
     const key = getCacheKey(url, params)
     const cached = localStorage.getItem(key)
@@ -56,6 +58,11 @@ export const getCache = (url, params = {}) => {
     
     // Kiểm tra xem cache còn hạn không
     if (age > cacheData.ttl) {
+      // Nếu cho phép expired và đang offline, vẫn trả về cache cũ
+      if (allowExpired && !navigator.onLine) {
+        console.log('Offline mode: using expired cache for', url)
+        return cacheData.data
+      }
       localStorage.removeItem(key)
       return null
     }
@@ -139,10 +146,36 @@ export const getAllCacheKeys = () => {
   }
 }
 
+/**
+ * Lưu cache với TTL dài hơn cho offline support
+ * @param {string} url - API endpoint
+ * @param {any} data - Data cần cache
+ * @param {object} params - Query params
+ */
+export const setOfflineCache = (url, data, params = {}) => {
+  setCache(url, data, OFFLINE_TTL, params)
+}
+
+/**
+ * Kiểm tra xem có network không
+ */
+export const isOnline = () => {
+  return typeof navigator !== 'undefined' && navigator.onLine
+}
+
 // Tự động dọn dẹp cache cũ khi import module này
 if (typeof window !== 'undefined') {
   clearOldCache()
   
   // Dọn dẹp cache cũ mỗi 10 phút
   setInterval(clearOldCache, 10 * 60 * 1000)
+  
+  // Lắng nghe sự kiện online/offline
+  window.addEventListener('online', () => {
+    console.log('Network is back online')
+  })
+  
+  window.addEventListener('offline', () => {
+    console.log('Network is offline - using cached data')
+  })
 }

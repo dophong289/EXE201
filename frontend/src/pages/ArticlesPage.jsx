@@ -4,7 +4,8 @@ import { motion } from 'framer-motion'
 import ArticleCard from '../components/ArticleCard'
 import TestimonialSlider from '../components/TestimonialSlider'
 import { articleApi, categoryApi } from '../services/api'
-import { getCache, setCache } from '../services/cache'
+import { getCache, setCache, setOfflineCache } from '../services/cache'
+import { cacheImages } from '../services/imageCache'
 import '../styles/pages/ArticlesPage.css'
 
 function ArticlesPage() {
@@ -85,8 +86,15 @@ function ArticlesPage() {
             .then(response => {
               const articles = response.data.content || response.data
               setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+              setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
               setArticles(articles)
               setHasMore(response.data.totalPages > 1)
+              
+              // Cache article images
+              const articleImages = articles
+                .map(a => a.thumbnail)
+                .filter(Boolean)
+              cacheImages(articleImages)
             })
             .catch(() => {})
         }, 0)
@@ -100,6 +108,13 @@ function ArticlesPage() {
       setHasMore(response.data.totalPages > 1)
       setPage(0)
       setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+      setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
+      
+      // Cache article images
+      const articleImages = articles
+        .map(a => a.thumbnail)
+        .filter(Boolean)
+      cacheImages(articleImages)
     } catch (error) {
       console.error('Error loading articles:', error)
       // Fallback data - Câu chuyện về văn hóa, làng nghề, nghệ nhân

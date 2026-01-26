@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, productCategoryApi, favoriteApi, resolveMediaUrl } from '../services/api'
-import { getCache, setCache } from '../services/cache'
+import { getCache, setCache, setOfflineCache } from '../services/cache'
+import { cacheImages } from '../services/imageCache'
 import { addToCart } from '../services/cart'
 import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductsPage.css'
@@ -129,7 +130,15 @@ function ProductsPage() {
             .then(response => {
               const products = response.data.content || response.data
               setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+              setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
               setProducts(products)
+              
+              // Cache image URLs
+              const imageUrls = products
+                .map(p => p.thumbnail)
+                .filter(Boolean)
+                .map(url => resolveMediaUrl(url))
+              cacheImages(imageUrls)
             })
             .catch(() => {})
         }, 0)
@@ -141,6 +150,14 @@ function ProductsPage() {
       const products = response.data.content || response.data
       setProducts(products)
       setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
+      setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
+      
+      // Cache image URLs
+      const imageUrls = products
+        .map(p => p.thumbnail)
+        .filter(Boolean)
+        .map(url => resolveMediaUrl(url))
+      cacheImages(imageUrls)
     } catch (error) {
       console.error('Error loading products:', error)
       // Fallback data

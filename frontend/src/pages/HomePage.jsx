@@ -5,7 +5,8 @@ import ArticleCard from '../components/ArticleCard'
 import ArticleSlider from '../components/ArticleSlider'
 import TestimonialSlider from '../components/TestimonialSlider'
 import { articleApi } from '../services/api'
-import { getCache, setCache } from '../services/cache'
+import { getCache, setCache, setOfflineCache } from '../services/cache'
+import { cacheImages } from '../services/imageCache'
 import '../styles/pages/HomePage.css'
 
 function HomePage() {
@@ -43,13 +44,23 @@ function HomePage() {
             .then(([featuredRes, articlesRes]) => {
               if (featuredRes?.data) {
                 setCache(featuredCacheKey, featuredRes.data, 5 * 60 * 1000)
+                setOfflineCache(featuredCacheKey, featuredRes.data)
                 if (featuredRes.data.length > 0) {
                   setFeaturedArticle(featuredRes.data[0])
+                  if (featuredRes.data[0].thumbnail) {
+                    cacheImages([featuredRes.data[0].thumbnail])
+                  }
                 }
               }
               if (articlesRes?.data) {
                 setCache(articlesCacheKey, articlesRes.data, 5 * 60 * 1000)
+                setOfflineCache(articlesCacheKey, articlesRes.data)
                 setArticles(articlesRes.data)
+                
+                const articleImages = articlesRes.data
+                  .map(a => a.thumbnail)
+                  .filter(Boolean)
+                cacheImages(articleImages)
               }
             })
             .catch(() => {})
@@ -66,9 +77,22 @@ function HomePage() {
       if (featuredRes.data.length > 0) {
         setFeaturedArticle(featuredRes.data[0])
         setCache(featuredCacheKey, featuredRes.data, 5 * 60 * 1000)
+        setOfflineCache(featuredCacheKey, featuredRes.data)
+        
+        // Cache featured article image
+        if (featuredRes.data[0].thumbnail) {
+          cacheImages([featuredRes.data[0].thumbnail])
+        }
       }
       setArticles(articlesRes.data)
       setCache(articlesCacheKey, articlesRes.data, 5 * 60 * 1000)
+      setOfflineCache(articlesCacheKey, articlesRes.data)
+      
+      // Cache article images
+      const articleImages = articlesRes.data
+        .map(a => a.thumbnail)
+        .filter(Boolean)
+      cacheImages(articleImages)
     } catch (error) {
       console.error('Error loading data:', error)
       // Fallback data
