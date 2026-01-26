@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 "/api/product-categories/**",
                                 "/api/site-settings/**",
                                 "/api/upload/**",
+                                "/api/menu/**",
                                 "/h2-console/**"
                         ).permitAll()
                         .anyRequest().authenticated()

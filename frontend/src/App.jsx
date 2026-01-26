@@ -10,6 +10,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CheckoutSuccessPage from './pages/CheckoutSuccessPage'
 import AboutPage from './pages/AboutPage'
+import MenuPage from './pages/MenuPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import AdminProductsPage from './pages/AdminProductsPage'
@@ -39,6 +40,7 @@ function App() {
           <Route path="/thanh-toan" element={<CheckoutPage />} />
           <Route path="/thanh-toan/thanh-cong/:orderId" element={<CheckoutSuccessPage />} />
           <Route path="/ve-goi-may" element={<AboutPage />} />
+          <Route path="/menu" element={<MenuPage />} />
           <Route path="/dang-nhap" element={<LoginPage />} />
           <Route path="/dang-ky" element={<RegisterPage />} />
           <Route path="/tai-khoan" element={<AccountPage />} />

@@ -368,5 +368,32 @@ export const productApi = {
     api.delete(`/products/${id}`),
 }
 
+// Menu API
+export const menuApi = {
+  getAll: () => 
+    api.get('/menu'),
+  
+  getById: (id) =>
+    api.get(`/menu/${id}`),
+  
+  create: (data) =>
+    api.post('/menu', data),
+  
+  update: (id, data) =>
+    api.put(`/menu/${id}`, data),
+  
+  delete: (id) =>
+    api.delete(`/menu/${id}`),
+  
+  addItem: (setId, item) =>
+    api.post(`/menu/${setId}/items`, item),
+  
+  updateItem: (itemId, item) =>
+    api.put(`/menu/items/${itemId}`, item),
+  
+  deleteItem: (itemId) =>
+    api.delete(`/menu/items/${itemId}`),
+}
+
 export default api
 
