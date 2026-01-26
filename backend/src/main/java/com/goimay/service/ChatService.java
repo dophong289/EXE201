@@ -119,23 +119,107 @@ public class ChatService {
         return sb.toString();
     }
 
-    // --- OLD RULE-BASED LOGIC (FALLBACK) ---
+    // --- IMPROVED RULE-BASED LOGIC (FALLBACK) ---
 
     private String processRuleBasedMessage(String userMessage, List<ChatRequest.ProductInfo> products) {
         String message = userMessage.toLowerCase().trim();
         
-        // Logic cũ giữ nguyên để fallback
-        if (message.contains("liên hệ") || message.contains("hotline") || message.contains("điện thoại")) {
+        // 1. Nếu hỏi về liên hệ
+        if (message.contains("liên hệ") || message.contains("hotline") || message.contains("điện thoại") || message.contains("địa chỉ")) {
             return getContactInfo();
         }
-        // ... (Giữ các logic cơ bản)
+
+        // 2. Logic "Tư vấn" (Giả lập AI)
+        if (message.contains("tư vấn") || message.contains("gợi ý") || message.contains("mua quà")) {
+            // Thử tìm ngân sách trong câu hỏi (vd: 500k, 700k)
+            Double budget = extractBudget(message);
+            List<ChatRequest.ProductInfo> suitableProducts = filterProductsByBudget(products, budget);
+
+            if (suitableProducts.isEmpty()) {
+                return "Chào bạn, mình là trợ lý Gói Mây.\n" +
+                       "Hiện tại mình chưa tìm thấy set quà phù hợp với mức giá bạn yêu cầu trong danh sách. " +
+                       "Bạn có thể tham khảo các set quà khác tại website hoặc liên hệ hotline 098 552 39 82 để được hỗ trợ riêng nhé!";
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Chào bạn, mình hiểu bạn đang cần tìm quà Tết. ");
+            if (budget != null) {
+                sb.append("Với ngân sách khoảng ").append(formatPrice(budget)).append(", ");
+            }
+            sb.append("mình xin gợi ý vài lựa chọn:\n\n");
+
+            for (ChatRequest.ProductInfo p : suitableProducts) {
+                sb.append("🎁 **").append(p.getName()).append("** - ").append(formatPrice(p.getSalePrice() != null ? p.getSalePrice() : p.getPrice())).append("\n");
+                sb.append("   • ").append(p.getDescription() != null ? p.getDescription() : "Thiết kế tinh tế, đậm chất Tết.").append("\n");
+            }
+
+            sb.append("\n• **Phù hợp**: Biếu tặng gia đình, đối tác.\n");
+            sb.append("• **Điểm nhấn**: Mây tre đan thủ công & đặc sản tự nhiên.\n\n");
+            sb.append("Bạn thấy set nào ưng ý nhất ạ?");
+            
+            return sb.toString();
+        }
+
+        // 3. Các logic cũ khác (Ship, Chính sách...)
+        if (message.contains("ship") || message.contains("giao hàng")) {
+            return "Bên mình ship nội thành 30-50k, tỉnh 50-100k. Freeship đơn trên 500k. Bạn cần giao đi đâu ạ?";
+        }
+
+        // Logic cũ (nếu hỏi sản phẩm chung chung)
+        if (message.contains("sản phẩm") || message.contains("set quà")) {
+             return getProductsInfo(products);
+        }
+
+        return "Chào bạn, mình là trợ lý Gói Mây. Bạn cần tư vấn set quà Tết, thông tin giá cả hay chính sách giao hàng ạ?"; 
+    }
+
+    private Double extractBudget(String message) {
+        // Tìm số trước chữ "k" hoặc "000"
+        try {
+            // Regex đơn giản bắt 500k, 700k
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile("(\\d+)[kK]");
+            java.util.regex.Matcher m = p.matcher(message);
+            if (m.find()) {
+                return Double.parseDouble(m.group(1)) * 1000;
+            }
+            // Regex bắt 500.000, 700000
+            p = java.util.regex.Pattern.compile("(\\d{3,})"); 
+            // Cẩn thận bắt nhầm năm 2024, nhưng tạm chấp nhận cho demo
+            m = p.matcher(message);
+            while (m.find()) {
+                double val = Double.parseDouble(m.group(1));
+                if (val > 10000) return val; // Giả sử giá > 10k
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+        return null;
+    }
+
+    private List<ChatRequest.ProductInfo> filterProductsByBudget(List<ChatRequest.ProductInfo> products, Double budget) {
+        if (products == null) return new ArrayList<>();
+        if (budget == null) return products.stream().limit(3).collect(Collectors.toList());
+
+        // Lọc sản phẩm trong khoảng budget +/- 20%
+        double min = budget * 0.8;
+        double max = budget * 1.2;
         
-        return "Chào bạn, mình là trợ lý Gói Mây. Hiện tại mình đang cập nhật thêm dữ liệu để tư vấn tốt hơn. " +
-               "Bạn cần hỗ trợ về sản phẩm hay chính sách giao hàng ạ?"; // Rút gọn fallback
+        return products.stream()
+                .filter(p -> {
+                    double price = (p.getSalePrice() != null) ? p.getSalePrice() : p.getPrice();
+                    return price >= min && price <= max;
+                })
+                .limit(3)
+                .collect(Collectors.toList());
     }
 
     private String getContactInfo() {
         return "📞 Hotline: 098 552 39 82\n🌐 Website: www.goimay.vn";
+    }
+
+    private String getProductsInfo(List<ChatRequest.ProductInfo> products) {
+        // ... (Giữ nguyên hoặc rút gọn)
+        return "Mình có nhiều set quà Tết đẹp lắm. Bạn vào mục Sản phẩm xem chi tiết nha!";
     }
 
     private String formatPrice(Double price) {
