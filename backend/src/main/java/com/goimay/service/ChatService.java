@@ -16,17 +16,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Service
-@RequiredArgsConstructor
-@Slf4j
 public class ChatService {
 
-    @Value("${GEMINI_API_KEY:}")
-    private String geminiApiKey;
+    @Value("${OPENAI_API_KEY:}")
+    private String openAiApiKey;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    // Gemini API Endpoint (using 1.5-flash model for speed and cost effectiveness)
-    private static final String GEMINI_API_URL_TEMPLATE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=%s";
+    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
     private static final String SYSTEM_PROMPT = 
         "Bạn là trợ lý tư vấn set quà Tết (ngân sách 500–800k).\n\n" +
@@ -37,7 +33,7 @@ public class ChatService {
         "1. Không bịa: Nếu thiếu thông tin (địa chỉ, ngày cần, số lượng) → hỏi lại 1–2 câu nhẹ nhàng.\n" +
         "2. Tư vấn đúng tâm: Ưu tiên tư vấn theo đối tượng + ngân sách + phong cách.\n" +
         "3. Luôn chốt nhẹ: Kết thúc bằng 1 câu hỏi để dẫn dắt khách hàng.\n" +
-        "4. Không sales lố: Tránh hứa chắc chắn 100% nếu chưa check.\n\n" +
+        "4. Không sales lố: Tránh hứa chắc chắn 100% nếu chưa check, tránh dùng từ ngữ quá vồn vã.\n\n" +
         "FORMAT CÂU TRẢ LỜI (80%):\n" +
         "1. Mở: 1 câu ấm áp, đồng cảm.\n" +
         "2. Gợi ý: 2–3 lựa chọn (mỗi gợi ý 1–2 dòng mô tả ngắn).\n" +
@@ -53,12 +49,12 @@ public class ChatService {
             return "Xin chào! Mình là trợ lý Gói Mây. Bạn cần tư vấn set quà Tết cho gia đình hay đối tác ạ?";
         }
 
-        // Nếu có API Key, dùng Gemini
-        if (geminiApiKey != null && !geminiApiKey.isEmpty()) {
+        // Nếu có API Key, dùng OpenAI
+        if (openAiApiKey != null && !openAiApiKey.isEmpty()) {
             try {
-                return callGemini(userMessage, products);
+                return callOpenAI(userMessage, products);
             } catch (Exception e) {
-                log.error("Lỗi khi gọi Gemini: {}", e.getMessage());
+                log.error("Lỗi khi gọi OpenAI: {}", e.getMessage());
                 // Fallback xuống logic cũ nếu lỗi
             }
         }
@@ -66,52 +62,47 @@ public class ChatService {
         return processRuleBasedMessage(userMessage, products);
     }
 
-    private String callGemini(String userMessage, List<ChatRequest.ProductInfo> products) {
+    private String callOpenAI(String userMessage, List<ChatRequest.ProductInfo> products) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        
-        // Construct the full prompt: System + Context + User Question
-        String fullPrompt = SYSTEM_PROMPT + "\n\n" +
-                            "DANH SÁCH SẢN PHẨM HIỆN CÓ:\n" + formatProductListForAI(products) + "\n\n" +
-                            "KHÁCH HÀNG: " + userMessage + "\n" +
-                            "TRỢ LÝ:";
-
-        // Gemini Request Body Structure
-        // { "contents": [{ "parts": [{ "text": "..." }] }] }
-        Map<String, Object> part = new HashMap<>();
-        part.put("text", fullPrompt);
-
-        Map<String, Object> content = new HashMap<>();
-        content.put("parts", Collections.singletonList(part));
+        headers.setBearerAuth(openAiApiKey);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("contents", Collections.singletonList(content));
+        requestBody.put("model", "gpt-3.5-turbo");
+        
+        List<Map<String, String>> messages = new ArrayList<>();
+        
+        // System Message
+        messages.add(Map.of("role", "system", "content", SYSTEM_PROMPT));
+        
+        // Context Message (Product List)
+        String productContext = "Danh sách sản phẩm hiện có:\n" + formatProductListForAI(products);
+        messages.add(Map.of("role", "system", "content", productContext));
+        
+        // User Message
+        messages.add(Map.of("role", "user", "content", userMessage));
+
+        requestBody.put("messages", messages);
+        requestBody.put("temperature", 0.7);
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
         try {
-            String url = String.format(GEMINI_API_URL_TEMPLATE, geminiApiKey);
-            Map<String, Object> response = restTemplate.postForObject(url, entity, Map.class);
+            Map<String, Object> response = restTemplate.postForObject(OPENAI_API_URL, entity, Map.class);
             
-            // Parse Gemini Response: candidates[0].content.parts[0].text
-            if (response != null && response.containsKey("candidates")) {
-                List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
-                if (!candidates.isEmpty()) {
-                    Map<String, Object> candidateContent = (Map<String, Object>) candidates.get(0).get("content");
-                    if (candidateContent != null && candidateContent.containsKey("parts")) {
-                         List<Map<String, Object>> parts = (List<Map<String, Object>>) candidateContent.get("parts");
-                         if (!parts.isEmpty()) {
-                             return (String) parts.get(0).get("text");
-                         }
-                    }
+            if (response != null && response.containsKey("choices")) {
+                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.get("choices");
+                if (!choices.isEmpty()) {
+                    Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
+                    return (String) message.get("content");
                 }
             }
         } catch (Exception e) {
-            log.error("Gemini API call failed", e);
+            log.error("OpenAI API call failed", e);
             throw e;
         }
         
-        return "Xin lỗi, mình đang gặp chút trục trặc với hệ thống. Bạn chờ mình xíu nhé!";
+        return "Xin lỗi, mình đang gặp chút trục trặc. Bạn chờ mình xíu nhé!";
     }
 
     private String formatProductListForAI(List<ChatRequest.ProductInfo> products) {

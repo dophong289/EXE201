@@ -1,4 +1,5 @@
 D:\EXE201\backend\src\main\java\com\goimay\service\FavoriteService.java
+D:\EXE201\backend\src\main\java\com\goimay\controller\MenuController.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\FavoriteRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\model\Category.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\UserRepository.java
@@ -12,6 +13,9 @@ D:\EXE201\backend\src\main\java\com\goimay\dto\OrderItemDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\ArticleRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\ArticleController.java
 D:\EXE201\backend\src\main\java\com\goimay\model\Order.java
+D:\EXE201\backend\src\main\java\com\goimay\dto\ChatResponse.java
+D:\EXE201\backend\src\main\java\com\goimay\service\MenuService.java
+D:\EXE201\backend\src\main\java\com\goimay\model\MenuSet.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\SiteSettingRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\RegisterRequest.java
 D:\EXE201\backend\src\main\java\com\goimay\model\OrderItem.java
@@ -22,11 +26,16 @@ D:\EXE201\backend\src\main\java\com\goimay\model\PaymentMethod.java
 D:\EXE201\backend\src\main\java\com\goimay\exception\GlobalExceptionHandler.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\ArticleDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\CategoryRepository.java
+D:\EXE201\backend\src\main\java\com\goimay\scheduler\KeepAliveScheduler.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\ProductCategoryController.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\CategoryController.java
+D:\EXE201\backend\src\main\java\com\goimay\controller\ChatController.java
+D:\EXE201\backend\src\main\java\com\goimay\dto\MenuItemDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\SiteSettingDTO.java
+D:\EXE201\backend\src\main\java\com\goimay\model\MenuItem.java
 D:\EXE201\backend\src\main\java\com\goimay\config\CorsConfig.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\OrderController.java
+D:\EXE201\backend\src\main\java\com\goimay\config\CloudinaryConfig.java
 D:\EXE201\backend\src\main\java\com\goimay\model\ProductCategory.java
 D:\EXE201\backend\src\main\java\com\goimay\config\SchemaMigrationRunner.java
 D:\EXE201\backend\src\main\java\com\goimay\service\ArticleService.java
@@ -34,6 +43,7 @@ D:\EXE201\backend\src\main\java\com\goimay\controller\UserController.java
 D:\EXE201\backend\src\main\java\com\goimay\config\JwtAuthenticationFilter.java
 D:\EXE201\backend\src\main\java\com\goimay\service\OrderService.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\ProductController.java
+D:\EXE201\backend\src\main\java\com\goimay\repository\MenuSetRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\config\SecurityConfig.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\CategoryDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\ProductCategoryRepository.java
@@ -45,13 +55,18 @@ D:\EXE201\backend\src\main\java\com\goimay\dto\UpdateProfileRequest.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\ProductRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\ProductCategoryDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\UserDTO.java
+D:\EXE201\backend\src\main\java\com\goimay\service\CloudinaryService.java
 D:\EXE201\backend\src\main\java\com\goimay\service\DataExportImportService.java
 D:\EXE201\backend\src\main\java\com\goimay\service\JwtService.java
+D:\EXE201\backend\src\main\java\com\goimay\dto\GoogleLoginRequest.java
 D:\EXE201\backend\src\main\java\com\goimay\controller\FileController.java
 D:\EXE201\backend\src\main\java\com\goimay\GoimayApplication.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\DataExportDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\service\SiteSettingService.java
+D:\EXE201\backend\src\main\java\com\goimay\repository\MenuItemRepository.java
+D:\EXE201\backend\src\main\java\com\goimay\service\ChatService.java
 D:\EXE201\backend\src\main\java\com\goimay\service\AuthService.java
+D:\EXE201\backend\src\main\java\com\goimay\dto\ChatRequest.java
 D:\EXE201\backend\src\main\java\com\goimay\model\OrderStatus.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\OrderRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\AuthResponse.java
@@ -59,6 +74,7 @@ D:\EXE201\backend\src\main\java\com\goimay\service\CategoryService.java
 D:\EXE201\backend\src\main\java\com\goimay\model\Product.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\ChangePasswordRequest.java
 D:\EXE201\backend\src\main\java\com\goimay\dto\CreateOrderRequest.java
+D:\EXE201\backend\src\main\java\com\goimay\dto\MenuSetDTO.java
 D:\EXE201\backend\src\main\java\com\goimay\repository\ProductImageRepository.java
 D:\EXE201\backend\src\main\java\com\goimay\model\Favorite.java
 D:\EXE201\backend\src\main\java\com\goimay\model\SiteSetting.java

@@ -88,7 +88,8 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "http://localhost:5173",
                 "https://goimay.vercel.app",
-                "https://goimay.com"
+                "https://goimay.com",
+                "https://www.goimay.com"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

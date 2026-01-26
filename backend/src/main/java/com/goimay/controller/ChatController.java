@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/chat")
 @RequiredArgsConstructor
-
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173", "https://goimay.vercel.app"})
 public class ChatController {
     
     private final ChatService chatService;
