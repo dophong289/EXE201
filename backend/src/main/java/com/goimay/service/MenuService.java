@@ -36,7 +36,7 @@ public class MenuService {
     public MenuSetDTO createMenuSet(MenuSetDTO dto) {
         MenuSet menuSet = new MenuSet();
         menuSet.setSetName(dto.getSetName());
-        menuSet.setDisplayOrder(menuSetRepository.count().intValue());
+        menuSet.setDisplayOrder((int) menuSetRepository.count());
         
         MenuSet saved = menuSetRepository.save(menuSet);
         
