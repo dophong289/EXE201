@@ -1,6 +1,6 @@
-/* ChatBox Component - Hình tròn ở góc phải dưới, có thể kéo thả */
+/* ChatBox Component - Cục tròn cố định góc dưới phải */
 
-/* Chat Toggle Button - Hình tròn có thể di chuyển */
+/* Chat Toggle Button - Cục tròn */
 .chat-toggle-button {
   position: fixed;
   bottom: 2rem;
@@ -11,7 +11,7 @@
   background: #7A2E2E;
   color: var(--color-white);
   border: none;
-  cursor: grab;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,16 +19,6 @@
   z-index: 1000;
   transition: all 0.3s;
   user-select: none;
-  touch-action: none;
-}
-
-.chat-toggle-button.dragging {
-  cursor: grabbing;
-  box-shadow: 0 8px 30px rgba(122, 46, 46, 0.6);
-}
-
-.chat-toggle-button.open {
-  cursor: pointer;
 }
 
 .chat-toggle-button:hover {
@@ -63,6 +53,8 @@
 /* Chat Window */
 .chat-window {
   position: fixed;
+  bottom: 2rem;
+  right: 2rem;
   width: 380px;
   max-width: calc(100vw - 4rem);
   height: 600px;
@@ -74,7 +66,6 @@
   flex-direction: column;
   z-index: 999;
   overflow: hidden;
-  user-select: none;
 }
 
 /* Chat Header */
@@ -83,13 +74,40 @@
   color: var(--color-white);
   padding: 1.25rem 1.5rem;
   border-radius: 16px 16px 0 0;
-  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chat-header-info {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.chat-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--color-white);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.04);
+}
+
+.chat-close-btn:active {
+  transform: scale(0.98);
 }
 
 .chat-avatar {
@@ -334,6 +352,8 @@
     width: calc(100vw - 2rem);
     height: calc(100vh - 2rem);
     max-height: calc(100vh - 2rem);
+    bottom: 1rem;
+    right: 1rem;
     border-radius: 12px;
   }
 
@@ -353,5 +373,7 @@
   .chat-window {
     width: calc(100vw - 1rem);
     height: calc(100vh - 1rem);
+    bottom: 0.5rem;
+    right: 0.5rem;
   }
 }
