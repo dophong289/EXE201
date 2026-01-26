@@ -333,8 +333,8 @@ export const siteSettingApi = {
 
 // Product API
 export const productApi = {
-  getAll: (page = 0, size = 12) => 
-    api.get(`/products?page=${page}&size=${size}`),
+  getAll: (page = 0, size = 12, includeInactive = false) => 
+    api.get(`/products?page=${page}&size=${size}&includeInactive=${includeInactive}`),
   
   getById: (id) =>
     api.get(`/products/${id}`),

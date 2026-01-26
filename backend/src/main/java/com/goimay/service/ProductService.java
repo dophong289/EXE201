@@ -21,8 +21,11 @@ public class ProductService {
     
     private final ProductRepository productRepository;
     
-    public Page<ProductDTO> getAllProducts(int page, int size) {
+    public Page<ProductDTO> getAllProducts(int page, int size, boolean includeInactive) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        if (includeInactive) {
+            return productRepository.findAll(pageable).map(this::convertToDTO);
+        }
         return productRepository.findByActiveTrue(pageable).map(this::convertToDTO);
     }
     

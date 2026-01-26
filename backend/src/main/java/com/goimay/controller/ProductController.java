@@ -21,8 +21,9 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size) {
-        return ResponseEntity.ok(productService.getAllProducts(page, size));
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "false") boolean includeInactive) {
+        return ResponseEntity.ok(productService.getAllProducts(page, size, includeInactive));
     }
     
     @GetMapping("/category/{category}")
