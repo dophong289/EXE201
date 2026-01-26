@@ -380,153 +380,170 @@ function MenuPage() {
           
           {!loading && !error && menuData.length === 0 && (
             <div className="empty-state">
-              <p>Chưa có dữ liệu menu. {isAdmin && 'Vui lòng thêm set mới.'}</p>
+              <div className="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <p>Chưa có dữ liệu menu.</p>
+              {isAdmin && (
+                <button className="btn btn-primary" onClick={() => {
+                  setEditingSetIndex(-1)
+                  setSetForm({ setName: '' })
+                  setShowSetModal(true)
+                }}>
+                  Thêm Set Đầu Tiên
+                </button>
+              )}
             </div>
           )}
           
           {!loading && !error && menuData.length > 0 && (
-            <div className="menu-table-wrapper">
-            <table className="menu-table">
-              <thead>
-                <tr>
-                  <th className="col-set">SET</th>
-                  <th className="col-product">SẢN PHẨM</th>
-                  <th className="col-quantity">SỐ LƯỢNG</th>
-                  <th className="col-price">THÀNH GIÁ</th>
-                  {isAdmin && <th className="col-actions">Thao tác</th>}
-                </tr>
-              </thead>
-              <tbody>
-                {menuData.map((set, setIndex) => {
-                  const isExpanded = expandedSets.has(set.setName)
-                  const totalPrice = calculateSetTotal(set.items)
-                  const rowCount = set.items.length
-
-                  return (
-                    <React.Fragment key={setIndex}>
-                      {set.items.map((item, itemIndex) => (
-                        <tr
-                          key={`${setIndex}-${itemIndex}`}
-                          className={`set-row ${itemIndex === 0 ? 'first-row' : ''} ${itemIndex === rowCount - 1 ? 'last-row' : ''}`}
-                          data-set-index={setIndex}
-                        >
-                          {itemIndex === 0 && (
-                            <td
-                              rowSpan={rowCount}
-                              className="set-name-cell"
-                            >
-                              <div className="set-name-content">
-                                <div onClick={() => toggleSet(set.setName)} style={{ cursor: 'pointer', flex: 1 }}>
-                                  <span className="set-name">{set.setName}</span>
-                                  <span className="set-total">
-                                    Tổng: {formatPrice(totalPrice)}
-                                  </span>
-                                  <svg
-                                    className={`expand-icon ${isExpanded ? 'expanded' : ''}`}
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                  >
-                                    <polyline points="6 9 12 15 18 9" />
-                                  </svg>
-                                </div>
-                                {isAdmin && (
-                                  <div className="set-actions">
-                                    <button
-                                      className="btn-edit-small"
-                                      onClick={() => handleEditSet(setIndex)}
-                                      title="Sửa set"
-                                    >
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                      </svg>
-                                    </button>
-                                    <button
-                                      className="btn-delete-small"
-                                      onClick={() => handleDeleteSet(setIndex)}
-                                      title="Xóa set"
-                                    >
-                                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <polyline points="3 6 5 6 21 6" />
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                      </svg>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            </td>
-                          )}
-                          <td className="product-cell">
-                            {item.product}
-                            {isAdmin && (
-                              <div className="item-actions">
-                                <button
-                                  className="btn-edit-item"
-                                  onClick={() => handleEditItem(setIndex, itemIndex)}
-                                  title="Sửa"
-                                >
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                  </svg>
-                                </button>
-                                <button
-                                  className="btn-delete-item"
-                                  onClick={() => handleDeleteItem(setIndex, itemIndex)}
-                                  title="Xóa"
-                                >
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="14" height="14">
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                  </svg>
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                          <td className="quantity-cell">{item.quantity}</td>
-                          <td className="price-cell">{formatPrice(item.price)}</td>
-                          {isAdmin && itemIndex === 0 && (
-                            <td rowSpan={rowCount} className="add-item-cell">
-                              <button
-                                className="btn-add-item"
-                                onClick={() => handleAddItem(setIndex)}
-                                title="Thêm thành phần"
-                              >
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                  <path d="M12 5v14M5 12h14" />
-                                </svg>
-                              </button>
-                            </td>
-                          )}
-                        </tr>
-                      ))}
-                    </React.Fragment>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-          )}
-
-          {/* Summary Section */}
-          {!loading && !error && (
-          <div className="menu-summary">
-            <h2>Tổng quan</h2>
-            <div className="summary-grid">
-              {menuData.map((set, index) => {
-                const total = calculateSetTotal(set.items)
+            <div className="menu-sets-grid">
+              {menuData.map((set, setIndex) => {
+                const isExpanded = expandedSets.has(set.setName)
+                const totalPrice = calculateSetTotal(set.items)
+                
                 return (
-                  <div key={index} className="summary-card">
-                    <h3>{set.setName}</h3>
-                    <p className="summary-price">{formatPrice(total)}</p>
-                    <p className="summary-items">{set.items.length} thành phần</p>
-                  </div>
+                  <motion.div
+                    key={setIndex}
+                    className="menu-set-card"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: setIndex * 0.1, duration: 0.5 }}
+                  >
+                    {/* Set Header */}
+                    <div className="set-card-header">
+                      <div className="set-header-content">
+                        <h3 className="set-card-title">{set.setName}</h3>
+                        <div className="set-card-meta">
+                          <span className="set-item-count">{set.items.length} thành phần</span>
+                          <span className="set-divider">•</span>
+                          <span className="set-total-price">{formatPrice(totalPrice)}</span>
+                        </div>
+                      </div>
+                      {isAdmin && (
+                        <div className="set-header-actions">
+                          <button
+                            className="btn-icon"
+                            onClick={() => handleEditSet(setIndex)}
+                            title="Sửa set"
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                            </svg>
+                          </button>
+                          <button
+                            className="btn-icon btn-icon-danger"
+                            onClick={() => handleDeleteSet(setIndex)}
+                            title="Xóa set"
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            </svg>
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Items List */}
+                    <div className={`set-items-container ${set.items.length > 3 && !isExpanded ? 'collapsed' : ''}`}>
+                      <div className="set-items-list">
+                        {set.items.map((item, itemIndex) => {
+                          // Show first 3 items when collapsed, all when expanded
+                          if (set.items.length > 3 && !isExpanded && itemIndex >= 3) {
+                            return null
+                          }
+                          
+                          return (
+                            <motion.div
+                              key={itemIndex}
+                              className="menu-item-row"
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: itemIndex * 0.05 }}
+                            >
+                              <div className="item-info">
+                                <div className="item-product">
+                                  <span className="item-name">{item.product}</span>
+                                  {isAdmin && (
+                                    <div className="item-actions-inline">
+                                      <button
+                                        className="btn-icon-small"
+                                        onClick={() => handleEditItem(setIndex, itemIndex)}
+                                        title="Sửa"
+                                      >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                        </svg>
+                                      </button>
+                                      <button
+                                        className="btn-icon-small btn-icon-danger"
+                                        onClick={() => handleDeleteItem(setIndex, itemIndex)}
+                                        title="Xóa"
+                                      >
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                                          <polyline points="3 6 5 6 21 6" />
+                                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="item-details">
+                                  <span className="item-quantity">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
+                                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                                    </svg>
+                                    {item.quantity}
+                                  </span>
+                                  <span className="item-price">{formatPrice(item.price)}</span>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )
+                        })}
+                      </div>
+                      
+                      {isAdmin && (
+                        <button
+                          className="btn-add-item-to-set"
+                          onClick={() => handleAddItem(setIndex)}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M12 5v14M5 12h14" />
+                          </svg>
+                          Thêm thành phần
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Expand/Collapse Button */}
+                    {set.items.length > 3 && (
+                      <button
+                        className="btn-expand-set"
+                        onClick={() => toggleSet(set.setName)}
+                      >
+                        <span>{isExpanded ? 'Thu gọn' : `Xem thêm ${set.items.length - 3} thành phần`}</span>
+                        <svg
+                          className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+                    )}
+                  </motion.div>
                 )
               })}
             </div>
-          </div>
           )}
         </div>
       </section>
