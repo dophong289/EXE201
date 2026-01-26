@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/upload")
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
+
 public class FileController {
     
     private final CloudinaryService cloudinaryService;

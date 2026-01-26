@@ -13,7 +13,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product-categories")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
+
 public class ProductCategoryController {
     
     private final ProductCategoryService productCategoryService;
