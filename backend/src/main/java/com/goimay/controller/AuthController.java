@@ -39,6 +39,16 @@ public class AuthController {
         }
     }
     
+    @PostMapping("/google")
+    public ResponseEntity<?> loginWithGoogle(@Valid @RequestBody com.goimay.dto.GoogleLoginRequest request) {
+        try {
+            AuthResponse response = authService.loginWithGoogle(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+    
     @GetMapping("/check")
     public ResponseEntity<?> checkAuth() {
         return ResponseEntity.ok(Map.of("message", "Authenticated"));

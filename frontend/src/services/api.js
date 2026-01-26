@@ -159,6 +159,7 @@ export const cachedApiCall = async (apiCall, cacheKey, ttl = 5 * 60 * 1000) => {
 export const authApi = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
+  loginWithGoogle: (idToken) => api.post('/auth/google', { idToken }),
   checkAuth: () => api.get('/auth/check'),
 }
 

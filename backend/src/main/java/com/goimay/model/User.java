@@ -35,6 +35,10 @@ public class User implements UserDetails {
     
     private String address;
     
+    private String googleId;
+    
+    private String provider; // "local" or "google"
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;
