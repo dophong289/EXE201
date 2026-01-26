@@ -1,10 +1,10 @@
-/* ChatBox Component - Hình tròn ở góc trái dưới */
+/* ChatBox Component - Hình tròn ở góc phải dưới, có thể kéo thả */
 
 /* Chat Toggle Button - Hình tròn */
 .chat-toggle-button {
   position: fixed;
   bottom: 2rem;
-  left: 2rem;
+  right: 2rem;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -18,6 +18,7 @@
   box-shadow: 0 4px 20px rgba(122, 46, 46, 0.4);
   z-index: 1000;
   transition: all 0.3s;
+  user-select: none;
 }
 
 .chat-toggle-button:hover {
@@ -52,8 +53,6 @@
 /* Chat Window */
 .chat-window {
   position: fixed;
-  bottom: 2rem;
-  left: 2rem;
   width: 380px;
   max-width: calc(100vw - 4rem);
   height: 600px;
@@ -65,6 +64,7 @@
   flex-direction: column;
   z-index: 999;
   overflow: hidden;
+  user-select: none;
 }
 
 /* Chat Header */
@@ -73,6 +73,12 @@
   color: var(--color-white);
   padding: 1.25rem 1.5rem;
   border-radius: 16px 16px 0 0;
+  cursor: grab;
+  user-select: none;
+}
+
+.chat-header:active {
+  cursor: grabbing;
 }
 
 .chat-header-info {
@@ -311,7 +317,7 @@
     width: 56px;
     height: 56px;
     bottom: 1.5rem;
-    left: 1.5rem;
+    right: 1.5rem;
   }
 
   .chat-toggle-button svg {
@@ -323,8 +329,6 @@
     width: calc(100vw - 2rem);
     height: calc(100vh - 2rem);
     max-height: calc(100vh - 2rem);
-    bottom: 1rem;
-    left: 1rem;
     border-radius: 12px;
   }
 
@@ -338,13 +342,11 @@
     width: 52px;
     height: 52px;
     bottom: 1rem;
-    left: 1rem;
+    right: 1rem;
   }
 
   .chat-window {
     width: calc(100vw - 1rem);
     height: calc(100vh - 1rem);
-    bottom: 0.5rem;
-    left: 0.5rem;
   }
 }

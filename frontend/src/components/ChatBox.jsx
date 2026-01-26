@@ -14,13 +14,121 @@ function ChatBox() {
   const [inputValue, setInputValue] = useState('')
   const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState([])
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const chatWindowRef = useRef(null)
+  const buttonRef = useRef(null)
 
   useEffect(() => {
     // Load products để AI có thể tham khảo
     loadProducts()
+    
+    // Load saved position từ localStorage hoặc set default (góc phải dưới)
+    const savedPosition = localStorage.getItem('chatbox_position')
+    if (savedPosition) {
+      try {
+        const pos = JSON.parse(savedPosition)
+        // Validate position vẫn trong viewport
+        const maxX = window.innerWidth - 380
+        const maxY = window.innerHeight - 600
+        setPosition({
+          x: Math.max(0, Math.min(pos.x, maxX)),
+          y: Math.max(0, Math.min(pos.y, maxY))
+        })
+      } catch (e) {
+        console.error('Error loading chatbox position:', e)
+        // Default: góc phải dưới
+        setPosition({ 
+          x: Math.max(0, window.innerWidth - 400), 
+          y: Math.max(0, window.innerHeight - 650)
+        })
+      }
+    } else {
+      // Default: góc phải dưới
+      setPosition({ 
+        x: Math.max(0, window.innerWidth - 400), 
+        y: Math.max(0, window.innerHeight - 650)
+      })
+    }
+
+    // Handle window resize để giữ chatbox trong viewport
+    const handleResize = () => {
+      setPosition(prev => {
+        const maxX = window.innerWidth - 380
+        const maxY = window.innerHeight - 600
+        return {
+          x: Math.max(0, Math.min(prev.x, maxX)),
+          y: Math.max(0, Math.min(prev.y, maxY))
+        }
+      })
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    // Save position to localStorage khi thay đổi
+    if (position.x !== 0 || position.y !== 0) {
+      localStorage.setItem('chatbox_position', JSON.stringify(position))
+    }
+  }, [position])
+
+  // Handle drag
+  const handleMouseDown = (e) => {
+    // Chỉ drag khi click vào header, không phải các element con
+    if (e.target.closest('.chat-header') && !e.target.closest('button') && !e.target.closest('input')) {
+      setIsDragging(true)
+      const rect = chatWindowRef.current?.getBoundingClientRect()
+      if (rect) {
+        setDragStart({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        })
+      }
+      e.preventDefault()
+    }
+  }
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging || !chatWindowRef.current) return
+      
+      const rect = chatWindowRef.current.getBoundingClientRect()
+      const newX = e.clientX - dragStart.x
+      const newY = e.clientY - dragStart.y
+      
+      // Giới hạn trong viewport
+      const maxX = window.innerWidth - rect.width
+      const maxY = window.innerHeight - rect.height
+      
+      setPosition({
+        x: Math.max(0, Math.min(newX, maxX)),
+        y: Math.max(0, Math.min(newY, maxY))
+      })
+    }
+
+    const handleMouseUp = () => {
+      setIsDragging(false)
+    }
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.body.style.userSelect = 'none'
+      document.body.style.cursor = 'grabbing'
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.body.style.userSelect = ''
+      document.body.style.cursor = ''
+    }
+  }, [isDragging, dragStart])
 
   useEffect(() => {
     // Auto scroll to bottom khi có message mới
@@ -89,8 +197,9 @@ function ChatBox() {
 
   return (
     <>
-      {/* Chat Button - Hình tròn ở góc trái dưới */}
+      {/* Chat Button - Hình tròn ở góc phải dưới */}
       <motion.button
+        ref={buttonRef}
         className={`chat-toggle-button ${isOpen ? 'open' : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         initial={false}
@@ -123,14 +232,30 @@ function ChatBox() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            ref={chatWindowRef}
             className="chat-window"
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              x: position.x,
+              y: position.y
+            }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            style={{
+              position: 'fixed',
+              left: `${position.x}px`,
+              top: `${position.y}px`,
+              cursor: isDragging ? 'grabbing' : 'default'
+            }}
           >
             {/* Chat Header */}
-            <div className="chat-header">
+            <div 
+              className="chat-header"
+              onMouseDown={handleMouseDown}
+              style={{ cursor: 'grab' }}
+            >
               <div className="chat-header-info">
                 <div className="chat-avatar">🤖</div>
                 <div>
