@@ -123,30 +123,38 @@ public class ChatService {
 
     private String processRuleBasedMessage(String userMessage, List<ChatRequest.ProductInfo> products) {
         String message = userMessage.toLowerCase().trim();
-        
+        Double budget = extractBudget(message); // Ưu tiên tìm ngân sách
+
         // 1. Nếu hỏi về liên hệ
         if (message.contains("liên hệ") || message.contains("hotline") || message.contains("điện thoại") || message.contains("địa chỉ")) {
             return getContactInfo();
         }
 
         // 2. Logic "Tư vấn" (Giả lập AI)
-        if (message.contains("tư vấn") || message.contains("gợi ý") || message.contains("mua quà")) {
-            // Thử tìm ngân sách trong câu hỏi (vd: 500k, 700k)
-            Double budget = extractBudget(message);
+        // Kích hoạt nếu: Có ngân sách HOẶC có từ khóa (tư vấn, gợi ý, mua, tìm, cần, thích...)
+        if (budget != null || 
+            message.contains("tư vấn") || message.contains("gợi ý") || 
+            message.contains("mua") || message.contains("tìm") || 
+            message.contains("cần") || message.contains("chọn")) {
+            
             List<ChatRequest.ProductInfo> suitableProducts = filterProductsByBudget(products, budget);
 
             if (suitableProducts.isEmpty()) {
-                return "Chào bạn, mình là trợ lý Gói Mây.\n" +
-                       "Hiện tại mình chưa tìm thấy set quà phù hợp với mức giá bạn yêu cầu trong danh sách. " +
-                       "Bạn có thể tham khảo các set quà khác tại website hoặc liên hệ hotline 098 552 39 82 để được hỗ trợ riêng nhé!";
+                // Nếu có budget mà ko tìm thấy
+                if (budget != null) {
+                    return "Chào bạn, với ngân sách " + formatPrice(budget) + ", hiện tại mình chưa tìm thấy set quà nào khớp hoàn toàn." +
+                           "\nBạn có thể tham khảo thêm trên website hoặc nhắn tin riêng để mình hỗ trợ nhé!";
+                }
+                // Nếu ko có budget -> giới thiệu chung 3 sp đầu
+                suitableProducts = products.stream().limit(3).collect(Collectors.toList());
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Chào bạn, mình hiểu bạn đang cần tìm quà Tết. ");
+            sb.append("Chào bạn, mình hiểu bạn đang quan tâm đến quà Tết. ");
             if (budget != null) {
                 sb.append("Với ngân sách khoảng ").append(formatPrice(budget)).append(", ");
             }
-            sb.append("mình xin gợi ý vài lựa chọn:\n\n");
+            sb.append("mình xin gợi ý vài lựa chọn nổi bật:\n\n");
 
             for (ChatRequest.ProductInfo p : suitableProducts) {
                 sb.append("🎁 **").append(p.getName()).append("** - ").append(formatPrice(p.getSalePrice() != null ? p.getSalePrice() : p.getPrice())).append("\n");
@@ -154,23 +162,29 @@ public class ChatService {
             }
 
             sb.append("\n• **Phù hợp**: Biếu tặng gia đình, đối tác.\n");
-            sb.append("• **Điểm nhấn**: Mây tre đan thủ công & đặc sản tự nhiên.\n\n");
-            sb.append("Bạn thấy set nào ưng ý nhất ạ?");
+            sb.append("• **Hỗ trợ**: Freeship đơn >500k, đóng gói cẩn thận.\n\n");
+            sb.append("Bạn ưng ý set nào chưa ạ?");
             
             return sb.toString();
         }
 
         // 3. Các logic cũ khác (Ship, Chính sách...)
-        if (message.contains("ship") || message.contains("giao hàng")) {
+        if (message.contains("ship") || message.contains("giao hàng") || message.contains("vận chuyển")) {
             return "Bên mình ship nội thành 30-50k, tỉnh 50-100k. Freeship đơn trên 500k. Bạn cần giao đi đâu ạ?";
         }
 
-        // Logic cũ (nếu hỏi sản phẩm chung chung)
+        // Logic cũ (nếu hỏi sản phẩm chung chung nhưng ko khớp keywords trên)
         if (message.contains("sản phẩm") || message.contains("set quà")) {
              return getProductsInfo(products);
         }
 
-        return "Chào bạn, mình là trợ lý Gói Mây. Bạn cần tư vấn set quà Tết, thông tin giá cả hay chính sách giao hàng ạ?"; 
+        // Catch-all: Hướng dẫn người dùng các mẫu câu có thể hiểu được
+        return "Mình chưa hiểu rõ ý bạn lắm (mình đang học việc mà 😅).\n\n" +
+               "Bạn thử hỏi ngắn gọn giúp mình nha, ví dụ:\n" +
+               "👉 \"Tư vấn set 500k\"\n" +
+               "👉 \"Phí ship thế nào\"\n" +
+               "👉 \"Cho xin hotline\"\n\n" +
+               "Hoặc bạn cần gặp nhân viên tư vấn trực tiếp thì nhắn \"Liên hệ\" nhé!";
     }
 
     private Double extractBudget(String message) {
