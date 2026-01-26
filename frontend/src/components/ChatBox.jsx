@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { chatApi, productApi } from '../services/api'
+import ImageWithFallback from './ImageWithFallback'
 import '../styles/components/ChatBox.css'
 
 function ChatBox() {
@@ -127,7 +128,18 @@ function ChatBox() {
             {/* Chat Header */}
             <div className="chat-header">
               <div className="chat-header-info">
-                <div className="chat-avatar">🤖</div>
+                <div className="chat-avatar">
+                  <ImageWithFallback
+                    src="/Logo-Gói-Mây.png"
+                    alt="Gói Mây"
+                    className="chat-avatar-image"
+                    onError={(e) => {
+                      // Nếu logo lỗi, fallback về emoji để không trống
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                  <span className="chat-avatar-fallback">GM</span>
+                </div>
                 <div>
                   <h3>Trợ lý Gói Mây</h3>
                   <p>Đang trực tuyến</p>
