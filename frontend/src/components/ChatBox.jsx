@@ -101,11 +101,15 @@ function ChatBox() {
           whileTap={{ scale: 0.95 }}
           aria-label="Mở chat"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            <line x1="9" y1="10" x2="15" y2="10"/>
-            <line x1="12" y1="7" x2="12" y2="13"/>
-          </svg>
+          <ImageWithFallback
+            src="/Logo-Gói-Mây.png"
+            alt="Gói Mây"
+            className="chat-toggle-logo"
+            onError={(e) => {
+              // Nếu logo lỗi, ẩn ảnh để tránh icon lỗi
+              e.currentTarget.style.display = 'none'
+            }}
+          />
           {messages.length > 1 && (
             <span className="chat-notification-badge">{messages.length - 1}</span>
           )}
@@ -134,11 +138,10 @@ function ChatBox() {
                     alt="Gói Mây"
                     className="chat-avatar-image"
                     onError={(e) => {
-                      // Nếu logo lỗi, fallback về emoji để không trống
+                      // Nếu logo lỗi, ẩn ảnh để tránh icon lỗi
                       e.currentTarget.style.display = 'none'
                     }}
                   />
-                  <span className="chat-avatar-fallback">GM</span>
                 </div>
                 <div>
                   <h3>Trợ lý Gói Mây</h3>
