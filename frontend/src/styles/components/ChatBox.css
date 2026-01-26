@@ -1,6 +1,6 @@
 /* ChatBox Component - Hình tròn ở góc phải dưới, có thể kéo thả */
 
-/* Chat Toggle Button - Hình tròn */
+/* Chat Toggle Button - Hình tròn có thể di chuyển */
 .chat-toggle-button {
   position: fixed;
   bottom: 2rem;
@@ -11,7 +11,7 @@
   background: #7A2E2E;
   color: var(--color-white);
   border: none;
-  cursor: pointer;
+  cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +19,16 @@
   z-index: 1000;
   transition: all 0.3s;
   user-select: none;
+  touch-action: none;
+}
+
+.chat-toggle-button.dragging {
+  cursor: grabbing;
+  box-shadow: 0 8px 30px rgba(122, 46, 46, 0.6);
+}
+
+.chat-toggle-button.open {
+  cursor: pointer;
 }
 
 .chat-toggle-button:hover {
@@ -73,12 +83,7 @@
   color: var(--color-white);
   padding: 1.25rem 1.5rem;
   border-radius: 16px 16px 0 0;
-  cursor: grab;
   user-select: none;
-}
-
-.chat-header:active {
-  cursor: grabbing;
 }
 
 .chat-header-info {
