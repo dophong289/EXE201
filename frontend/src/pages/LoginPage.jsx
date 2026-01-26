@@ -74,31 +74,39 @@ function LoginPage() {
     // Wait for Google Sign-In API to load
     const initGoogleSignIn = () => {
       if (window.google && window.google.accounts) {
-        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '418375020384-9vvrvl88876fnl0dibbb1refqomc53gd.apps.googleusercontent.com'
         if (!clientId) {
           console.warn('Google Client ID chưa được cấu hình. Vui lòng thêm VITE_GOOGLE_CLIENT_ID vào file .env')
           return
         }
 
-        window.google.accounts.id.initialize({
-          client_id: clientId,
-          callback: (response) => {
-            if (response.credential) {
-              handleGoogleLogin(response.credential)
-            }
-          },
-        })
-
-        // Render Google Sign-In button
-        const buttonElement = document.getElementById('google-signin-button')
-        if (buttonElement) {
-          window.google.accounts.id.renderButton(buttonElement, {
-            theme: 'outline',
-            size: 'large',
-            width: '100%',
-            text: 'signin_with',
-            locale: 'vi'
+        try {
+          window.google.accounts.id.initialize({
+            client_id: clientId,
+            callback: (response) => {
+              if (response.credential) {
+                handleGoogleLogin(response.credential)
+              }
+            },
+            use_fedcm_for_prompt: true,
           })
+
+          // Render Google Sign-In button
+          const buttonElement = document.getElementById('google-signin-button')
+          if (buttonElement) {
+            // Clear any existing content
+            buttonElement.innerHTML = ''
+            window.google.accounts.id.renderButton(buttonElement, {
+              theme: 'outline',
+              size: 'large',
+              width: '100%',
+              text: 'signin_with',
+              locale: 'vi',
+              type: 'standard'
+            })
+          }
+        } catch (error) {
+          console.error('Lỗi khởi tạo Google Sign-In:', error)
         }
       }
     }
@@ -122,6 +130,18 @@ function LoginPage() {
           console.error('Không thể tải Google Sign-In API')
         }
       }, 5000)
+    }
+
+    // Cleanup
+    return () => {
+      const buttonElement = document.getElementById('google-signin-button')
+      if (buttonElement && window.google && window.google.accounts) {
+        try {
+          window.google.accounts.id.cancel()
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+      }
     }
   }, [])
 
