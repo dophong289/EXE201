@@ -369,6 +369,23 @@ export const productApi = {
     api.delete(`/products/${id}`),
 }
 
+// Chat API
+export const chatApi = {
+  sendMessage: (message, products = []) => {
+    return api.post('/chat', {
+      message,
+      products: products.map(p => ({
+        id: p.id,
+        name: p.name,
+        description: p.description,
+        price: p.price,
+        salePrice: p.salePrice,
+        category: p.productCategory
+      }))
+    })
+  },
+}
+
 // Menu API
 export const menuApi = {
   getAll: () => 

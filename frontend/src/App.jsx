@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ChatBox from './components/ChatBox'
 import HomePage from './pages/HomePage'
 import ArticlesPage from './pages/ArticlesPage'
 import ArticleDetailPage from './pages/ArticleDetailPage'
@@ -53,6 +54,7 @@ function App() {
         </Routes>
       </main>
       {!isAuthPage && <Footer />}
+      {!isAuthPage && <ChatBox />}
     </div>
   )
 }

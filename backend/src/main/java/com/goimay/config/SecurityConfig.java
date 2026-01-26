@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 "/api/site-settings/**",
                                 "/api/upload/**",
                                 "/api/menu/**",
+                                "/api/chat/**",
                                 "/h2-console/**"
                         ).permitAll()
                         .anyRequest().authenticated()
