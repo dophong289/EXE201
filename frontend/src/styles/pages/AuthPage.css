@@ -45,7 +45,7 @@
   gap: 1rem;
   margin-bottom: 2.5rem;
   /* Dịch cụm logo + tên sang phải (tránh padding-left quá lớn gây lệch/mất logo) */
-  margin-left: 190px;
+  margin-left: 150px;
 }
 
 .brand-logo-image {
