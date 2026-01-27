@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,8 +20,10 @@ public class EmailService {
     @Value("${app.name:Gói Mây}")
     private String appName;
     
-    @Async
     public void sendPasswordResetOtp(String toEmail, String otp) {
+        log.info("Attempting to send OTP email to: {}", toEmail);
+        log.info("Using from email: {}", fromEmail);
+        
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
@@ -39,9 +40,10 @@ public class EmailService {
             );
             
             mailSender.send(message);
-            log.info("Password reset OTP sent to: {}", toEmail);
+            log.info("Password reset OTP sent successfully to: {}", toEmail);
         } catch (Exception e) {
-            log.error("Failed to send password reset email to {}: {}", toEmail, e.getMessage());
+            log.error("Failed to send password reset email to {}: {}", toEmail, e.getMessage(), e);
+            throw new RuntimeException("Không thể gửi email. Vui lòng thử lại sau.");
         }
     }
 }
