@@ -14,6 +14,8 @@ import AboutPage from './pages/AboutPage'
 import MenuPage from './pages/MenuPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import AdminProductsPage from './pages/AdminProductsPage'
 import AdminCategoriesPage from './pages/AdminCategoriesPage'
 import AdminSiteSettingsPage from './pages/AdminSiteSettingsPage'
@@ -24,7 +26,7 @@ import AdminOrdersPage from './pages/AdminOrdersPage'
 
 function App() {
   const location = useLocation()
-  const isAuthPage = ['/dang-nhap', '/dang-ky'].includes(location.pathname)
+  const isAuthPage = ['/dang-nhap', '/dang-ky', '/quen-mat-khau', '/dat-lai-mat-khau'].includes(location.pathname)
 
   return (
     <div className="app">
@@ -44,6 +46,8 @@ function App() {
           <Route path="/menu" element={<MenuPage />} />
           <Route path="/dang-nhap" element={<LoginPage />} />
           <Route path="/dang-ky" element={<RegisterPage />} />
+          <Route path="/quen-mat-khau" element={<ForgotPasswordPage />} />
+          <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage />} />
           <Route path="/tai-khoan" element={<AccountPage />} />
           <Route path="/don-hang" element={<OrdersPage />} />
           <Route path="/admin/don-hang" element={<AdminOrdersPage />} />

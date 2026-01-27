@@ -82,7 +82,7 @@ api.interceptors.response.use(
     const config = response.config
     if (config.method === 'get' && !config.skipCache && response.data) {
       const cacheKey = `${config.url}${config.params ? '?' + new URLSearchParams(config.params).toString() : ''}`
-      
+
       // Cache với TTL dài hơn cho offline support
       // Static data: 30 phút normal cache + 24h offline cache
       // Dynamic data: 5 phút normal cache + 24h offline cache
@@ -103,7 +103,7 @@ api.interceptors.response.use(
       if (config && config.method === 'get') {
         const cacheKey = `${config.url}${config.params ? '?' + new URLSearchParams(config.params).toString() : ''}`
         const cachedData = getCache(cacheKey, {}, true) // allowExpired = true
-        
+
         if (cachedData) {
           console.log('Using offline cache for', cacheKey)
           return Promise.resolve({
@@ -116,7 +116,7 @@ api.interceptors.response.use(
         }
       }
     }
-    
+
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
@@ -143,10 +143,10 @@ export const cachedApiCall = async (apiCall, cacheKey, ttl = 5 * 60 * 1000) => {
         // Ignore errors khi fetch background
       })
     }, 0)
-    
+
     return { data: cachedData }
   }
-  
+
   // Nếu không có cache, gọi API bình thường
   const response = await apiCall()
   if (response?.data) {
@@ -161,6 +161,9 @@ export const authApi = {
   login: (data) => api.post('/auth/login', data),
   loginWithGoogle: (idToken) => api.post('/auth/google', { idToken }),
   checkAuth: () => api.get('/auth/check'),
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  verifyResetOtp: (email, otp) => api.post('/auth/verify-reset-otp', { email, otp }),
+  resetPassword: (token, newPassword) => api.post('/auth/reset-password', { token, newPassword }),
 }
 
 // User API
@@ -213,141 +216,141 @@ export const uploadApi = {
 
 // Article API
 export const articleApi = {
-  getAll: (page = 0, size = 10) => 
+  getAll: (page = 0, size = 10) =>
     api.get(`/articles?page=${page}&size=${size}`),
-  
+
   getById: (id) =>
     api.get(`/articles/${id}`),
-  
-  getByCategory: (categorySlug, page = 0, size = 10) => 
+
+  getByCategory: (categorySlug, page = 0, size = 10) =>
     api.get(`/articles/category/${categorySlug}?page=${page}&size=${size}`),
-  
-  getBySlug: (slug) => 
+
+  getBySlug: (slug) =>
     api.get(`/articles/slug/${slug}`),
-  
-  getFeatured: () => 
+
+  getFeatured: () =>
     api.get('/articles/featured'),
-  
-  getLatest: (limit = 5) => 
+
+  getLatest: (limit = 5) =>
     api.get(`/articles/latest?limit=${limit}`),
-  
-  search: (keyword, page = 0, size = 10) => 
+
+  search: (keyword, page = 0, size = 10) =>
     api.get(`/articles/search?keyword=${keyword}&page=${page}&size=${size}`),
-  
+
   // Admin APIs
   create: (data) =>
     api.post('/articles', data),
-  
+
   update: (id, data) =>
     api.put(`/articles/${id}`, data),
-  
+
   delete: (id) =>
     api.delete(`/articles/${id}`),
 }
 
 // Category API (Article categories)
 export const categoryApi = {
-  getAll: () => 
+  getAll: () =>
     api.get('/categories'),
-  
+
   getById: (id) =>
     api.get(`/categories/${id}`),
-  
-  getBySlug: (slug) => 
+
+  getBySlug: (slug) =>
     api.get(`/categories/slug/${slug}`),
-  
+
   // Admin APIs
   create: (data) =>
     api.post('/categories', data),
-  
+
   update: (id, data) =>
     api.put(`/categories/${id}`, data),
-  
+
   delete: (id) =>
     api.delete(`/categories/${id}`),
 }
 
 // Product Category API
 export const productCategoryApi = {
-  getAll: () => 
+  getAll: () =>
     api.get('/product-categories'),
-  
+
   getActive: () =>
     api.get('/product-categories/active'),
-  
+
   getById: (id) =>
     api.get(`/product-categories/${id}`),
-  
-  getBySlug: (slug) => 
+
+  getBySlug: (slug) =>
     api.get(`/product-categories/slug/${slug}`),
-  
+
   // Admin APIs
   create: (data) =>
     api.post('/product-categories', data),
-  
+
   update: (id, data) =>
     api.put(`/product-categories/${id}`, data),
-  
+
   delete: (id) =>
     api.delete(`/product-categories/${id}`),
 }
 
 // Site Settings API
 export const siteSettingApi = {
-  getAll: () => 
+  getAll: () =>
     api.get('/site-settings'),
-  
+
   getMap: () =>
     api.get('/site-settings/map'),
-  
+
   getByCategory: (category) =>
     api.get(`/site-settings/category/${category}`),
-  
+
   getMapByCategory: (category) =>
     api.get(`/site-settings/category/${category}/map`),
-  
+
   getByKey: (key) =>
     api.get(`/site-settings/key/${key}`),
-  
+
   save: (data) =>
     api.post('/site-settings', data),
-  
+
   saveAll: (settings) =>
     api.post('/site-settings/bulk', settings),
-  
+
   saveBulk: (category, settings) =>
     api.post(`/site-settings/bulk/${category}`, settings),
-  
+
   initDefaults: () =>
     api.post('/site-settings/init'),
-  
+
   syncToCode: () =>
     api.post('/site-settings/admin/sync'),
-  
+
   syncAllToCode: () =>
     api.post('/site-settings/admin/sync-all'),
-  
+
   delete: (id) =>
     api.delete(`/site-settings/${id}`),
 }
 
 // Product API
 export const productApi = {
-  getAll: (page = 0, size = 12, includeInactive = false) => 
+  getAll: (page = 0, size = 12, includeInactive = false) =>
     api.get(`/products?page=${page}&size=${size}&includeInactive=${includeInactive}`),
-  
+
   getById: (id) =>
     api.get(`/products/${id}`),
-  
-  getByCategory: (category, page = 0, size = 12) => 
+
+  getByCategory: (category, page = 0, size = 12) =>
     api.get(`/products/category/${category}?page=${page}&size=${size}`),
-  
-  getBySlug: (slug) => 
+
+  getBySlug: (slug) =>
     api.get(`/products/slug/${slug}`),
-  
-  getSale: () => 
+
+  getSale: () =>
     api.get('/products/sale'),
-  
+
   search: (keyword, category = null, page = 0, size = 12) => {
     const params = new URLSearchParams({
       keyword: keyword ?? '',
@@ -357,14 +360,14 @@ export const productApi = {
     if (category) params.set('category', category)
     return api.get(`/products/search?${params.toString()}`)
   },
-  
+
   // Admin APIs
   create: (data) =>
     api.post('/products', data),
-  
+
   update: (id, data) =>
     api.put(`/products/${id}`, data),
-  
+
   delete: (id) =>
     api.delete(`/products/${id}`),
 }
@@ -388,27 +391,27 @@ export const chatApi = {
 
 // Menu API
 export const menuApi = {
-  getAll: () => 
+  getAll: () =>
     api.get('/menu'),
-  
+
   getById: (id) =>
     api.get(`/menu/${id}`),
-  
+
   create: (data) =>
     api.post('/menu', data),
-  
+
   update: (id, data) =>
     api.put(`/menu/${id}`, data),
-  
+
   delete: (id) =>
     api.delete(`/menu/${id}`),
-  
+
   addItem: (setId, item) =>
     api.post(`/menu/${setId}/items`, item),
-  
+
   updateItem: (itemId, item) =>
     api.put(`/menu/items/${itemId}`, item),
-  
+
   deleteItem: (itemId) =>
     api.delete(`/menu/items/${itemId}`),
 }

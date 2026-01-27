@@ -1,9 +1,8 @@
 package com.goimay.controller;
 
-import com.goimay.dto.AuthResponse;
-import com.goimay.dto.LoginRequest;
-import com.goimay.dto.RegisterRequest;
+import com.goimay.dto.*;
 import com.goimay.service.AuthService;
+import com.goimay.service.PasswordResetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import java.util.Map;
 public class AuthController {
     
     private final AuthService authService;
+    private final PasswordResetService passwordResetService;
     
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
@@ -40,7 +40,7 @@ public class AuthController {
     }
     
     @PostMapping("/google")
-    public ResponseEntity<?> loginWithGoogle(@Valid @RequestBody com.goimay.dto.GoogleLoginRequest request) {
+    public ResponseEntity<?> loginWithGoogle(@Valid @RequestBody GoogleLoginRequest request) {
         try {
             AuthResponse response = authService.loginWithGoogle(request);
             return ResponseEntity.ok(response);
@@ -52,5 +52,36 @@ public class AuthController {
     @GetMapping("/check")
     public ResponseEntity<?> checkAuth() {
         return ResponseEntity.ok(Map.of("message", "Authenticated"));
+    }
+    
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        try {
+            passwordResetService.sendPasswordResetOtp(request.getEmail());
+            // Always return success to not reveal if email exists
+            return ResponseEntity.ok(Map.of("message", "Nếu email tồn tại, mã xác minh đã được gửi"));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Map.of("message", "Nếu email tồn tại, mã xác minh đã được gửi"));
+        }
+    }
+    
+    @PostMapping("/verify-reset-otp")
+    public ResponseEntity<?> verifyResetOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        try {
+            String resetToken = passwordResetService.verifyOtp(request.getEmail(), request.getOtp());
+            return ResponseEntity.ok(Map.of("token", resetToken));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        try {
+            passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
+            return ResponseEntity.ok(Map.of("message", "Đặt lại mật khẩu thành công"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
     }
 }
