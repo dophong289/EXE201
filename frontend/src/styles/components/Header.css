@@ -280,6 +280,8 @@
   top: calc(100% + 0.5rem);
   right: 0;
   min-width: 260px;
+  max-width: 260px !important;
+  /* Override global max-width: 100% */
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: 12px;
@@ -546,6 +548,8 @@
   top: calc(100% + 10px);
   right: 0;
   width: 340px;
+  max-width: 340px !important;
+  /* Override global max-width: 100% */
   background: white;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
@@ -566,6 +570,8 @@
   font-size: 1rem;
   color: var(--color-text);
   margin: 0;
+  white-space: nowrap;
+  /* Prevent vertical text */
 }
 
 .close-favorites {
@@ -942,4 +948,3 @@
     padding: 0 3px;
   }
 }
-
