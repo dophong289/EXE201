@@ -45,7 +45,7 @@
   gap: 1rem;
   margin-bottom: 2.5rem;
   /* Dịch cụm logo + tên sang phải (tránh padding-left quá lớn gây lệch/mất logo) */
-  margin-left: 210px;
+  margin-left: 190px;
 }
 
 .brand-logo-image {
@@ -116,7 +116,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
+  background-image:
     radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 30%);
@@ -228,7 +228,7 @@
   box-shadow: 0 0 0 4px rgba(122, 46, 46, 0.1);
 }
 
-.input-wrapper input:focus + svg,
+.input-wrapper input:focus+svg,
 .input-wrapper:focus-within svg {
   color: #7A2E2E;
 }
@@ -278,12 +278,12 @@
   transition: all 0.3s;
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked + .checkmark {
+.checkbox-wrapper input[type="checkbox"]:checked+.checkmark {
   background: #7A2E2E;
   border-color: #7A2E2E;
 }
 
-.checkbox-wrapper input[type="checkbox"]:checked + .checkmark::after {
+.checkbox-wrapper input[type="checkbox"]:checked+.checkmark::after {
   content: '✓';
   color: var(--color-white);
   font-size: 12px;
@@ -529,9 +529,11 @@
   0% {
     box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 10px rgba(72, 187, 120, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(72, 187, 120, 0);
   }

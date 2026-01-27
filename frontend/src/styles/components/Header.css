@@ -84,6 +84,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
+  margin-left: -20px;
 }
 
 .brand-logo {
