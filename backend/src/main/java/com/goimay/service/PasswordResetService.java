@@ -5,6 +5,7 @@ import com.goimay.model.User;
 import com.goimay.repository.PasswordResetTokenRepository;
 import com.goimay.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PasswordResetService {
     
     private final UserRepository userRepository;
@@ -27,20 +29,26 @@ public class PasswordResetService {
     
     @Transactional
     public void sendPasswordResetOtp(String email) {
+        log.info("=== Password reset requested for email: {} ===", email);
+        
         // Check if user exists
         User user = userRepository.findByEmail(email).orElse(null);
         
-        // Don't reveal if email exists for security
         if (user == null) {
+            log.warn("User NOT FOUND in database for email: {}", email);
             return;
         }
         
+        log.info("User FOUND in database: {} (id={})", user.getEmail(), user.getId());
+        
         // Delete any existing tokens for this email
         tokenRepository.deleteByEmail(email);
+        log.info("Deleted existing tokens for email: {}", email);
         
         // Generate OTP
         String otp = generateOtp();
         String resetToken = UUID.randomUUID().toString();
+        log.info("Generated OTP: {} for email: {}", otp, email);
         
         // Save token
         PasswordResetToken token = PasswordResetToken.builder()
@@ -52,9 +60,12 @@ public class PasswordResetService {
                 .build();
         
         tokenRepository.save(token);
+        log.info("Token saved to database for email: {}", email);
         
         // Send email
+        log.info("Calling EmailService to send OTP...");
         emailService.sendPasswordResetOtp(email, otp);
+        log.info("EmailService call completed for email: {}", email);
     }
     
     @Transactional
