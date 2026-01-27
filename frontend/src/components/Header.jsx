@@ -111,19 +111,18 @@ function Header() {
   }
 
   const navItems = [
+    { path: '/ve-goi-may', label: 'Trang Chủ' },
     { path: '/san-pham', label: 'Sản Phẩm' },
     { path: '/khuyen-mai', label: 'Ưu đãi' },
-    { path: '/menu', label: 'Menu' },
-    { path: '/ve-goi-may', label: 'Gói Mây' },
     { path: '/bai-viet', label: 'Câu chuyện' },
   ]
 
   return (
     <header className="header">
-      
+
       <nav className="header-main">
         <div className="header-container">
-          <button 
+          <button
             className="menu-toggle"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menu"
@@ -147,7 +146,7 @@ function Header() {
           <ul className="nav-menu desktop-menu">
             {navItems.map((item) => (
               <li key={item.path}>
-                <NavLink 
+                <NavLink
                   to={item.path}
                   className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
                 >
@@ -158,7 +157,7 @@ function Header() {
           </ul>
 
           <div className="header-actions">
-            <button 
+            <button
               className="icon-btn search-btn"
               onClick={() => {
                 setShowFavorites(false)
@@ -168,18 +167,18 @@ function Header() {
               aria-label="Tìm kiếm"
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="M21 21l-4.35-4.35"/>
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
               </svg>
             </button>
             <div className="favorites-container">
-              <button 
-                className="icon-btn favorites-btn" 
+              <button
+                className="icon-btn favorites-btn"
                 aria-label="Yêu thích"
                 onClick={handleFavoritesClick}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                 </svg>
                 {user && favoriteCount > 0 && (
                   <span className="favorites-count">{favoriteCount}</span>
@@ -188,7 +187,7 @@ function Header() {
 
               <AnimatePresence>
                 {showFavorites && user && (
-                  <motion.div 
+                  <motion.div
                     className="favorites-dropdown"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -198,15 +197,15 @@ function Header() {
                       <h4>Sản phẩm yêu thích</h4>
                       <button className="close-favorites" onClick={() => setShowFavorites(false)}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <line x1="18" y1="6" x2="6" y2="18"/>
-                          <line x1="6" y1="6" x2="18" y2="18"/>
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
                         </svg>
                       </button>
                     </div>
                     {favorites.length === 0 ? (
                       <div className="favorites-empty">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                         </svg>
                         <p>Chưa có sản phẩm yêu thích</p>
                         <Link to="/san-pham" onClick={() => setShowFavorites(false)}>
@@ -217,8 +216,8 @@ function Header() {
                       <>
                         <div className="favorites-list">
                           {favorites.slice(0, 5).map((product) => (
-                            <Link 
-                              key={product.id} 
+                            <Link
+                              key={product.id}
                               to={`/san-pham/${product.slug}`}
                               className="favorite-item"
                               onClick={() => setShowFavorites(false)}
@@ -229,9 +228,9 @@ function Header() {
                                 ) : (
                                   <div className="no-thumb">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                      <circle cx="8.5" cy="8.5" r="1.5"/>
-                                      <polyline points="21 15 16 10 5 21"/>
+                                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                      <circle cx="8.5" cy="8.5" r="1.5" />
+                                      <polyline points="21 15 16 10 5 21" />
                                     </svg>
                                   </div>
                                 )}
@@ -242,22 +241,22 @@ function Header() {
                                   {product.salePrice ? formatPrice(product.salePrice) : formatPrice(product.price)}
                                 </span>
                               </div>
-                              <button 
+                              <button
                                 className="remove-favorite"
                                 onClick={(e) => removeFavorite(product.id, e)}
                                 title="Xóa khỏi yêu thích"
                               >
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                  <line x1="18" y1="6" x2="6" y2="18"/>
-                                  <line x1="6" y1="6" x2="18" y2="18"/>
+                                  <line x1="18" y1="6" x2="6" y2="18" />
+                                  <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                               </button>
                             </Link>
                           ))}
                         </div>
                         {favorites.length > 5 && (
-                          <Link 
-                            to="/yeu-thich" 
+                          <Link
+                            to="/yeu-thich"
                             className="view-all-favorites"
                             onClick={() => setShowFavorites(false)}
                           >
@@ -273,18 +272,18 @@ function Header() {
 
             <div className="cart-container">
               <button className="icon-btn cart-btn" aria-label="Giỏ hàng" onClick={handleCartClick}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                <line x1="3" y1="6" x2="21" y2="6"/>
-                <path d="M16 10a4 4 0 01-8 0"/>
-              </svg>
-            </button>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 01-8 0" />
+                </svg>
+              </button>
               {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
             </div>
-            
+
             {user ? (
               <div className="user-menu-container">
-                <button 
+                <button
                   className="user-btn"
                   onClick={() => setShowUserMenu(!showUserMenu)}
                 >
@@ -293,13 +292,13 @@ function Header() {
                   </div>
                   <span className="user-name">{user.fullName?.split(' ').pop()}</span>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="chevron">
-                    <polyline points="6 9 12 15 18 9"/>
+                    <polyline points="6 9 12 15 18 9" />
                   </svg>
                 </button>
-                
+
                 <AnimatePresence>
                   {showUserMenu && (
-                    <motion.div 
+                    <motion.div
                       className="user-dropdown"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -317,16 +316,16 @@ function Header() {
                       <div className="dropdown-divider"></div>
                       <Link to="/tai-khoan" className="dropdown-item" onClick={() => setShowUserMenu(false)}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-                          <circle cx="12" cy="7" r="4"/>
+                          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                          <circle cx="12" cy="7" r="4" />
                         </svg>
                         Tài khoản của tôi
                       </Link>
                       <Link to="/don-hang" className="dropdown-item" onClick={() => setShowUserMenu(false)}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                          <line x1="3" y1="6" x2="21" y2="6"/>
-                          <path d="M16 10a4 4 0 01-8 0"/>
+                          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                          <line x1="3" y1="6" x2="21" y2="6" />
+                          <path d="M16 10a4 4 0 01-8 0" />
                         </svg>
                         Đơn hàng
                       </Link>
@@ -335,41 +334,41 @@ function Header() {
                           <div className="dropdown-divider"></div>
                           <Link to="/admin/don-hang" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                              <polyline points="14 2 14 8 20 8"/>
-                              <line x1="16" y1="13" x2="8" y2="13"/>
-                              <line x1="16" y1="17" x2="8" y2="17"/>
+                              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                              <polyline points="14 2 14 8 20 8" />
+                              <line x1="16" y1="13" x2="8" y2="13" />
+                              <line x1="16" y1="17" x2="8" y2="17" />
                             </svg>
                             Quản lý đơn hàng
                           </Link>
                           <Link to="/admin/san-pham" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                              <path d="M2 17l10 5 10-5"/>
-                              <path d="M2 12l10 5 10-5"/>
+                              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                              <path d="M2 17l10 5 10-5" />
+                              <path d="M2 12l10 5 10-5" />
                             </svg>
                             Quản lý sản phẩm
                           </Link>
                           <Link to="/admin/bai-viet" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                              <polyline points="14 2 14 8 20 8"/>
-                              <line x1="16" y1="13" x2="8" y2="13"/>
-                              <line x1="16" y1="17" x2="8" y2="17"/>
+                              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                              <polyline points="14 2 14 8 20 8" />
+                              <line x1="16" y1="13" x2="8" y2="13" />
+                              <line x1="16" y1="17" x2="8" y2="17" />
                             </svg>
                             Quản lý bài viết
                           </Link>
                           <Link to="/admin/danh-muc" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                              <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                             </svg>
                             Quản lý danh mục
                           </Link>
                           <Link to="/admin/hinh-anh" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="8.5" cy="8.5" r="1.5"/>
-                              <polyline points="21 15 16 10 5 21"/>
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <polyline points="21 15 16 10 5 21" />
                             </svg>
                             Quản lý hình ảnh
                           </Link>
@@ -378,9 +377,9 @@ function Header() {
                       <div className="dropdown-divider"></div>
                       <button className="dropdown-item logout" onClick={handleLogout}>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-                          <polyline points="16 17 21 12 16 7"/>
-                          <line x1="21" y1="12" x2="9" y2="12"/>
+                          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                          <polyline points="16 17 21 12 16 7" />
+                          <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
                         Đăng xuất
                       </button>
@@ -400,7 +399,7 @@ function Header() {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div 
+          <motion.div
             className="mobile-menu"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -410,7 +409,7 @@ function Header() {
             <ul>
               {navItems.map((item) => (
                 <li key={item.path}>
-                  <NavLink 
+                  <NavLink
                     to={item.path}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -426,14 +425,14 @@ function Header() {
       {/* Search Overlay */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div 
+          <motion.div
             className="search-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <div className="search-container">
-              <button 
+              <button
                 className="close-search"
                 onClick={() => setIsSearchOpen(false)}
               >
@@ -441,8 +440,8 @@ function Header() {
               </button>
               <h3>Tìm kiếm</h3>
               <div className="search-input-wrapper">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Tìm set quà, đặc sản, quà tặng..."
                   autoFocus
                   value={searchText}
@@ -456,8 +455,8 @@ function Header() {
                 />
                 <button className="search-submit" onClick={() => submitSearch()} aria-label="Tìm kiếm" type="button">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="M21 21l-4.35-4.35"/>
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
                   </svg>
                 </button>
               </div>
