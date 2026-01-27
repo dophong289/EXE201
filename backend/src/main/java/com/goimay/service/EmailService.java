@@ -24,7 +24,7 @@ public class EmailService {
     @Value("${app.name:Goi May}")
     private String appName;
     
-    private static final String APP_NAME_DISPLAY = "Gói Mây";
+    private static final String APP_NAME_DISPLAY = "Goi May";
     
     public void sendPasswordResetOtp(String toEmail, String otp) {
         log.info("Attempting to send OTP email via SendGrid Web API to: {}", toEmail);
