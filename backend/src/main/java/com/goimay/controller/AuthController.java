@@ -5,6 +5,7 @@ import com.goimay.service.AuthService;
 import com.goimay.service.PasswordResetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
+@Slf4j
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173", "https://www.goimay.com", "https://goimay.com"})
 public class AuthController {
     
     private final AuthService authService;
@@ -56,11 +58,14 @@ public class AuthController {
     
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        log.info(">>> FORGOT PASSWORD ENDPOINT CALLED for email: {}", request.getEmail());
         try {
             passwordResetService.sendPasswordResetOtp(request.getEmail());
+            log.info(">>> FORGOT PASSWORD completed for email: {}", request.getEmail());
             // Always return success to not reveal if email exists
             return ResponseEntity.ok(Map.of("message", "Nếu email tồn tại, mã xác minh đã được gửi"));
         } catch (Exception e) {
+            log.error(">>> FORGOT PASSWORD error: {}", e.getMessage(), e);
             return ResponseEntity.ok(Map.of("message", "Nếu email tồn tại, mã xác minh đã được gửi"));
         }
     }
