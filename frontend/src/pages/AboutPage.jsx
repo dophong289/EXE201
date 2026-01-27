@@ -46,22 +46,22 @@ function AboutPage() {
 
   const values = [
     {
-      icon: '🎋',
+      icon: '01',
       title: 'Thủ công truyền thống',
       description: 'Mỗi sản phẩm được làm thủ công bởi các nghệ nhân làng nghề, gìn giữ tinh hoa văn hóa Việt qua từng đường đan, nét tết.'
     },
     {
-      icon: <VietnamFlagIcon />,
+      icon: '02',
       title: 'Bản sắc Việt Nam',
       description: 'Kết hợp đặc sản địa phương với bao bì thủ công từ tre, mây, nan - mang đậm hồn Việt trong từng set quà.'
     },
     {
-      icon: '🌱',
+      icon: '03',
       title: 'Bền vững với môi trường',
       description: 'Sử dụng 100% nguyên liệu tự nhiên, có thể tái chế và phân hủy sinh học, góp phần bảo vệ môi trường.'
     },
     {
-      icon: '💝',
+      icon: '04',
       title: 'Trải nghiệm ý nghĩa',
       description: 'Mỗi set quà không chỉ là món quà - mà là câu chuyện văn hóa, là tình cảm được gửi gắm qua bàn tay nghệ nhân.'
     }
@@ -113,17 +113,17 @@ function AboutPage() {
             >
               <h2>Câu chuyện thương hiệu</h2>
               <p>
-                <strong>Gói Mây</strong> ra đời từ tình yêu với những làng nghề truyền thống Việt Nam - 
-                nơi đôi bàn tay khéo léo của các nghệ nhân đã tạo nên những tác phẩm từ tre, mây, nan 
+                <strong>Gói Mây</strong> ra đời từ tình yêu với những làng nghề truyền thống Việt Nam -
+                nơi đôi bàn tay khéo léo của các nghệ nhân đã tạo nên những tác phẩm từ tre, mây, nan
                 qua hàng trăm năm lịch sử.
               </p>
               <p>
-                Chúng tôi kết nối tinh hoa thủ công truyền thống với đặc sản vùng miền, tạo nên những 
-                set quà tặng độc đáo - nơi mỗi chiếc giỏ mây, hộp tre, túi cói đều mang trong mình 
-                câu chuyện của người thợ làng nghề Chương Mỹ. 
+                Chúng tôi kết nối tinh hoa thủ công truyền thống với đặc sản vùng miền, tạo nên những
+                set quà tặng độc đáo - nơi mỗi chiếc giỏ mây, hộp tre, túi cói đều mang trong mình
+                câu chuyện của người thợ làng nghề Chương Mỹ.
               </p>
               <p>
-                Với Gói Mây, tặng quà không chỉ là trao đi một món đồ - mà là gửi gắm văn hóa, 
+                Với Gói Mây, tặng quà không chỉ là trao đi một món đồ - mà là gửi gắm văn hóa,
                 là lan tỏa giá trị truyền thống Việt Nam đến mọi người, mọi nơi trên thế giới.
               </p>
             </motion.div>
@@ -135,8 +135,8 @@ function AboutPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               {getImage('about_story_image') && (
-                <ImageWithFallback 
-                  src={getImage('about_story_image')} 
+                <ImageWithFallback
+                  src={getImage('about_story_image')}
                   alt="Sản phẩm thủ công Gói Mây"
                 />
               )}
@@ -179,40 +179,40 @@ function AboutPage() {
           >
             <h2>Chất liệu thủ công truyền thống</h2>
             <p className="ingredients-intro">
-              Gói Mây tự hào sử dụng các nguyên liệu tự nhiên từ làng nghề Việt Nam, 
+              Gói Mây tự hào sử dụng các nguyên liệu tự nhiên từ làng nghề Việt Nam,
               mỗi sản phẩm là một tác phẩm nghệ thuật mang đậm bản sắc văn hóa dân tộc.
             </p>
           </motion.div>
-          
+
           <div className="ingredients-grid">
             <div className="ingredient-item">
-              <ImageWithFallback 
+              <ImageWithFallback
                 src={getImage('about_material_1', 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300')}
-                alt="Mây tre đan" 
+                alt="Mây tre đan"
                 fallbackSrc="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300"
               />
               <h4>Mây tre đan</h4>
             </div>
             <div className="ingredient-item">
-              <ImageWithFallback 
+              <ImageWithFallback
                 src={getImage('about_material_2', 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300')}
-                alt="Mứt" 
+                alt="Mứt"
                 fallbackSrc="https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=300"
               />
               <h4>Mứt</h4>
             </div>
             <div className="ingredient-item">
-              <ImageWithFallback 
+              <ImageWithFallback
                 src={getImage('about_material_3', 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300')}
-                alt="Gỗ tre" 
+                alt="Gỗ tre"
                 fallbackSrc="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300"
               />
               <h4>Gỗ tre</h4>
             </div>
             <div className="ingredient-item">
-              <ImageWithFallback 
+              <ImageWithFallback
                 src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')}
-                alt="Lá chuối khô" 
+                alt="Lá chuối khô"
                 fallbackSrc="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300"
               />
               <h4>Lá chuối khô</h4>
@@ -232,8 +232,8 @@ function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <ImageWithFallback 
-                src={getImage('about_artisan_image', 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600')} 
+              <ImageWithFallback
+                src={getImage('about_artisan_image', 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600')}
                 alt="Nghệ nhân làng nghề"
                 fallbackSrc="https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600"
               />
@@ -248,11 +248,11 @@ function AboutPage() {
               <h2>Nghệ nhân làng nghề</h2>
               <p>
                 Gói Mây hợp tác với hơn 50 hộ gia đình nghệ nhân tại các làng nghề truyền thống như
-                - <strong>Chương Mỹ (Hà Nội)</strong> - những nơi lưu giữ tinh hoa nghề đan lát 
+                - <strong>Chương Mỹ (Hà Nội)</strong> - những nơi lưu giữ tinh hoa nghề đan lát
                 hàng trăm năm tuổi.
               </p>
               <p>
-                Mỗi set quà của Gói Mây không chỉ mang giá trị vật chất, mà còn góp phần 
+                Mỗi set quà của Gói Mây không chỉ mang giá trị vật chất, mà còn góp phần
                 bảo tồn nghề thủ công truyền thống và tạo sinh kế bền vững cho cộng đồng làng nghề.
               </p>
             </motion.div>
