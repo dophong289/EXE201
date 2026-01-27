@@ -5,11 +5,13 @@ import { productApi, productCategoryApi, favoriteApi, resolveMediaUrl } from '..
 import { getCache, setCache, setOfflineCache } from '../services/cache'
 import { cacheImages } from '../services/imageCache'
 import { addToCart } from '../services/cart'
+import { useToast } from '../contexts/ToastContext'
 import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductsPage.css'
 
 function ProductsPage() {
   const navigate = useNavigate()
+  const { addToast } = useToast()
   const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
@@ -78,11 +80,11 @@ function ProductsPage() {
                 setCategories(response.data || [])
               }
             })
-            .catch(() => {})
+            .catch(() => { })
         }, 0)
         return
       }
-      
+
       const response = await productCategoryApi.getActive()
       const data = response.data || []
       setCategories(data)
@@ -106,7 +108,7 @@ function ProductsPage() {
     try {
       const keyword = (debouncedSearch || '').trim()
       let cacheKey, apiCall
-      
+
       if (keyword) {
         cacheKey = `/products/search?keyword=${keyword}&category=${activeCategory === 'all' ? '' : activeCategory}&page=0&size=12`
         apiCall = () => productApi.search(keyword, activeCategory === 'all' ? null : activeCategory, 0, 12)
@@ -117,7 +119,7 @@ function ProductsPage() {
         cacheKey = `/products/category/${activeCategory}?page=0&size=12`
         apiCall = () => productApi.getByCategory(activeCategory, 0, 12)
       }
-      
+
       // Kiểm tra cache trước
       const cachedData = getCache(cacheKey)
       if (cachedData) {
@@ -132,7 +134,7 @@ function ProductsPage() {
               setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
               setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
               setProducts(products)
-              
+
               // Cache image URLs
               const imageUrls = products
                 .map(p => p.thumbnail)
@@ -140,18 +142,18 @@ function ProductsPage() {
                 .map(url => resolveMediaUrl(url))
               cacheImages(imageUrls)
             })
-            .catch(() => {})
+            .catch(() => { })
         }, 0)
         return
       }
-      
+
       // Nếu không có cache, fetch bình thường
       const response = await apiCall()
       const products = response.data.content || response.data
       setProducts(products)
       setCache(cacheKey, response.data, 5 * 60 * 1000) // Cache 5 phút
       setOfflineCache(cacheKey, response.data) // Cache 24h cho offline
-      
+
       // Cache image URLs
       const imageUrls = products
         .map(p => p.thumbnail)
@@ -200,7 +202,7 @@ function ProductsPage() {
 
   const toggleFavorite = async (productId, e) => {
     e.stopPropagation()
-    
+
     if (!user) {
       navigate('/dang-nhap')
       return
@@ -210,8 +212,10 @@ function ProductsPage() {
       const response = await favoriteApi.toggle(productId)
       if (response.data.isFavorite) {
         setFavoriteIds([...favoriteIds, productId])
+        addToast('Đã thêm vào danh sách yêu thích!')
       } else {
         setFavoriteIds(favoriteIds.filter(id => id !== productId))
+        addToast('Đã xóa khỏi danh sách yêu thích!')
       }
     } catch (error) {
       console.error('Error toggling favorite:', error)
@@ -226,6 +230,7 @@ function ProductsPage() {
     e.preventDefault()
     e.stopPropagation()
     addToCart(product, 1)
+    addToast(`Đã thêm ${product.name} vào giỏ hàng!`)
   }
 
   const formatPrice = (price) => {
@@ -312,9 +317,9 @@ function ProductsPage() {
                 >
                   <Link to={`/san-pham/${product.slug}`} className="product-link">
                     <div className="product-image">
-                      <ImageWithFallback 
-                        src={resolveMediaUrl(product.thumbnail)} 
-                        alt={product.name} 
+                      <ImageWithFallback
+                        src={resolveMediaUrl(product.thumbnail)}
+                        alt={product.name}
                       />
                       {product.salePrice && (
                         <span className="sale-badge">Giảm giá</span>
@@ -339,13 +344,13 @@ function ProductsPage() {
                     </div>
                   </Link>
                   <div className="product-actions">
-                    <button 
+                    <button
                       className={`favorite-btn ${isFavorite(product.id) ? 'active' : ''}`}
                       onClick={(e) => toggleFavorite(product.id, e)}
                       title={isFavorite(product.id) ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
                     >
                       <svg viewBox="0 0 24 24" fill={isFavorite(product.id) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                       </svg>
                     </button>
                     <button className="add-to-cart-btn" onClick={(e) => handleAddToCart(product, e)}>

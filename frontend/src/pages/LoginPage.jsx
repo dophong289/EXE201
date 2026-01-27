@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { authApi } from '../services/api'
+import { useToast } from '../contexts/ToastContext'
 import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/AuthPage.css'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const { addToast } = useToast()
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -38,6 +40,7 @@ function LoginPage() {
         email: response.data.email,
         role: response.data.role
       }))
+      addToast('Đăng nhập thành công!')
       navigate('/')
       window.location.reload()
     } catch (err) {
@@ -149,7 +152,7 @@ function LoginPage() {
     <div className="auth-page">
       <div className="auth-container">
         {/* Left Side - Branding */}
-        <motion.div 
+        <motion.div
           className="auth-branding"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -169,7 +172,7 @@ function LoginPage() {
               <h1 className="brand-name">Gói Mây</h1>
             </div>
             <p className="brand-tagline">
-              Gói trọn tinh hoa Việt Nam<br/>
+              Gói trọn tinh hoa Việt Nam<br />
               Chạm đến trái tim bạn
             </p>
             <div className="brand-features">
@@ -191,7 +194,7 @@ function LoginPage() {
         </motion.div>
 
         {/* Right Side - Form */}
-        <motion.div 
+        <motion.div
           className="auth-form-container"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -204,15 +207,15 @@ function LoginPage() {
             </div>
 
             {error && (
-              <motion.div 
+              <motion.div
                 className="auth-error"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="12" y1="8" x2="12" y2="12"/>
-                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
                 {error}
               </motion.div>
@@ -223,8 +226,8 @@ function LoginPage() {
                 <label htmlFor="email">Email</label>
                 <div className="input-wrapper">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                    <polyline points="22,6 12,13 2,6"/>
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
                   </svg>
                   <input
                     type="email"
@@ -242,8 +245,8 @@ function LoginPage() {
                 <label htmlFor="password">Mật khẩu</label>
                 <div className="input-wrapper">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
                   </svg>
                   <input
                     type="password"
@@ -266,8 +269,8 @@ function LoginPage() {
                 <Link to="/quen-mat-khau" className="forgot-link">Quên mật khẩu?</Link>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="auth-submit-btn"
                 disabled={loading}
               >

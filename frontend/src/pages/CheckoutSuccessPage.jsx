@@ -2,10 +2,12 @@ import { Link, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { orderApi } from '../services/api'
+import { useToast } from '../contexts/ToastContext'
 import '../styles/pages/CheckoutSuccessPage.css'
 
 function CheckoutSuccessPage() {
   const { orderId } = useParams()
+  const { addToast } = useToast()
   const [order, setOrder] = useState(null)
 
   useEffect(() => {
@@ -13,12 +15,13 @@ function CheckoutSuccessPage() {
       try {
         const res = await orderApi.myOrderById(orderId)
         setOrder(res.data)
+        addToast('Đặt hàng thành công! Cảm ơn bạn đã ủng hộ Gói Mây.')
       } catch (e) {
         console.error(e)
       }
     }
     load()
-  }, [orderId])
+  }, [orderId, addToast])
 
   const formatPrice = (price) =>
     new Intl.NumberFormat('vi-VN').format(price) + 'đ'

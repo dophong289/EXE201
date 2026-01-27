@@ -3,12 +3,14 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, favoriteApi, resolveMediaUrl } from '../services/api'
 import { addToCart } from '../services/cart'
+import { useToast } from '../contexts/ToastContext'
 import ImageWithFallback from '../components/ImageWithFallback'
 import '../styles/pages/ProductDetailPage.css'
 
 function ProductDetailPage() {
   const { slug } = useParams()
   const navigate = useNavigate()
+  const { addToast } = useToast()
   const [product, setProduct] = useState(null)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -41,7 +43,7 @@ function ProductDetailPage() {
     try {
       const response = await productApi.getBySlug(slug)
       setProduct(response.data)
-      
+
       // Load related products
       if (response.data.productCategory) {
         const relatedResponse = await productApi.getByCategory(response.data.productCategory, 0, 4)
@@ -76,6 +78,11 @@ function ProductDetailPage() {
     try {
       const response = await favoriteApi.toggle(product.id)
       setIsFavorite(response.data.isFavorite)
+      if (response.data.isFavorite) {
+        addToast('Đã thêm vào danh sách yêu thích!')
+      } else {
+        addToast('Đã xóa khỏi danh sách yêu thích!')
+      }
     } catch (error) {
       console.error('Error toggling favorite:', error)
     }
@@ -99,6 +106,7 @@ function ProductDetailPage() {
 
   const handleAddToCart = () => {
     addToCart(product, quantity)
+    addToast(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`)
   }
 
   if (loading) {
@@ -146,7 +154,7 @@ function ProductDetailPage() {
         <div className="container">
           <div className="product-detail-grid">
             {/* Product Images */}
-            <motion.div 
+            <motion.div
               className="product-images"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -158,9 +166,9 @@ function ProductDetailPage() {
                 ) : (
                   <div className="no-image">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                      <circle cx="8.5" cy="8.5" r="1.5"/>
-                      <polyline points="21 15 16 10 5 21"/>
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
                     </svg>
                     <span>Chưa có ảnh</span>
                   </div>
@@ -185,7 +193,7 @@ function ProductDetailPage() {
             </motion.div>
 
             {/* Product Info */}
-            <motion.div 
+            <motion.div
               className="product-info"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -194,9 +202,9 @@ function ProductDetailPage() {
               {product.productCategory && (
                 <span className="product-category">{product.productCategory}</span>
               )}
-              
+
               <h1 className="product-title">{product.name}</h1>
-              
+
               <div className="product-price-box">
                 {product.salePrice ? (
                   <>
@@ -221,22 +229,22 @@ function ProductDetailPage() {
               <div className="product-features">
                 <div className="feature">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                   </svg>
                   <span>Bảo hành chất lượng</span>
                 </div>
                 <div className="feature">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
-                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                    <line x1="7" y1="7" x2="7.01" y2="7" />
                   </svg>
                   <span>100% thủ công</span>
                 </div>
                 <div className="feature">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                    <path d="M2 17l10 5 10-5"/>
-                    <path d="M2 12l10 5 10-5"/>
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
                   </svg>
                   <span>Đóng gói cẩn thận</span>
                 </div>
@@ -247,7 +255,7 @@ function ProductDetailPage() {
                 {product.stock > 0 ? (
                   <span className="in-stock">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
+                      <polyline points="20 6 9 17 4 12" />
                     </svg>
                     Còn hàng ({product.stock} sản phẩm)
                   </span>
@@ -262,14 +270,14 @@ function ProductDetailPage() {
                 <div className="quantity-controls">
                   <button onClick={decreaseQuantity} disabled={quantity <= 1}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </button>
                   <span className="quantity-value">{quantity}</span>
                   <button onClick={increaseQuantity} disabled={quantity >= (product.stock || 10)}>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="12" y1="5" x2="12" y2="19"/>
-                      <line x1="5" y1="12" x2="19" y2="12"/>
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
                   </button>
                 </div>
@@ -279,18 +287,18 @@ function ProductDetailPage() {
               <div className="product-actions">
                 <button className="btn-add-cart" disabled={product.stock === 0} onClick={handleAddToCart}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="9" cy="21" r="1"/>
-                    <circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/>
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button 
+                <button
                   className={`btn-favorite ${isFavorite ? 'active' : ''}`}
                   onClick={toggleFavorite}
                 >
                   <svg viewBox="0 0 24 24" fill={isFavorite ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
                   </svg>
                 </button>
               </div>
@@ -299,25 +307,25 @@ function ProductDetailPage() {
               <div className="extra-info">
                 <div className="info-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="1" y="3" width="15" height="13"/>
-                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-                    <circle cx="5.5" cy="18.5" r="2.5"/>
-                    <circle cx="18.5" cy="18.5" r="2.5"/>
+                    <rect x="1" y="3" width="15" height="13" />
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                    <circle cx="5.5" cy="18.5" r="2.5" />
+                    <circle cx="18.5" cy="18.5" r="2.5" />
                   </svg>
                   <div>
                     <strong>Giao hàng toàn quốc</strong>
-                    
+
                   </div>
                 </div>
                 <div className="info-item">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
-                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                    <line x1="12" y1="22.08" x2="12" y2="12" />
                   </svg>
                   <div>
                     <strong>Đổi trả trong 7 ngày</strong>
-                    
+
                   </div>
                 </div>
               </div>
@@ -347,9 +355,9 @@ function ProductDetailPage() {
                       ) : (
                         <div className="no-image-small">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                            <circle cx="8.5" cy="8.5" r="1.5"/>
-                            <polyline points="21 15 16 10 5 21"/>
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
                           </svg>
                         </div>
                       )}
