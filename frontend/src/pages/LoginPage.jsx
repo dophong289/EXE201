@@ -32,8 +32,7 @@ function LoginPage() {
 
     try {
       const response = await authApi.login(formData)
-      // Lưu token và thông tin user
-      localStorage.setItem('token', response.data.token)
+      // Lưu thông tin user (token được lưu trong httpOnly cookie bởi backend)
       localStorage.setItem('user', JSON.stringify({
         id: response.data.id,
         fullName: response.data.fullName,
@@ -56,8 +55,7 @@ function LoginPage() {
 
     try {
       const response = await authApi.loginWithGoogle(credential)
-      // Lưu token và thông tin user
-      localStorage.setItem('token', response.data.token)
+      // Lưu thông tin user (token được lưu trong httpOnly cookie bởi backend)
       localStorage.setItem('user', JSON.stringify({
         id: response.data.id,
         fullName: response.data.fullName,
@@ -77,9 +75,13 @@ function LoginPage() {
     // Wait for Google Sign-In API to load
     const initGoogleSignIn = () => {
       if (window.google && window.google.accounts) {
-        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '418375020384-9vvrvl88876fnl0dibbb1refqomc53gd.apps.googleusercontent.com'
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
         if (!clientId) {
-          console.warn('Google Client ID chưa được cấu hình. Vui lòng thêm VITE_GOOGLE_CLIENT_ID vào file .env')
+          console.error('VITE_GOOGLE_CLIENT_ID chưa được cấu hình trong .env file')
+          const buttonElement = document.getElementById('google-signin-button')
+          if (buttonElement) {
+            buttonElement.innerHTML = '<p style="color: #999; font-size: 12px;">Google Sign-In chưa được cấu hình</p>'
+          }
           return
         }
 

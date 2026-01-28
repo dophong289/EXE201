@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { favoriteApi } from '../services/api'
+import { favoriteApi, authApi } from '../services/api'
 import { getCartItemCount } from '../services/cart'
 import ImageWithFallback from './ImageWithFallback'
 import '../styles/components/Header.css'
@@ -86,8 +86,12 @@ function Header() {
     return new Intl.NumberFormat('vi-VN').format(price) + 'đ'
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('token')
+  const handleLogout = async () => {
+    try {
+      await authApi.logout() // Clear httpOnly cookie on backend
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
     localStorage.removeItem('user')
     setUser(null)
     setShowUserMenu(false)

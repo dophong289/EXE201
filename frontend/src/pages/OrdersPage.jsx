@@ -44,8 +44,7 @@ function OrdersPage() {
 
   const openConfirm = (orderId) => {
     const userStr = localStorage.getItem('user')
-    const token = localStorage.getItem('token')
-    if (!userStr || !token) {
+    if (!userStr) {
       alert('Bạn cần đăng nhập để xác nhận đã nhận hàng.')
       return
     }

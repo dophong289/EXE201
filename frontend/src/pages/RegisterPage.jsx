@@ -53,8 +53,7 @@ function RegisterPage() {
         phone: formData.phone,
         password: formData.password
       })
-      // Lưu token và thông tin user
-      localStorage.setItem('token', response.data.token)
+      // Lưu thông tin user (token được lưu trong httpOnly cookie bởi backend)
       localStorage.setItem('user', JSON.stringify({
         id: response.data.id,
         fullName: response.data.fullName,

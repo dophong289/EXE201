@@ -10,14 +10,14 @@ function AccountPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
-  
+
   // Profile form
   const [profileData, setProfileData] = useState({
     fullName: '',
     phone: '',
     address: ''
   })
-  
+
   // Password form
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -47,7 +47,7 @@ function AccountPage() {
     } catch (error) {
       console.error('Error loading profile:', error)
       if (error.response?.status === 401) {
-        localStorage.removeItem('token')
+        // Cookie cleared by backend, just clear user info
         localStorage.removeItem('user')
         navigate('/dang-nhap')
       }
@@ -74,12 +74,12 @@ function AccountPage() {
     try {
       const response = await userApi.updateProfile(profileData)
       setUser(response.data)
-      
+
       // Update localStorage
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
       storedUser.fullName = response.data.fullName
       localStorage.setItem('user', JSON.stringify(storedUser))
-      
+
       setMessage({ type: 'success', text: 'Cập nhật thông tin thành công!' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {
@@ -91,7 +91,7 @@ function AccountPage() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       setMessage({ type: 'error', text: 'Mật khẩu xác nhận không khớp' })
       return
@@ -110,13 +110,13 @@ function AccountPage() {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword
       })
-      
+
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       })
-      
+
       setMessage({ type: 'success', text: 'Đổi mật khẩu thành công!' })
       setTimeout(() => setMessage({ type: '', text: '' }), 3000)
     } catch (error) {
@@ -155,7 +155,7 @@ function AccountPage() {
         </motion.div>
 
         {message.text && (
-          <motion.div 
+          <motion.div
             className={`alert ${message.type === 'error' ? 'alert-error' : 'alert-success'}`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ function AccountPage() {
 
         <div className="account-sections">
           {/* Profile Section */}
-          <motion.section 
+          <motion.section
             className="account-section"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -185,7 +185,7 @@ function AccountPage() {
                   required
                 />
               </div>
-              
+
               <div className="form-group">
                 <label>Email</label>
                 <input
@@ -196,7 +196,7 @@ function AccountPage() {
                 />
                 <span className="form-hint">Email không thể thay đổi</span>
               </div>
-              
+
               <div className="form-group">
                 <label>Số điện thoại</label>
                 <input
@@ -207,7 +207,7 @@ function AccountPage() {
                   placeholder="Nhập số điện thoại"
                 />
               </div>
-              
+
               <div className="form-group">
                 <label>Địa chỉ</label>
                 <textarea
@@ -218,7 +218,7 @@ function AccountPage() {
                   rows="3"
                 />
               </div>
-              
+
               <button type="submit" className="btn-save" disabled={saving}>
                 {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
               </button>
@@ -226,7 +226,7 @@ function AccountPage() {
           </motion.section>
 
           {/* Password Section */}
-          <motion.section 
+          <motion.section
             className="account-section"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -245,7 +245,7 @@ function AccountPage() {
                   required
                 />
               </div>
-              
+
               <div className="form-group">
                 <label>Mật khẩu mới</label>
                 <input
@@ -258,7 +258,7 @@ function AccountPage() {
                   minLength={6}
                 />
               </div>
-              
+
               <div className="form-group">
                 <label>Xác nhận mật khẩu mới</label>
                 <input
@@ -270,7 +270,7 @@ function AccountPage() {
                   required
                 />
               </div>
-              
+
               <button type="submit" className="btn-save" disabled={changingPassword}>
                 {changingPassword ? 'Đang xử lý...' : 'Đổi mật khẩu'}
               </button>

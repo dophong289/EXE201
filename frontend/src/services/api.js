@@ -61,19 +61,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Send httpOnly cookies with requests
 })
-
-// Add token to requests if available
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  (error) => Promise.reject(error)
-)
 
 // Handle token expiration và cache responses
 api.interceptors.response.use(
@@ -118,7 +107,7 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      localStorage.removeItem('token')
+      // Token expired or invalid - clear user info (cookie is managed by backend)
       localStorage.removeItem('user')
     }
     return Promise.reject(error)
@@ -160,6 +149,7 @@ export const authApi = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
   loginWithGoogle: (idToken) => api.post('/auth/google', { idToken }),
+  logout: () => api.post('/auth/logout'),
   checkAuth: () => api.get('/auth/check'),
   forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
   verifyResetOtp: (email, otp) => api.post('/auth/verify-reset-otp', { email, otp }),
