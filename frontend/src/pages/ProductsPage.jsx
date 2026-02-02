@@ -372,7 +372,7 @@ function ProductsPage() {
           )}
 
           {/* Pagination */}
-          {!loading && totalPages > 1 && (
+          {!loading && products.length > 0 && (
             <div className="pagination" style={{ marginTop: '2rem' }}>
               <button
                 className="pagination-btn"
