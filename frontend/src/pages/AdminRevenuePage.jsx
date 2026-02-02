@@ -299,21 +299,19 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                                                 <stop offset="95%" stopColor="#059669" stopOpacity={0.02} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" strokeOpacity={0.6} />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" />
                                         <XAxis
                                             dataKey="date"
-                                            stroke="#9CA3AF"
+                                            stroke="#7A6E5D"
                                             fontSize={11}
                                             tickLine={false}
-                                            axisLine={false}
                                         />
                                         <YAxis
-                                            stroke="#9CA3AF"
+                                            stroke="#7A6E5D"
                                             fontSize={11}
                                             tickFormatter={formatShortPrice}
                                             tickLine={false}
-                                            axisLine={false}
-                                            width={50}
+                                            width={55}
                                         />
                                         <Tooltip
                                             content={({ active, payload, label }) => {
