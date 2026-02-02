@@ -386,7 +386,6 @@ function ProductsPage() {
               </button>
               <div className="pagination-info">
                 <span>Trang {currentPage + 1} / {totalPages}</span>
-                <span className="pagination-total">({products.length} sản phẩm)</span>
               </div>
               <button
                 className="pagination-btn"
