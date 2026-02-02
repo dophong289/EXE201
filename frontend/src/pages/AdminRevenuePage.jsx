@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { adminOrderApi, adminUserApi } from '../services/api'
 import {
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     PieChart, Pie, Cell, Legend
 } from 'recharts'
 import '../styles/pages/AdminRevenue.css'
@@ -296,13 +296,7 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                         <div className="chart-container">
                             {chartData.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={260}>
-                                    <AreaChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#059669" stopOpacity={0.25} />
-                                                <stop offset="95%" stopColor="#059669" stopOpacity={0.02} />
-                                            </linearGradient>
-                                        </defs>
+                                    <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 0 }}>
                                         <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" />
                                         <XAxis
                                             dataKey="date"
@@ -331,16 +325,15 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                                                 return null
                                             }}
                                         />
-                                        <Area
+                                        <Line
                                             type="monotone"
                                             dataKey="revenue"
                                             stroke="#059669"
                                             strokeWidth={2.5}
-                                            fillOpacity={1}
-                                            fill="url(#colorRevenue)"
-                                            dot={{ r: 3, fill: '#059669', strokeWidth: 0 }}
+                                            dot={{ r: 4, fill: '#059669', strokeWidth: 0 }}
+                                            activeDot={{ r: 6, fill: '#059669', stroke: '#fff', strokeWidth: 2 }}
                                         />
-                                    </AreaChart>
+                                    </LineChart>
                                 </ResponsiveContainer>
                             ) : (
                                 <div className="no-data">
