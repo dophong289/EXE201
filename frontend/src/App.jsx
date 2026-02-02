@@ -23,6 +23,7 @@ import AdminArticlesPage from './pages/AdminArticlesPage'
 import AccountPage from './pages/AccountPage'
 import OrdersPage from './pages/OrdersPage'
 import AdminOrdersPage from './pages/AdminOrdersPage'
+import AdminAccountsPage from './pages/AdminAccountsPage'
 
 function App() {
   const location = useLocation()
@@ -55,6 +56,7 @@ function App() {
           <Route path="/admin/danh-muc" element={<AdminCategoriesPage />} />
           <Route path="/admin/hinh-anh" element={<AdminSiteSettingsPage />} />
           <Route path="/admin/bai-viet" element={<AdminArticlesPage />} />
+          <Route path="/admin/tai-khoan" element={<AdminAccountsPage />} />
         </Routes>
       </main>
       {!isAuthPage && <Footer />}

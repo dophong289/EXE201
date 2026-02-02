@@ -214,6 +214,11 @@
   color: #6b7280;
 }
 
+.status-badge.manager {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
 /* Price */
 td.price {
   font-weight: 600;
@@ -694,12 +699,12 @@ td.price.sale {
   background: white;
 }
 
-.checkbox-label input:checked + .checkmark {
+.checkbox-label input:checked+.checkmark {
   background: var(--color-primary);
   border-color: var(--color-primary);
 }
 
-.checkbox-label input:checked + .checkmark::after {
+.checkbox-label input:checked+.checkmark::after {
   content: '✓';
   color: white;
   font-size: 14px;
@@ -767,7 +772,9 @@ td.price.sale {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Delete Modal */
@@ -837,6 +844,7 @@ td.price.sale {
 
 /* Responsive */
 @media (max-width: 1024px) {
+
   .admin-table th:nth-child(5),
   .admin-table td:nth-child(5),
   .admin-table th:nth-child(6),
@@ -1024,12 +1032,12 @@ td.price.sale {
   .settings-section {
     padding: 1.25rem;
   }
-  
+
   .upload-methods {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .url-input {
     min-width: 100%;
   }

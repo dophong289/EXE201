@@ -187,6 +187,17 @@ export const adminOrderApi = {
   cancel: (orderId) => api.put(`/admin/orders/${orderId}/cancel`),
 }
 
+// User API (Admin)
+export const adminUserApi = {
+  getAll: (search = '', role = '', page = 0, size = 10) =>
+    api.get(`/admin/users?search=${encodeURIComponent(search)}&role=${role}&page=${page}&size=${size}`),
+  getById: (id) => api.get(`/admin/users/${id}`),
+  updateRole: (id, role) => api.put(`/admin/users/${id}/role`, { role }),
+  delete: (id) => api.delete(`/admin/users/${id}`),
+  getStats: () => api.get('/admin/users/stats'),
+  getRoles: () => api.get('/admin/users/roles'),
+}
+
 // Upload API
 export const uploadApi = {
   uploadImage: (file) => {

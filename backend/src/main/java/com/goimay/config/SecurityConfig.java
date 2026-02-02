@@ -38,8 +38,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // Admin-only endpoints (user management)
+                        .requestMatchers("/api/admin/users/**").hasRole("ADMIN")
                         .requestMatchers("/api/site-settings/admin/**").hasRole("ADMIN")
+                        // Manager + Admin can manage orders and products
+                        .requestMatchers("/api/admin/orders/**").hasAnyRole("ADMIN", "MANAGER")
+                        .requestMatchers("/api/manager/**").hasAnyRole("ADMIN", "MANAGER")
+                        // Public endpoints
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/articles/**",
