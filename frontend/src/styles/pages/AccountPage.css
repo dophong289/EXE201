@@ -155,13 +155,13 @@
   color: var(--color-text-light);
 }
 
-/* Save Button */
+/* Save Button - Màu đỏ đô */
 .account-section .btn-save {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  background: linear-gradient(135deg, #8B2332 0%, #6B1A26 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -174,7 +174,7 @@
 
 .account-section .btn-save:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 105, 20, 0.35);
+  box-shadow: 0 6px 20px rgba(139, 35, 50, 0.35);
 }
 
 .account-section .btn-save:disabled {
