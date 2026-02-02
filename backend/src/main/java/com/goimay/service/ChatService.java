@@ -130,11 +130,43 @@ public class ChatService {
             return getContactInfo();
         }
 
-        // 2. Logic "Tư vấn" (Giả lập AI)
+        // 2. Logic "Tư vấn" (Giả lập AI) - Mở rộng keywords
         if (budget != null || 
             message.contains("tư vấn") || message.contains("gợi ý") || 
             message.contains("mua") || message.contains("tìm") || 
-            message.contains("cần") || message.contains("chọn")) {
+            message.contains("cần") || message.contains("chọn") ||
+            // Keywords về quà/set
+            message.contains("set quà") || message.contains("set qua") ||
+            message.contains("quà tết") || message.contains("qua tet") ||
+            message.contains("quà tặng") || message.contains("qua tang") ||
+            message.contains("quà biếu") || message.contains("qua bieu") ||
+            message.contains("hộp quà") || message.contains("hop qua") ||
+            message.contains("giỏ quà") || message.contains("gio qua") ||
+            // Keywords về giá
+            message.contains("giá rẻ") || message.contains("gia re") ||
+            message.contains("rẻ") || message.contains("tiết kiệm") ||
+            message.contains("tiet kiem") || message.contains("giá tốt") ||
+            message.contains("gia tot") || message.contains("khuyến mãi") ||
+            message.contains("khuyen mai") || message.contains("giảm giá") ||
+            message.contains("giam gia") || message.contains("sale") ||
+            // Keywords về đối tượng
+            message.contains("biếu") || message.contains("bieu") ||
+            message.contains("tặng") || message.contains("tang") ||
+            message.contains("gia đình") || message.contains("gia dinh") ||
+            message.contains("sếp") || message.contains("sep") ||
+            message.contains("đối tác") || message.contains("doi tac") ||
+            message.contains("khách hàng") || message.contains("khach hang") ||
+            message.contains("bố mẹ") || message.contains("bo me") ||
+            message.contains("ông bà") || message.contains("ong ba") ||
+            // Keywords về chất lượng
+            message.contains("đẹp") || message.contains("dep") ||
+            message.contains("sang") || message.contains("cao cấp") ||
+            message.contains("cao cap") || message.contains("chất lượng") ||
+            message.contains("chat luong") || message.contains("xịn") ||
+            // Keywords về Tết
+            message.contains("tết") || message.contains("tet") ||
+            message.contains("xuân") || message.contains("xuan") ||
+            message.contains("năm mới") || message.contains("nam moi")) {
             
             // Tìm sản phẩm trong khoảng giá gần đúng
             List<ChatRequest.ProductInfo> suitableProducts = findProductsAroundBudget(products, budget);
