@@ -337,25 +337,43 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                         <div className="chart-header">
                             <h3>Cơ cấu đơn hàng</h3>
                         </div>
-                        <div className="chart-container">
+                        <div className="chart-container pie-chart-container">
                             {pieData.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={280}>
                                     <PieChart>
                                         <Pie
                                             data={pieData}
                                             cx="50%"
-                                            cy="50%"
-                                            innerRadius={50}
-                                            outerRadius={80}
+                                            cy="40%"
+                                            innerRadius={45}
+                                            outerRadius={70}
                                             paddingAngle={2}
                                             dataKey="value"
+                                            label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
+                                            labelLine={false}
                                         >
                                             {pieData.map((entry, index) => (
                                                 <Cell key={`cell-${index}`} fill={entry.color} />
                                             ))}
                                         </Pie>
-                                        <Tooltip />
-                                        <Legend />
+                                        <Tooltip
+                                            formatter={(value, name) => [value + ' đơn', name]}
+                                            contentStyle={{
+                                                background: '#fff',
+                                                border: '1px solid #E8DFD0',
+                                                borderRadius: '8px',
+                                                fontSize: '14px'
+                                            }}
+                                        />
+                                        <Legend
+                                            layout="horizontal"
+                                            align="center"
+                                            verticalAlign="bottom"
+                                            wrapperStyle={{
+                                                paddingTop: '16px',
+                                                fontSize: '13px'
+                                            }}
+                                        />
                                     </PieChart>
                                 </ResponsiveContainer>
                             ) : (

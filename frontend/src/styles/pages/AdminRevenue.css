@@ -189,9 +189,9 @@
 }
 
 .kpi-value {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 1.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text);
     line-height: 1.2;
 }
@@ -245,6 +245,18 @@
 .chart-container {
     padding: 1.5rem;
     min-height: 280px;
+}
+
+.pie-chart-container {
+    padding: 1rem;
+}
+
+.pie-chart-container .recharts-legend-wrapper {
+    font-size: 13px !important;
+}
+
+.pie-chart-container .recharts-legend-item {
+    margin-right: 16px !important;
 }
 
 .no-data {
@@ -313,9 +325,9 @@
 }
 
 .stat-value {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 1.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-text);
     display: block;
     line-height: 1.2;
