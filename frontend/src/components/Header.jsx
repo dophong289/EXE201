@@ -117,7 +117,7 @@ function Header() {
   const navItems = [
     { path: '/ve-goi-may', label: 'Trang Chủ' },
     { path: '/san-pham', label: 'Sản Phẩm' },
-    { path: '/khuyen-mai', label: 'Ưu đãi' },
+    { path: '/khuyen-mai', label: 'Khuyến mãi' },
     { path: '/bai-viet', label: 'Câu chuyện' },
   ]
 

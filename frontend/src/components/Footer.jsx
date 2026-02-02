@@ -4,7 +4,7 @@ import '../styles/components/Footer.css'
 function Footer() {
   const location = useLocation()
   // Chỉ hiện newsletter ở trang Ưu đãi
-  const isOffersPage = location.pathname === '/uu-dai'
+  const isOffersPage = location.pathname === '/khuyen-mai'
   const showNewsletter = isOffersPage
 
   return (
