@@ -167,10 +167,10 @@ public class OrderService {
         // Get orders in date range
         java.time.LocalDateTime startDt = startDate != null 
             ? startDate.atStartOfDay() 
-            : java.time.LocalDateTime.now().minusDays(30);
+            : java.time.LocalDate.now().minusDays(30).atStartOfDay();
         java.time.LocalDateTime endDt = endDate != null 
             ? endDate.plusDays(1).atStartOfDay() 
-            : java.time.LocalDateTime.now().plusDays(1).atStartOfDay();
+            : java.time.LocalDate.now().plusDays(1).atStartOfDay();
         
         List<Order> orders = orderRepository.findByCreatedAtBetween(startDt, endDt);
         
