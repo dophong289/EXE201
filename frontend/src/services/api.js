@@ -183,6 +183,12 @@ export const orderApi = {
 // Order API (Admin)
 export const adminOrderApi = {
   getAll: () => api.get('/admin/orders'),
+  getStats: (startDate, endDate) => {
+    const params = new URLSearchParams()
+    if (startDate) params.set('startDate', startDate)
+    if (endDate) params.set('endDate', endDate)
+    return api.get(`/admin/orders/stats?${params.toString()}`)
+  },
   confirm: (orderId) => api.put(`/admin/orders/${orderId}/confirm`),
   cancel: (orderId) => api.put(`/admin/orders/${orderId}/cancel`),
 }

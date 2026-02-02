@@ -157,6 +157,116 @@ public class OrderService {
         return toDTO(orderRepository.save(order));
     }
 
+    /**
+     * Get order statistics for dashboard
+     */
+    @Transactional(readOnly = true)
+    public java.util.Map<String, Object> getOrderStats(java.time.LocalDate startDate, java.time.LocalDate endDate) {
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        
+        // Get orders in date range
+        java.time.LocalDateTime startDt = startDate != null 
+            ? startDate.atStartOfDay() 
+            : java.time.LocalDateTime.now().minusDays(30);
+        java.time.LocalDateTime endDt = endDate != null 
+            ? endDate.plusDays(1).atStartOfDay() 
+            : java.time.LocalDateTime.now().plusDays(1).atStartOfDay();
+        
+        List<Order> orders = orderRepository.findByCreatedAtBetween(startDt, endDt);
+        
+        // Basic stats
+        BigDecimal totalRevenue = BigDecimal.ZERO;
+        int completedOrders = 0;
+        int pendingOrders = 0;
+        int rejectedOrders = 0;
+        
+        java.util.Map<String, java.util.Map<String, Object>> revenueByDateMap = new java.util.LinkedHashMap<>();
+        java.util.Map<OrderStatus, BigDecimal> revenueByStatus = new java.util.EnumMap<>(OrderStatus.class);
+        java.util.Map<OrderStatus, Integer> countByStatus = new java.util.EnumMap<>(OrderStatus.class);
+        java.util.Map<PaymentMethod, BigDecimal> revenueByPayment = new java.util.EnumMap<>(PaymentMethod.class);
+        java.util.Map<PaymentMethod, Integer> countByPayment = new java.util.EnumMap<>(PaymentMethod.class);
+        
+        for (Order order : orders) {
+            BigDecimal orderTotal = order.getTotal() != null ? order.getTotal() : BigDecimal.ZERO;
+            
+            // Revenue (only count completed orders)
+            if (order.getStatus() == OrderStatus.GIAO_HANG_THANH_CONG) {
+                totalRevenue = totalRevenue.add(orderTotal);
+                completedOrders++;
+            } else if (order.getStatus() == OrderStatus.DA_HUY) {
+                rejectedOrders++;
+            } else {
+                pendingOrders++;
+            }
+            
+            // Revenue by date
+            String dateKey = order.getCreatedAt().toLocalDate().toString();
+            revenueByDateMap.computeIfAbsent(dateKey, k -> {
+                java.util.Map<String, Object> m = new java.util.HashMap<>();
+                m.put("date", k);
+                m.put("revenue", BigDecimal.ZERO);
+                m.put("orders", 0);
+                return m;
+            });
+            java.util.Map<String, Object> dayStats = revenueByDateMap.get(dateKey);
+            if (order.getStatus() == OrderStatus.GIAO_HANG_THANH_CONG) {
+                dayStats.put("revenue", ((BigDecimal) dayStats.get("revenue")).add(orderTotal));
+            }
+            dayStats.put("orders", (Integer) dayStats.get("orders") + 1);
+            
+            // Revenue by status
+            revenueByStatus.merge(order.getStatus(), orderTotal, BigDecimal::add);
+            countByStatus.merge(order.getStatus(), 1, Integer::sum);
+            
+            // Revenue by payment method
+            revenueByPayment.merge(order.getPaymentMethod(), orderTotal, BigDecimal::add);
+            countByPayment.merge(order.getPaymentMethod(), 1, Integer::sum);
+        }
+        
+        int totalOrders = orders.size();
+        BigDecimal avgOrderValue = totalOrders > 0 
+            ? totalRevenue.divide(BigDecimal.valueOf(Math.max(1, completedOrders)), 0, java.math.RoundingMode.HALF_UP)
+            : BigDecimal.ZERO;
+        double completionRate = totalOrders > 0 
+            ? (completedOrders * 100.0 / totalOrders) 
+            : 0.0;
+        
+        stats.put("totalRevenue", totalRevenue);
+        stats.put("totalOrders", totalOrders);
+        stats.put("completedOrders", completedOrders);
+        stats.put("pendingOrders", pendingOrders);
+        stats.put("rejectedOrders", rejectedOrders);
+        stats.put("avgOrderValue", avgOrderValue);
+        stats.put("completionRate", Math.round(completionRate * 10.0) / 10.0);
+        
+        // Revenue by date list
+        stats.put("revenueByDate", new java.util.ArrayList<>(revenueByDateMap.values()));
+        
+        // Revenue by status list
+        List<java.util.Map<String, Object>> statusList = new java.util.ArrayList<>();
+        for (OrderStatus status : OrderStatus.values()) {
+            java.util.Map<String, Object> m = new java.util.HashMap<>();
+            m.put("status", status.name());
+            m.put("revenue", revenueByStatus.getOrDefault(status, BigDecimal.ZERO));
+            m.put("count", countByStatus.getOrDefault(status, 0));
+            statusList.add(m);
+        }
+        stats.put("revenueByStatus", statusList);
+        
+        // Revenue by payment method list
+        List<java.util.Map<String, Object>> paymentList = new java.util.ArrayList<>();
+        for (PaymentMethod pm : PaymentMethod.values()) {
+            java.util.Map<String, Object> m = new java.util.HashMap<>();
+            m.put("method", pm.name());
+            m.put("revenue", revenueByPayment.getOrDefault(pm, BigDecimal.ZERO));
+            m.put("count", countByPayment.getOrDefault(pm, 0));
+            paymentList.add(m);
+        }
+        stats.put("revenueByPaymentMethod", paymentList);
+        
+        return stats;
+    }
+
     private OrderDTO toDTO(Order order) {
         OrderDTO dto = new OrderDTO();
         dto.setId(order.getId());

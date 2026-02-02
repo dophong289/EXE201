@@ -333,10 +333,17 @@ function Header() {
                         </svg>
                         Đơn hàng
                       </Link>
-                      {/* MANAGER + ADMIN: Đơn hàng, Sản phẩm */}
+                      {/* MANAGER + ADMIN: Doanh thu, Đơn hàng, Sản phẩm */}
                       {(user.role === 'ADMIN' || user.role === 'MANAGER') && (
                         <>
                           <div className="dropdown-divider"></div>
+                          <Link to="/admin/doanh-thu" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <line x1="12" y1="1" x2="12" y2="23" />
+                              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                            Doanh thu
+                          </Link>
                           <Link to="/admin/don-hang" className="dropdown-item admin-link" onClick={() => setShowUserMenu(false)}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />

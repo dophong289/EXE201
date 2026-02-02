@@ -29,5 +29,15 @@ public class AdminOrderController {
     public ResponseEntity<OrderDTO> cancel(@PathVariable String orderId) {
         return ResponseEntity.ok(orderService.adminCancel(orderId));
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<java.util.Map<String, Object>> getStats(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate
+    ) {
+        java.time.LocalDate start = startDate != null ? java.time.LocalDate.parse(startDate) : null;
+        java.time.LocalDate end = endDate != null ? java.time.LocalDate.parse(endDate) : null;
+        return ResponseEntity.ok(orderService.getOrderStats(start, end));
+    }
 }
 

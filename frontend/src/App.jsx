@@ -24,6 +24,7 @@ import AccountPage from './pages/AccountPage'
 import OrdersPage from './pages/OrdersPage'
 import AdminOrdersPage from './pages/AdminOrdersPage'
 import AdminAccountsPage from './pages/AdminAccountsPage'
+import AdminRevenuePage from './pages/AdminRevenuePage'
 
 function App() {
   const location = useLocation()
@@ -51,6 +52,7 @@ function App() {
           <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage />} />
           <Route path="/tai-khoan" element={<AccountPage />} />
           <Route path="/don-hang" element={<OrdersPage />} />
+          <Route path="/admin/doanh-thu" element={<AdminRevenuePage />} />
           <Route path="/admin/don-hang" element={<AdminOrdersPage />} />
           <Route path="/admin/san-pham" element={<AdminProductsPage />} />
           <Route path="/admin/danh-muc" element={<AdminCategoriesPage />} />
