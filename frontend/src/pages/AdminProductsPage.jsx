@@ -49,7 +49,7 @@ function AdminProductsPage() {
       return
     }
     const user = JSON.parse(userStr)
-    if (user.role !== 'ADMIN') {
+    if (user.role !== 'ADMIN' && user.role !== 'MANAGER') {
       navigate('/')
       return
     }
