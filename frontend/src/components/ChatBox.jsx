@@ -4,6 +4,32 @@ import { chatApi, productApi } from '../services/api'
 import ImageWithFallback from './ImageWithFallback'
 import '../styles/components/ChatBox.css'
 
+// Helper function to format message content with line breaks and basic formatting
+const formatMessage = (content) => {
+  if (!content) return content
+
+  // Process each line separately
+  const lines = content.split('\n')
+
+  return lines.map((line, index) => {
+    // Handle bold text with ** markers
+    const parts = line.split(/(\*\*[^*]+\*\*)/g)
+    const formattedParts = parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i}>{part.slice(2, -2)}</strong>
+      }
+      return part
+    })
+
+    return (
+      <span key={index}>
+        {formattedParts}
+        {index < lines.length - 1 && <br />}
+      </span>
+    )
+  })
+}
+
 function ChatBox() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([
@@ -51,7 +77,7 @@ function ChatBox() {
 
     const userMessage = inputValue.trim()
     setInputValue('')
-    
+
     // Thêm user message
     const newMessages = [...messages, { role: 'user', content: userMessage }]
     setMessages(newMessages)
@@ -61,7 +87,7 @@ function ChatBox() {
       // Gửi message đến backend AI
       const response = await chatApi.sendMessage(userMessage, products)
       const aiResponse = response.data.message || response.data.response || 'Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng thử lại.'
-      
+
       setMessages([...newMessages, { role: 'assistant', content: aiResponse }])
     } catch (error) {
       console.error('Error sending message:', error)
@@ -122,8 +148,8 @@ function ChatBox() {
           <motion.div
             className="chat-window"
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ 
-              opacity: 1, 
+            animate={{
+              opacity: 1,
               scale: 1
             }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -169,11 +195,11 @@ function ChatBox() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <div className="message-content">
-                    {message.content}
+                    {message.role === 'assistant' ? formatMessage(message.content) : message.content}
                   </div>
                 </motion.div>
               ))}
-              
+
               {loading && (
                 <motion.div
                   className="chat-message assistant loading"
@@ -189,7 +215,7 @@ function ChatBox() {
                   </div>
                 </motion.div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
 
@@ -223,8 +249,8 @@ function ChatBox() {
               />
               <button type="submit" disabled={!inputValue.trim() || loading}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <line x1="22" y1="2" x2="11" y2="13"/>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
                 </svg>
               </button>
             </form>
