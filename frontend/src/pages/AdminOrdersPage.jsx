@@ -318,9 +318,9 @@ function AdminOrdersPage() {
                             <tr key={idx} style={{ borderTop: '1px solid var(--color-border)' }}>
                               <td style={{ padding: '0.75rem' }}>{item.productName || item.name || `Sản phẩm #${item.productId}`}</td>
                               <td style={{ padding: '0.75rem', textAlign: 'center' }}>{item.quantity}</td>
-                              <td style={{ padding: '0.75rem', textAlign: 'right' }}>{formatPrice(item.price)}</td>
+                              <td style={{ padding: '0.75rem', textAlign: 'right' }}>{formatPrice(item.unitPrice)}</td>
                               <td style={{ padding: '0.75rem', textAlign: 'right', fontWeight: '600' }}>
-                                {formatPrice(item.price * item.quantity)}
+                                {formatPrice(item.lineTotal)}
                               </td>
                             </tr>
                           ))}
