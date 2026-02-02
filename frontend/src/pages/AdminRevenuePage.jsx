@@ -265,58 +265,79 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                     </div>
                 </motion.div>
 
-                {/* Charts Row - Row B */}
+                {/* Charts Row - Row B (8:4 layout) */}
                 <motion.div
                     className="charts-row"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                 >
-                    {/* Revenue Chart */}
+                    {/* Revenue Chart - 8 columns */}
                     <div className="chart-card main-chart">
-                        <div className="chart-header">
+                        <div className="chart-header-enhanced">
                             <h3>Doanh thu theo thời gian</h3>
+                            <div className="chart-summary">
+                                <div className="summary-item">
+                                    <span className="summary-label">Tổng {getTimeRangeLabel()}:</span>
+                                    <span className="summary-value">{formatPrice(stats?.totalRevenue)}</span>
+                                </div>
+                                <div className="summary-item">
+                                    <span className="summary-label">TB/ngày:</span>
+                                    <span className="summary-value">
+                                        {formatPrice(chartData.length > 0 ? Math.round((stats?.totalRevenue || 0) / chartData.length) : 0)}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div className="chart-container">
                             {chartData.length > 0 ? (
-                                <ResponsiveContainer width="100%" height={280}>
-                                    <AreaChart data={chartData}>
+                                <ResponsiveContainer width="100%" height={260}>
+                                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                                         <defs>
                                             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#8B6914" stopOpacity={0.3} />
-                                                <stop offset="95%" stopColor="#8B6914" stopOpacity={0} />
+                                                <stop offset="5%" stopColor="#059669" stopOpacity={0.25} />
+                                                <stop offset="95%" stopColor="#059669" stopOpacity={0.02} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" strokeOpacity={0.6} />
                                         <XAxis
                                             dataKey="date"
-                                            stroke="#7A6E5D"
-                                            fontSize={12}
+                                            stroke="#9CA3AF"
+                                            fontSize={11}
+                                            tickLine={false}
+                                            axisLine={false}
                                         />
                                         <YAxis
-                                            stroke="#7A6E5D"
-                                            fontSize={12}
+                                            stroke="#9CA3AF"
+                                            fontSize={11}
                                             tickFormatter={formatShortPrice}
+                                            tickLine={false}
+                                            axisLine={false}
+                                            width={50}
                                         />
                                         <Tooltip
-                                            contentStyle={{
-                                                background: '#fff',
-                                                border: '1px solid #E8DFD0',
-                                                borderRadius: '8px',
-                                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                                            content={({ active, payload, label }) => {
+                                                if (active && payload && payload.length) {
+                                                    return (
+                                                        <div className="custom-tooltip">
+                                                            <p className="tooltip-date">Ngày: {label}</p>
+                                                            <p className="tooltip-revenue">Doanh thu: {formatPrice(payload[0].value)}</p>
+                                                            <p className="tooltip-orders">Số đơn: {payload[0].payload.orders}</p>
+                                                        </div>
+                                                    )
+                                                }
+                                                return null
                                             }}
-                                            formatter={(value, name) => [
-                                                name === 'revenue' ? formatPrice(value) : value,
-                                                name === 'revenue' ? 'Doanh thu' : 'Đơn hàng'
-                                            ]}
                                         />
                                         <Area
                                             type="monotone"
                                             dataKey="revenue"
-                                            stroke="#8B6914"
-                                            strokeWidth={2}
+                                            stroke="#059669"
+                                            strokeWidth={2.5}
                                             fillOpacity={1}
                                             fill="url(#colorRevenue)"
+                                            dot={{ r: 3, fill: '#059669', strokeWidth: 0 }}
+                                            activeDot={{ r: 5, fill: '#059669', stroke: '#fff', strokeWidth: 2 }}
                                         />
                                     </AreaChart>
                                 </ResponsiveContainer>
@@ -330,52 +351,91 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                                 </div>
                             )}
                         </div>
+                        {/* Mini Stats */}
+                        {chartData.length > 0 && (
+                            <div className="chart-mini-stats">
+                                <div className="mini-stat high">
+                                    <span className="mini-label">📈 Cao nhất:</span>
+                                    <span className="mini-value">
+                                        {(() => {
+                                            const max = chartData.reduce((a, b) => a.revenue > b.revenue ? a : b, { revenue: 0, date: '' })
+                                            return `${max.date} – ${formatPrice(max.revenue)}`
+                                        })()}
+                                    </span>
+                                </div>
+                                <div className="mini-stat low">
+                                    <span className="mini-label">📉 Thấp nhất:</span>
+                                    <span className="mini-value">
+                                        {(() => {
+                                            const min = chartData.reduce((a, b) => a.revenue < b.revenue ? a : b, { revenue: Infinity, date: '' })
+                                            return `${min.date} – ${formatPrice(min.revenue)}`
+                                        })()}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
-                    {/* Breakdown PieChart */}
+                    {/* Donut Chart - 4 columns */}
                     <div className="chart-card breakdown-chart">
                         <div className="chart-header">
                             <h3>Cơ cấu đơn hàng</h3>
                         </div>
-                        <div className="chart-container pie-chart-container">
-                            {pieData.length > 0 ? (
-                                <ResponsiveContainer width="100%" height={280}>
-                                    <PieChart>
-                                        <Pie
-                                            data={pieData}
-                                            cx="50%"
-                                            cy="40%"
-                                            innerRadius={45}
-                                            outerRadius={70}
-                                            paddingAngle={2}
-                                            dataKey="value"
-                                            label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
-                                            labelLine={false}
-                                        >
-                                            {pieData.map((entry, index) => (
-                                                <Cell key={`cell-${index}`} fill={entry.color} />
-                                            ))}
-                                        </Pie>
-                                        <Tooltip
-                                            formatter={(value, name) => [value + ' đơn', name]}
-                                            contentStyle={{
-                                                background: '#fff',
-                                                border: '1px solid #E8DFD0',
-                                                borderRadius: '8px',
-                                                fontSize: '14px'
-                                            }}
-                                        />
-                                        <Legend
-                                            layout="horizontal"
-                                            align="center"
-                                            verticalAlign="bottom"
-                                            wrapperStyle={{
-                                                paddingTop: '16px',
-                                                fontSize: '13px'
-                                            }}
-                                        />
-                                    </PieChart>
-                                </ResponsiveContainer>
+                        <div className="chart-container donut-layout">
+                            {stats?.totalOrders > 0 ? (
+                                <>
+                                    <div className="donut-wrapper">
+                                        <ResponsiveContainer width="100%" height={180}>
+                                            <PieChart>
+                                                <Pie
+                                                    data={pieData}
+                                                    cx="50%"
+                                                    cy="50%"
+                                                    innerRadius={50}
+                                                    outerRadius={75}
+                                                    paddingAngle={2}
+                                                    dataKey="value"
+                                                >
+                                                    {pieData.map((entry, index) => (
+                                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                                    ))}
+                                                </Pie>
+                                                <Tooltip
+                                                    formatter={(value, name) => [`${value} đơn (${Math.round(value / stats.totalOrders * 100)}%)`, name]}
+                                                    contentStyle={{
+                                                        background: '#fff',
+                                                        border: '1px solid #E8DFD0',
+                                                        borderRadius: '8px',
+                                                        fontSize: '13px',
+                                                        padding: '8px 12px'
+                                                    }}
+                                                />
+                                            </PieChart>
+                                        </ResponsiveContainer>
+                                        {/* Center Label */}
+                                        <div className="donut-center">
+                                            <span className="center-value">{stats?.totalOrders || 0}</span>
+                                            <span className="center-label">Tổng đơn</span>
+                                        </div>
+                                    </div>
+                                    {/* Custom Legend */}
+                                    <div className="donut-legend">
+                                        {stats?.revenueByStatus?.map((item, index) => {
+                                            const percent = stats.totalOrders > 0 ? Math.round(item.count / stats.totalOrders * 100) : 0
+                                            return (
+                                                <div className="legend-item" key={item.status}>
+                                                    <span
+                                                        className="legend-dot"
+                                                        style={{ background: COLORS[index % COLORS.length] }}
+                                                    />
+                                                    <span className="legend-text">
+                                                        {STATUS_LABELS[item.status]} — {item.count} đơn ({percent}%)
+                                                    </span>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </>
                             ) : (
                                 <div className="no-data">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
