@@ -3,24 +3,23 @@ import '../styles/components/Footer.css'
 
 function Footer() {
   const location = useLocation()
-  const isProductsPage = location.pathname === '/san-pham'
-  const isAboutPage = location.pathname === '/ve-goi-may'
-  const isArticlesPage = location.pathname.startsWith('/bai-viet')
-  const hideNewsletter = isProductsPage || isAboutPage || isArticlesPage
-  
+  // Chỉ hiện newsletter ở trang Ưu đãi
+  const isOffersPage = location.pathname === '/uu-dai'
+  const showNewsletter = isOffersPage
+
   return (
     <footer className="footer">
-      {!hideNewsletter && (
+      {showNewsletter && (
         <div className="footer-newsletter">
-        <div className="newsletter-container">
-          <h3>Đăng ký nhận thông tin từ Gói Mây</h3>
-          <p>Khám phá bộ sưu tập quà tặng văn hóa Việt Nam, ưu đãi độc quyền và câu chuyện từ các làng nghề truyền thống.</p>
-          <form className="newsletter-form">
-            <input type="email" placeholder="Nhập email của bạn" />
-            <button type="submit">Đăng ký</button>
-          </form>
+          <div className="newsletter-container">
+            <h3>Đăng ký nhận thông tin từ Gói Mây</h3>
+            <p>Khám phá bộ sưu tập quà tặng văn hóa Việt Nam, ưu đãi độc quyền và câu chuyện từ các làng nghề truyền thống.</p>
+            <form className="newsletter-form">
+              <input type="email" placeholder="Nhập email của bạn" />
+              <button type="submit">Đăng ký</button>
+            </form>
+          </div>
         </div>
-      </div>
       )}
 
       <div className="footer-main">
@@ -57,12 +56,12 @@ function Footer() {
             <div className="social-links">
               <a href="https://www.facebook.com/profile.php?id=61585943023670" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                 </svg>
               </a>
               <a href="https://www.tiktok.com/@goimay_" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16.6 2c.2 2.1 1.4 3.8 3.4 4.5V10c-1.5-.1-2.8-.6-3.9-1.5v6.4c0 3.7-3 6.7-6.7 6.7S2.7 18.6 2.7 14.9c0-3.6 2.9-6.6 6.5-6.7v3.6c-.2 0-.4-.1-.6-.1-1.7 0-3.1 1.4-3.1 3.1S7 17.9 8.7 17.9s3-1.3 3.1-3V2h4.8z"/>
+                  <path d="M16.6 2c.2 2.1 1.4 3.8 3.4 4.5V10c-1.5-.1-2.8-.6-3.9-1.5v6.4c0 3.7-3 6.7-6.7 6.7S2.7 18.6 2.7 14.9c0-3.6 2.9-6.6 6.5-6.7v3.6c-.2 0-.4-.1-.6-.1-1.7 0-3.1 1.4-3.1 3.1S7 17.9 8.7 17.9s3-1.3 3.1-3V2h4.8z" />
                 </svg>
               </a>
               <a href="https://zalo.me/19009300" target="_blank" rel="noopener noreferrer" aria-label="Zalo">
