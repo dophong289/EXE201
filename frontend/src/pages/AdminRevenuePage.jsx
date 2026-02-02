@@ -291,54 +291,55 @@ Tỷ lệ hoàn tất,${exportData.completionRate}%`
                         </div>
                         <div className="chart-container">
                             {chartData.length > 0 ? (
-                                <ResponsiveContainer width="100%" height={260}>
-                                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                                        <defs>
-                                            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#059669" stopOpacity={0.25} />
-                                                <stop offset="95%" stopColor="#059669" stopOpacity={0.02} />
-                                            </linearGradient>
-                                        </defs>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" />
-                                        <XAxis
-                                            dataKey="date"
-                                            stroke="#7A6E5D"
-                                            fontSize={11}
-                                            tickLine={false}
-                                        />
-                                        <YAxis
-                                            stroke="#7A6E5D"
-                                            fontSize={11}
-                                            tickFormatter={formatShortPrice}
-                                            tickLine={false}
-                                            width={55}
-                                        />
-                                        <Tooltip
-                                            content={({ active, payload, label }) => {
-                                                if (active && payload && payload.length) {
-                                                    return (
-                                                        <div className="custom-tooltip">
-                                                            <p className="tooltip-date">Ngày: {label}</p>
-                                                            <p className="tooltip-revenue">Doanh thu: {formatPrice(payload[0].value)}</p>
-                                                            <p className="tooltip-orders">Số đơn: {payload[0].payload.orders}</p>
-                                                        </div>
-                                                    )
-                                                }
-                                                return null
-                                            }}
-                                        />
-                                        <Area
-                                            type="monotone"
-                                            dataKey="revenue"
-                                            stroke="#059669"
-                                            strokeWidth={2.5}
-                                            fillOpacity={1}
-                                            fill="url(#colorRevenue)"
-                                            dot={{ r: 3, fill: '#059669', strokeWidth: 0 }}
-                                            activeDot={{ r: 5, fill: '#059669', stroke: '#fff', strokeWidth: 2 }}
-                                        />
-                                    </AreaChart>
-                                </ResponsiveContainer>
+                                <div style={{ width: '100%', height: 260 }}>
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                                            <defs>
+                                                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#059669" stopOpacity={0.25} />
+                                                    <stop offset="95%" stopColor="#059669" stopOpacity={0.02} />
+                                                </linearGradient>
+                                            </defs>
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#E8DFD0" />
+                                            <XAxis
+                                                dataKey="date"
+                                                stroke="#7A6E5D"
+                                                fontSize={11}
+                                                tickLine={false}
+                                            />
+                                            <YAxis
+                                                stroke="#7A6E5D"
+                                                fontSize={11}
+                                                tickFormatter={formatShortPrice}
+                                                tickLine={false}
+                                                width={55}
+                                            />
+                                            <Tooltip
+                                                content={({ active, payload, label }) => {
+                                                    if (active && payload && payload.length) {
+                                                        return (
+                                                            <div className="custom-tooltip">
+                                                                <p className="tooltip-date">Ngày: {label}</p>
+                                                                <p className="tooltip-revenue">Doanh thu: {formatPrice(payload[0].value)}</p>
+                                                                <p className="tooltip-orders">Số đơn: {payload[0].payload.orders}</p>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    return null
+                                                }}
+                                            />
+                                            <Area
+                                                type="monotone"
+                                                dataKey="revenue"
+                                                stroke="#059669"
+                                                strokeWidth={2.5}
+                                                fillOpacity={1}
+                                                fill="url(#colorRevenue)"
+                                                dot={{ r: 3, fill: '#059669', strokeWidth: 0 }}
+                                            />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                </div>
                             ) : (
                                 <div className="no-data">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

@@ -285,6 +285,12 @@
 .chart-container {
     padding: 1rem 1.5rem;
     min-height: 280px;
+    height: 280px;
+}
+
+.chart-container .recharts-responsive-container {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Custom Tooltip */
