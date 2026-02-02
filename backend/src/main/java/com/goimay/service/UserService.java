@@ -37,6 +37,12 @@ public class UserService {
         if (request.getAddress() != null) {
             user.setAddress(request.getAddress());
         }
+        if (request.getBirthDate() != null && !request.getBirthDate().isEmpty()) {
+            user.setBirthDate(java.time.LocalDate.parse(request.getBirthDate()));
+        }
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        }
         
         return toDTO(userRepository.save(user));
     }
@@ -64,6 +70,10 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());
         dto.setAddress(user.getAddress());
+        if (user.getBirthDate() != null) {
+            dto.setBirthDate(user.getBirthDate().toString());
+        }
+        dto.setGender(user.getGender());
         dto.setRole(user.getRole().name());
         if (user.getCreatedAt() != null) {
             dto.setCreatedAt(user.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));

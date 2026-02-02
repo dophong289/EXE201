@@ -35,6 +35,10 @@ public class User implements UserDetails {
     
     private String address;
     
+    private java.time.LocalDate birthDate;
+    
+    private String gender; // "MALE", "FEMALE", "OTHER"
+    
     private String googleId;
     
     private String provider; // "local" or "google"

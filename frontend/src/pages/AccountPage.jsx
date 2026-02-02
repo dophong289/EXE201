@@ -15,6 +15,8 @@ function AccountPage() {
   const [profileData, setProfileData] = useState({
     fullName: '',
     phone: '',
+    birthDate: '',
+    gender: '',
     address: ''
   })
 
@@ -42,6 +44,8 @@ function AccountPage() {
       setProfileData({
         fullName: response.data.fullName || '',
         phone: response.data.phone || '',
+        birthDate: response.data.birthDate || '',
+        gender: response.data.gender || '',
         address: response.data.address || ''
       })
     } catch (error) {
@@ -206,6 +210,32 @@ function AccountPage() {
                   onChange={handleProfileChange}
                   placeholder="Nhập số điện thoại"
                 />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Ngày sinh</label>
+                  <input
+                    type="date"
+                    name="birthDate"
+                    value={profileData.birthDate}
+                    onChange={handleProfileChange}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Giới tính</label>
+                  <select
+                    name="gender"
+                    value={profileData.gender}
+                    onChange={handleProfileChange}
+                  >
+                    <option value="">-- Chọn giới tính --</option>
+                    <option value="MALE">Nam</option>
+                    <option value="FEMALE">Nữ</option>
+                    <option value="OTHER">Khác</option>
+                  </select>
+                </div>
               </div>
 
               <div className="form-group">
