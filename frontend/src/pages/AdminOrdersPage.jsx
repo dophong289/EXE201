@@ -11,6 +11,10 @@ function AdminOrdersPage() {
   const [message, setMessage] = useState({ type: '', text: '' })
   const [actionLoading, setActionLoading] = useState('')
 
+  // Pagination
+  const pageSize = 6
+  const [currentPage, setCurrentPage] = useState(0)
+
   // Order detail modal
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [showDetailModal, setShowDetailModal] = useState(false)
@@ -104,6 +108,10 @@ function AdminOrdersPage() {
   const formatPrice = (price) =>
     new Intl.NumberFormat('vi-VN').format(price || 0) + 'đ'
 
+  // Pagination calculations
+  const totalPages = Math.ceil(orders.length / pageSize)
+  const paginatedOrders = orders.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+
   return (
     <div className="admin-page">
       <div className="admin-container">
@@ -165,7 +173,7 @@ function AdminOrdersPage() {
                   </td>
                 </tr>
               ) : (
-                orders.map((o) => (
+                paginatedOrders.map((o) => (
                   <motion.tr
                     key={o.id}
                     initial={{ opacity: 0 }}
@@ -228,6 +236,30 @@ function AdminOrdersPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+            >
+              ← Trước
+            </button>
+            <div className="pagination-info">
+              <span>Trang {currentPage + 1} / {totalPages}</span>
+              <span className="pagination-total">({orders.length} đơn hàng)</span>
+            </div>
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage >= totalPages - 1}
+            >
+              Sau →
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Order Detail Modal */}

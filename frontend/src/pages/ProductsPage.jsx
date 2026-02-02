@@ -22,6 +22,10 @@ function ProductsPage() {
   const [searchInput, setSearchInput] = useState(searchParams.get('q') || '')
   const [debouncedSearch, setDebouncedSearch] = useState(searchParams.get('q') || '')
 
+  // Pagination
+  const pageSize = 8
+  const [currentPage, setCurrentPage] = useState(0)
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
@@ -62,6 +66,7 @@ function ProductsPage() {
 
   useEffect(() => {
     loadProducts()
+    setCurrentPage(0) // Reset page when filter changes
   }, [activeCategory, debouncedSearch])
 
   const loadCategories = async () => {
@@ -239,6 +244,10 @@ function ProductsPage() {
 
   const clearSearch = () => setSearchInput('')
 
+  // Pagination calculations
+  const totalPages = Math.ceil(products.length / pageSize)
+  const paginatedProducts = products.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+
   return (
     <div className="products-page">
       <section className="page-header">
@@ -307,7 +316,7 @@ function ProductsPage() {
             </div>
           ) : (
             <div className="products-grid">
-              {products.map((product, index) => (
+              {paginatedProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
                   className="product-card"
@@ -359,6 +368,36 @@ function ProductsPage() {
                   </div>
                 </motion.div>
               ))}
+            </div>
+          )}
+
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <div className="pagination" style={{ marginTop: '2rem' }}>
+              <button
+                className="pagination-btn"
+                onClick={() => {
+                  setCurrentPage(p => Math.max(0, p - 1))
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage === 0}
+              >
+                ← Trước
+              </button>
+              <div className="pagination-info">
+                <span>Trang {currentPage + 1} / {totalPages}</span>
+                <span className="pagination-total">({products.length} sản phẩm)</span>
+              </div>
+              <button
+                className="pagination-btn"
+                onClick={() => {
+                  setCurrentPage(p => Math.min(totalPages - 1, p + 1))
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                disabled={currentPage >= totalPages - 1}
+              >
+                Sau →
+              </button>
             </div>
           )}
         </div>

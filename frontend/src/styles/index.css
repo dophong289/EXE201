@@ -1,23 +1,33 @@
 /* ===== CSS Variables ===== */
 :root {
   /* Colors - Bảng màu nâu/be truyền thống */
-  --color-primary: #8B6914;         /* Nâu vàng đậm - màu tre già */
-  --color-primary-dark: #6B5210;    /* Nâu đậm hơn */
-  --color-primary-light: #A68B3D;   /* Nâu vàng nhạt */
-  --color-accent: #D4A574;          /* Màu mây tự nhiên */
-  --color-accent-dark: #B8956A;     /* Màu mây đậm */
-  
-  --color-text: #3D3428;            /* Nâu đen */
-  --color-text-light: #7A6E5D;      /* Nâu xám */
+  --color-primary: #8B6914;
+  /* Nâu vàng đậm - màu tre già */
+  --color-primary-dark: #6B5210;
+  /* Nâu đậm hơn */
+  --color-primary-light: #A68B3D;
+  /* Nâu vàng nhạt */
+  --color-accent: #D4A574;
+  /* Màu mây tự nhiên */
+  --color-accent-dark: #B8956A;
+  /* Màu mây đậm */
+
+  --color-text: #3D3428;
+  /* Nâu đen */
+  --color-text-light: #7A6E5D;
+  /* Nâu xám */
   --color-white: #ffffff;
-  --color-bg: #FDFBF7;              /* Kem nhạt */
-  --color-bg-alt: #F5F0E8;          /* Be nhạt */
-  --color-border: #E8DFD0;          /* Viền be */
-  
+  --color-bg: #FDFBF7;
+  /* Kem nhạt */
+  --color-bg-alt: #F5F0E8;
+  /* Be nhạt */
+  --color-border: #E8DFD0;
+  /* Viền be */
+
   /* Fonts */
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
-  
+
   /* Spacing */
   --section-padding: 5rem;
   --container-max: 1400px;
@@ -33,21 +43,40 @@
 }
 
 /* Prevent horizontal overflow globally */
-html, body {
+html,
+body {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
 }
 
 /* Ensure all text elements wrap properly */
-p, span, div, a, button, input, textarea, select, label, h1, h2, h3, h4, h5, h6 {
+p,
+span,
+div,
+a,
+button,
+input,
+textarea,
+select,
+label,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
 /* Ensure containers don't overflow */
-.container, .section, .page-header, main, .app {
+.container,
+.section,
+.page-header,
+main,
+.app {
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
@@ -118,7 +147,12 @@ button {
 }
 
 /* ===== Typography ===== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 500;
   line-height: 1.3;
@@ -231,7 +265,7 @@ a:hover {
   .grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -242,52 +276,59 @@ a:hover {
     --section-padding: 3rem;
     --container-max: 100%;
   }
-  
+
   html {
     font-size: 14px;
   }
-  
+
   body {
     font-size: 14px;
     line-height: 1.6;
   }
-  
+
   h1 {
     font-size: 1.75rem;
     line-height: 1.2;
   }
-  
+
   h2 {
     font-size: 1.5rem;
     line-height: 1.3;
   }
-  
+
   h3 {
     font-size: 1.25rem;
     line-height: 1.3;
   }
-  
+
   .container {
     padding: 0 1rem;
     max-width: 100%;
   }
-  
+
   .page-header {
     padding: 2rem 1rem !important;
   }
-  
+
   .page-header h1 {
     font-size: 1.75rem !important;
   }
-  
+
   .grid-2,
   .grid-3,
   .grid-4 {
     grid-template-columns: 1fr;
   }
-  
+
   /* Ensure text doesn't overflow */
-  p, span, div, a, button, input, textarea, select {
+  p,
+  span,
+  div,
+  a,
+  button,
+  input,
+  textarea,
+  select {
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -298,65 +339,68 @@ a:hover {
   html {
     font-size: 14px;
   }
-  
+
   body {
     font-size: 14px;
     line-height: 1.5;
   }
-  
+
   h1 {
     font-size: 1.5rem;
     line-height: 1.2;
   }
-  
+
   h2 {
     font-size: 1.25rem;
     line-height: 1.3;
   }
-  
+
   h3 {
     font-size: 1.1rem;
     line-height: 1.3;
   }
-  
+
   p {
     font-size: 0.95rem;
     line-height: 1.6;
   }
-  
+
   .container {
     padding: 0 0.75rem;
     max-width: 100%;
   }
-  
+
   .page-header {
     padding: 1.5rem 0.75rem !important;
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .page-header h1 {
     font-size: 1.5rem !important;
     line-height: 1.2;
     padding: 0 0.5rem;
   }
-  
+
   .page-header .page-subtitle {
     font-size: 0.9rem !important;
     padding: 0 0.5rem;
     line-height: 1.5;
   }
-  
+
   /* Ensure buttons are touch-friendly */
   .btn {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
     min-height: 44px;
   }
-  
+
   /* Ensure inputs are readable */
-  input, textarea, select {
-    font-size: 16px; /* Prevents zoom on iOS */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+    /* Prevents zoom on iOS */
     padding: 0.75rem;
   }
 }
@@ -366,6 +410,7 @@ a:hover {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -376,6 +421,7 @@ a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -438,3 +484,65 @@ a:hover {
   color: var(--color-primary);
 }
 
+/* ===== Pagination ===== */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+}
+
+.pagination-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-body);
+}
+
+.pagination-info span:first-child {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.pagination-total {
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    gap: 0.75rem;
+  }
+
+  .pagination-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}

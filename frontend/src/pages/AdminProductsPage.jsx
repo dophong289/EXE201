@@ -13,6 +13,10 @@ function AdminProductsPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
+  // Pagination
+  const pageSize = 6
+  const [currentPage, setCurrentPage] = useState(0)
+
   // Modal states
   const [showModal, setShowModal] = useState(false)
   const [modalMode, setModalMode] = useState('add') // 'add' or 'edit'
@@ -303,6 +307,10 @@ function AdminProductsPage() {
     }).format(price)
   }
 
+  // Pagination calculations
+  const totalPages = Math.ceil(products.length / pageSize)
+  const paginatedProducts = products.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+
   if (loading) {
     return (
       <div className="admin-page">
@@ -393,7 +401,7 @@ function AdminProductsPage() {
                   </td>
                 </tr>
               ) : (
-                products.map((product) => (
+                paginatedProducts.map((product) => (
                   <tr key={product.id}>
                     <td>
                       <div className="product-thumb">
@@ -463,6 +471,30 @@ function AdminProductsPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+            >
+              ← Trước
+            </button>
+            <div className="pagination-info">
+              <span>Trang {currentPage + 1} / {totalPages}</span>
+              <span className="pagination-total">({products.length} sản phẩm)</span>
+            </div>
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage >= totalPages - 1}
+            >
+              Sau →
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Add/Edit Modal */}

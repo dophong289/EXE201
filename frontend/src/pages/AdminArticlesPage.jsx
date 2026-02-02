@@ -12,13 +12,17 @@ function AdminArticlesPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  
+
+  // Pagination
+  const pageSize = 6
+  const [currentPage, setCurrentPage] = useState(0)
+
   // Modal states
   const [showModal, setShowModal] = useState(false)
   const [modalMode, setModalMode] = useState('add')
   const [selectedArticle, setSelectedArticle] = useState(null)
   const [saving, setSaving] = useState(false)
-  
+
   // Form data
   const [formData, setFormData] = useState({
     title: '',
@@ -35,7 +39,7 @@ function AdminArticlesPage() {
   // Delete confirmation
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [articleToDelete, setArticleToDelete] = useState(null)
-  
+
   // Image upload
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef(null)
@@ -95,7 +99,7 @@ function AdminArticlesPage() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
-    
+
     if (name === 'title' && modalMode === 'add') {
       setFormData({
         ...formData,
@@ -210,7 +214,7 @@ function AdminArticlesPage() {
 
       closeModal()
       loadArticles()
-      
+
       setTimeout(() => setSuccess(''), 3000)
     } catch (err) {
       setError(err.response?.data?.message || 'Có lỗi xảy ra. Vui lòng thử lại.')
@@ -233,7 +237,7 @@ function AdminArticlesPage() {
       setShowDeleteConfirm(false)
       setArticleToDelete(null)
       loadArticles()
-      
+
       setTimeout(() => setSuccess(''), 3000)
     } catch (err) {
       setError('Không thể xóa bài viết')
@@ -249,6 +253,10 @@ function AdminArticlesPage() {
     const cat = categories.find(c => c.id === categoryId)
     return cat?.name || 'Chưa phân loại'
   }
+
+  // Pagination calculations
+  const totalPages = Math.ceil(articles.length / pageSize)
+  const paginatedArticles = articles.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
 
   if (loading) {
     return (
@@ -271,8 +279,8 @@ function AdminArticlesPage() {
           </div>
           <button className="btn-add" onClick={openAddModal}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
             Thêm bài viết
           </button>
@@ -281,30 +289,30 @@ function AdminArticlesPage() {
         {/* Messages */}
         <AnimatePresence>
           {success && (
-            <motion.div 
+            <motion.div
               className="alert alert-success"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
               {success}
             </motion.div>
           )}
           {error && !showModal && (
-            <motion.div 
+            <motion.div
               className="alert alert-error"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
               {error}
             </motion.div>
@@ -331,11 +339,11 @@ function AdminArticlesPage() {
                   <td colSpan="7" className="empty-state">
                     <div className="empty-content">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="16" y1="13" x2="8" y2="13"/>
-                        <line x1="16" y1="17" x2="8" y2="17"/>
-                        <polyline points="10 9 9 9 8 9"/>
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
                       </svg>
                       <p>Chưa có bài viết nào</p>
                       <button onClick={openAddModal}>Thêm bài viết đầu tiên</button>
@@ -343,18 +351,18 @@ function AdminArticlesPage() {
                   </td>
                 </tr>
               ) : (
-                articles.map((article) => (
+                paginatedArticles.map((article) => (
                   <tr key={article.id}>
                     <td>
                       <div className="product-thumb">
-                      {article.thumbnail ? (
-                        <ImageWithFallback src={resolveMediaUrl(article.thumbnail)} alt={article.title} />
+                        {article.thumbnail ? (
+                          <ImageWithFallback src={resolveMediaUrl(article.thumbnail)} alt={article.title} />
                         ) : (
                           <div className="no-image">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                              <circle cx="8.5" cy="8.5" r="1.5"/>
-                              <polyline points="21 15 16 10 5 21"/>
+                              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <polyline points="21 15 16 10 5 21" />
                             </svg>
                           </div>
                         )}
@@ -385,26 +393,26 @@ function AdminArticlesPage() {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button 
+                        <button
                           className="btn-action edit"
                           onClick={() => openEditModal(article)}
                           title="Sửa"
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
                           </svg>
                         </button>
-                        <button 
+                        <button
                           className="btn-action delete"
                           onClick={() => confirmDelete(article)}
                           title="Xóa"
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-                            <line x1="10" y1="11" x2="10" y2="17"/>
-                            <line x1="14" y1="11" x2="14" y2="17"/>
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
                           </svg>
                         </button>
                       </div>
@@ -415,18 +423,42 @@ function AdminArticlesPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+              disabled={currentPage === 0}
+            >
+              ← Trước
+            </button>
+            <div className="pagination-info">
+              <span>Trang {currentPage + 1} / {totalPages}</span>
+              <span className="pagination-total">({articles.length} bài viết)</span>
+            </div>
+            <button
+              className="pagination-btn"
+              onClick={() => setCurrentPage(p => Math.min(totalPages - 1, p + 1))}
+              disabled={currentPage >= totalPages - 1}
+            >
+              Sau →
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Add/Edit Modal */}
       <AnimatePresence>
         {showModal && (
-          <motion.div 
+          <motion.div
             className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <motion.div 
+            <motion.div
               className="modal-content"
               style={{ maxWidth: '800px' }}
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -438,8 +470,8 @@ function AdminArticlesPage() {
                 <h2>{modalMode === 'add' ? 'Thêm bài viết mới' : 'Chỉnh sửa bài viết'}</h2>
                 <button className="close-btn" onClick={closeModal}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
               </div>
@@ -511,9 +543,9 @@ function AdminArticlesPage() {
                         ) : (
                           <>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                              <polyline points="17 8 12 3 7 8"/>
-                              <line x1="12" y1="3" x2="12" y2="15"/>
+                              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                              <polyline points="17 8 12 3 7 8" />
+                              <line x1="12" y1="3" x2="12" y2="15" />
                             </svg>
                             Tải ảnh lên
                           </>
@@ -531,19 +563,19 @@ function AdminArticlesPage() {
                     </div>
                     {formData.thumbnail && (
                       <div className="image-preview">
-                        <ImageWithFallback 
-                          src={resolveMediaUrl(formData.thumbnail)} 
-                          alt="Preview" 
-                          onError={(e) => e.target.style.display = 'none'} 
+                        <ImageWithFallback
+                          src={resolveMediaUrl(formData.thumbnail)}
+                          alt="Preview"
+                          onError={(e) => e.target.style.display = 'none'}
                         />
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="remove-image"
-                          onClick={() => setFormData({...formData, thumbnail: ''})}
+                          onClick={() => setFormData({ ...formData, thumbnail: '' })}
                         >
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <line x1="18" y1="6" x2="6" y2="18"/>
-                            <line x1="6" y1="6" x2="18" y2="18"/>
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
                           </svg>
                         </button>
                       </div>
@@ -636,14 +668,14 @@ function AdminArticlesPage() {
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {showDeleteConfirm && (
-          <motion.div 
+          <motion.div
             className="modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowDeleteConfirm(false)}
           >
-            <motion.div 
+            <motion.div
               className="modal-content delete-modal"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -652,9 +684,9 @@ function AdminArticlesPage() {
             >
               <div className="delete-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="12" y1="8" x2="12" y2="12"/>
-                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
               </div>
               <h3>Xác nhận xóa</h3>
