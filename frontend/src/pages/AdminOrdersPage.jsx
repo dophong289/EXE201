@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { adminOrderApi } from '../services/api'
 import '../styles/pages/AdminPage.css'
 
@@ -10,6 +10,10 @@ function AdminOrdersPage() {
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState({ type: '', text: '' })
   const [actionLoading, setActionLoading] = useState('')
+
+  // Order detail modal
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [showDetailModal, setShowDetailModal] = useState(false)
 
   useEffect(() => {
     const userStr = localStorage.getItem('user')
@@ -36,6 +40,16 @@ function AdminOrdersPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const viewOrderDetail = (order) => {
+    setSelectedOrder(order)
+    setShowDetailModal(true)
+  }
+
+  const closeDetailModal = () => {
+    setShowDetailModal(false)
+    setSelectedOrder(null)
   }
 
   const statusLabel = (s) => {
@@ -176,6 +190,16 @@ function AdminOrdersPage() {
                     <td>
                       <div className="action-buttons">
                         <button
+                          className="btn-action view"
+                          title="Xem chi tiết"
+                          onClick={() => viewOrderDetail(o)}
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
+                          </svg>
+                        </button>
+                        <button
                           className="btn-action edit"
                           title="Xác nhận"
                           disabled={actionLoading === o.id || o.status !== 'CHO_XAC_NHAN'}
@@ -205,9 +229,139 @@ function AdminOrdersPage() {
           </table>
         </div>
       </div>
+
+      {/* Order Detail Modal */}
+      <AnimatePresence>
+        {showDetailModal && selectedOrder && (
+          <motion.div
+            className="modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeDetailModal}
+          >
+            <motion.div
+              className="modal-content"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: '700px' }}
+            >
+              <div className="modal-header">
+                <h2>Chi tiết đơn hàng #{selectedOrder.id}</h2>
+                <button className="close-btn" onClick={closeDetailModal}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="order-detail-content" style={{ padding: '1.5rem' }}>
+                {/* Customer Info */}
+                <div className="order-section" style={{ marginBottom: '1.5rem' }}>
+                  <h3 style={{ color: 'var(--color-primary)', marginBottom: '0.75rem', fontSize: '1rem' }}>
+                    Thông tin khách hàng
+                  </h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.9rem' }}>
+                    <div><strong>Họ tên:</strong> {selectedOrder.fullName}</div>
+                    <div><strong>SĐT:</strong> {selectedOrder.phone}</div>
+                    <div style={{ gridColumn: '1 / -1' }}><strong>Email:</strong> {selectedOrder.email || 'N/A'}</div>
+                    <div style={{ gridColumn: '1 / -1' }}><strong>Địa chỉ:</strong> {selectedOrder.address || 'N/A'}</div>
+                  </div>
+                </div>
+
+                {/* Order Info */}
+                <div className="order-section" style={{ marginBottom: '1.5rem' }}>
+                  <h3 style={{ color: 'var(--color-primary)', marginBottom: '0.75rem', fontSize: '1rem' }}>
+                    Thông tin đơn hàng
+                  </h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.9rem' }}>
+                    <div><strong>Ngày đặt:</strong> {selectedOrder.createdAt}</div>
+                    <div><strong>Thanh toán:</strong> {selectedOrder.paymentMethod === 'BANK' ? 'Chuyển khoản' : 'COD'}</div>
+                    <div>
+                      <strong>Trạng thái:</strong>{' '}
+                      <span className={`status-badge ${statusClass(selectedOrder.status)}`} style={{ marginLeft: '0.25rem' }}>
+                        {statusLabel(selectedOrder.status)}
+                      </span>
+                    </div>
+                  </div>
+                  {selectedOrder.note && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                      <strong>Ghi chú:</strong>
+                      <p style={{ margin: '0.25rem 0', padding: '0.5rem', background: 'var(--color-bg-alt)', borderRadius: '4px' }}>
+                        {selectedOrder.note}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Order Items */}
+                <div className="order-section">
+                  <h3 style={{ color: 'var(--color-primary)', marginBottom: '0.75rem', fontSize: '1rem' }}>
+                    Sản phẩm đặt mua
+                  </h3>
+                  {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                    <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                        <thead>
+                          <tr style={{ background: 'var(--color-bg-alt)' }}>
+                            <th style={{ padding: '0.75rem', textAlign: 'left' }}>Sản phẩm</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'center', width: '80px' }}>SL</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'right', width: '120px' }}>Đơn giá</th>
+                            <th style={{ padding: '0.75rem', textAlign: 'right', width: '120px' }}>Thành tiền</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedOrder.items.map((item, idx) => (
+                            <tr key={idx} style={{ borderTop: '1px solid var(--color-border)' }}>
+                              <td style={{ padding: '0.75rem' }}>{item.productName || item.name || `Sản phẩm #${item.productId}`}</td>
+                              <td style={{ padding: '0.75rem', textAlign: 'center' }}>{item.quantity}</td>
+                              <td style={{ padding: '0.75rem', textAlign: 'right' }}>{formatPrice(item.price)}</td>
+                              <td style={{ padding: '0.75rem', textAlign: 'right', fontWeight: '600' }}>
+                                {formatPrice(item.price * item.quantity)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                        <tfoot>
+                          <tr style={{ borderTop: '2px solid var(--color-border)', background: 'var(--color-bg-alt)' }}>
+                            <td colSpan="3" style={{ padding: '0.75rem', textAlign: 'right', fontWeight: '600' }}>
+                              Tổng cộng:
+                            </td>
+                            <td style={{ padding: '0.75rem', textAlign: 'right', fontWeight: '700', color: 'var(--color-primary)', fontSize: '1.1rem' }}>
+                              {formatPrice(selectedOrder.total)}
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  ) : (
+                    <p style={{ color: 'var(--color-text-light)' }}>Không có thông tin sản phẩm</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                <button className="btn-cancel" onClick={closeDetailModal}>
+                  Đóng
+                </button>
+                {selectedOrder.status === 'CHO_XAC_NHAN' && (
+                  <button
+                    className="btn-save"
+                    onClick={() => { confirmOrder(selectedOrder.id); closeDetailModal(); }}
+                  >
+                    Xác nhận đơn
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
 
 export default AdminOrdersPage
-

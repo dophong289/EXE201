@@ -270,6 +270,15 @@ td.price.sale {
   background: #fee2e2;
 }
 
+.btn-action.view {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.btn-action.view:hover {
+  background: #dcfce7;
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;
