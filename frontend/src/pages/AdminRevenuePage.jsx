@@ -19,11 +19,13 @@ const STATUS_LABELS = {
 function AdminRevenuePage() {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
-    const [isFirstLoad, setIsFirstLoad] = useState(true)
     const [stats, setStats] = useState(null)
     const [userStats, setUserStats] = useState(null)
     const [timeRange, setTimeRange] = useState('30')
     const [showExport, setShowExport] = useState(false)
+
+    // Cache stats per time range for instant switching
+    const [statsCache, setStatsCache] = useState({})
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user')
@@ -36,43 +38,60 @@ function AdminRevenuePage() {
             navigate('/')
             return
         }
+        // Load all time ranges data on mount for instant switching
+        loadAllStats()
     }, [navigate])
 
     useEffect(() => {
-        loadStats()
-    }, [timeRange])
-
-    const loadStats = async () => {
-        // Only show loading on first load, not when changing time range
-        if (isFirstLoad) {
-            setLoading(true)
+        // When time range changes, use cached data immediately if available
+        if (statsCache[timeRange]) {
+            setStats(statsCache[timeRange])
         }
-        try {
-            const endDate = new Date()
-            const startDate = new Date()
-            if (timeRange === '1') {
-                startDate.setDate(startDate.getDate() - 1)
-            } else if (timeRange === '7') {
-                startDate.setDate(startDate.getDate() - 7)
-            } else {
-                startDate.setDate(startDate.getDate() - 30)
-            }
+    }, [timeRange, statsCache])
 
-            const [orderStatsRes, userStatsRes] = await Promise.all([
-                adminOrderApi.getStats(
-                    startDate.toISOString().split('T')[0],
-                    endDate.toISOString().split('T')[0]
-                ),
-                adminUserApi.getStats()
+    const getDateRange = (days) => {
+        const endDate = new Date()
+        const startDate = new Date()
+        if (days === '1') {
+            startDate.setDate(startDate.getDate() - 1)
+        } else if (days === '7') {
+            startDate.setDate(startDate.getDate() - 7)
+        } else {
+            startDate.setDate(startDate.getDate() - 30)
+        }
+        return {
+            start: startDate.toISOString().split('T')[0],
+            end: endDate.toISOString().split('T')[0]
+        }
+    }
+
+    const loadAllStats = async () => {
+        setLoading(true)
+        try {
+            // Load all 3 time ranges and user stats in parallel
+            const ranges = ['1', '7', '30']
+            const [userStatsRes, ...statsResults] = await Promise.all([
+                adminUserApi.getStats(),
+                ...ranges.map(r => {
+                    const { start, end } = getDateRange(r)
+                    return adminOrderApi.getStats(start, end)
+                })
             ])
 
-            setStats(orderStatsRes.data)
+            // Cache all stats
+            const cache = {}
+            ranges.forEach((r, i) => {
+                cache[r] = statsResults[i].data
+            })
+            setStatsCache(cache)
+
+            // Set current stats
+            setStats(cache[timeRange])
             setUserStats(userStatsRes.data)
         } catch (error) {
             console.error('Error loading stats:', error)
         } finally {
             setLoading(false)
-            setIsFirstLoad(false)
         }
     }
 
