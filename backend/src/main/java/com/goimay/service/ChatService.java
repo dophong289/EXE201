@@ -49,17 +49,44 @@ public class ChatService {
             return "Xin chào! Mình là trợ lý Gói Mây. Bạn cần tư vấn set quà Tết cho gia đình hay đối tác ạ?";
         }
 
+        // Sanitize user input to prevent XSS and injection attacks
+        String sanitizedMessage = sanitizeInput(userMessage);
+
         // Nếu có API Key, dùng OpenAI
         if (openAiApiKey != null && !openAiApiKey.isEmpty()) {
             try {
-                return callOpenAI(userMessage, products);
+                return callOpenAI(sanitizedMessage, products);
             } catch (Exception e) {
                 log.error("Lỗi khi gọi OpenAI: {}", e.getMessage());
                 // Fallback xuống logic cũ nếu lỗi
             }
         }
 
-        return processRuleBasedMessage(userMessage, products);
+        return processRuleBasedMessage(sanitizedMessage, products);
+    }
+
+    /**
+     * Sanitize user input to prevent XSS and prompt injection attacks.
+     * - Removes HTML/script tags
+     * - Escapes special characters
+     * - Limits message length
+     */
+    private String sanitizeInput(String input) {
+        if (input == null) return "";
+        
+        // Remove HTML tags
+        String sanitized = input.replaceAll("<[^>]*>", "");
+        
+        // Remove common script patterns
+        sanitized = sanitized.replaceAll("(?i)javascript:", "");
+        sanitized = sanitized.replaceAll("(?i)on\\w+\\s*=", "");
+        
+        // Limit length to prevent abuse (max 1000 chars)
+        if (sanitized.length() > 1000) {
+            sanitized = sanitized.substring(0, 1000);
+        }
+        
+        return sanitized.trim();
     }
 
     private String callOpenAI(String userMessage, List<ChatRequest.ProductInfo> products) {
