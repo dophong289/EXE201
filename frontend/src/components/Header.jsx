@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { favoriteApi, authApi } from '../services/api'
@@ -16,6 +16,7 @@ function Header() {
   const [favorites, setFavorites] = useState([])
   const [favoriteCount, setFavoriteCount] = useState(0)
   const [cartCount, setCartCount] = useState(0)
+  const removedFavoriteIdsRef = useRef(new Set())
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,8 +28,46 @@ function Header() {
 
   useEffect(() => {
     if (user) {
-      loadFavoriteCount()
+      removedFavoriteIdsRef.current.clear()
+      loadFavorites()
+    } else {
+      removedFavoriteIdsRef.current.clear()
+      setFavorites([])
+      setFavoriteCount(0)
     }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+
+    const handleFavoritesUpdated = (event) => {
+      const detail = event?.detail || {}
+      const action = detail.action
+      if (detail.source === 'header') return
+      const productId = detail.productId ?? detail.product?.id
+
+      if (!action || !productId) return
+
+      if (action === 'add') {
+        removedFavoriteIdsRef.current.delete(productId)
+        setFavorites((prev) => {
+          const exists = prev.some(p => p.id === productId)
+          if (exists) return prev
+          if (detail.product) {
+            return [detail.product, ...prev]
+          }
+          return prev
+        })
+        setFavoriteCount((prev) => prev + 1)
+      } else if (action === 'remove') {
+        removedFavoriteIdsRef.current.add(productId)
+        setFavorites((prev) => prev.filter(p => p.id !== productId))
+        setFavoriteCount((prev) => Math.max(0, prev - 1))
+      }
+    }
+
+    window.addEventListener('favorites_updated', handleFavoritesUpdated)
+    return () => window.removeEventListener('favorites_updated', handleFavoritesUpdated)
   }, [user])
 
   useEffect(() => {
@@ -42,19 +81,28 @@ function Header() {
     }
   }, [])
 
-  const loadFavoriteCount = async () => {
-    try {
-      const response = await favoriteApi.count()
-      setFavoriteCount(response.data.count || 0)
-    } catch (error) {
-      console.error('Error loading favorite count:', error)
-    }
-  }
-
   const loadFavorites = async () => {
     try {
       const response = await favoriteApi.getAll()
-      setFavorites(response.data || [])
+      const data = response.data || []
+      const removedIds = removedFavoriteIdsRef.current
+      setFavorites((prev) => {
+        if (prev.length === 0) {
+          const filtered = data.filter(p => !removedIds.has(p.id))
+          setFavoriteCount(filtered.length)
+          return filtered
+        }
+        const map = new Map()
+        data.forEach((p) => {
+          if (!removedIds.has(p.id)) {
+            map.set(p.id, p)
+          }
+        })
+        prev.forEach((p) => map.set(p.id, p))
+        const merged = Array.from(map.values())
+        setFavoriteCount(merged.length)
+        return merged
+      })
     } catch (error) {
       console.error('Error loading favorites:', error)
     }
@@ -65,20 +113,47 @@ function Header() {
       navigate('/dang-nhap')
       return
     }
-    loadFavorites()
-    setShowFavorites(!showFavorites)
+    setShowFavorites((prev) => {
+      const next = !prev
+      if (next) {
+        loadFavorites()
+      }
+      return next
+    })
     setShowUserMenu(false)
   }
 
   const removeFavorite = async (productId, e) => {
     e.preventDefault()
     e.stopPropagation()
+    removedFavoriteIdsRef.current.add(productId)
+    const previousFavorites = favorites
+    const previousCount = favoriteCount
+    setFavorites(favorites.filter(f => f.id !== productId))
+    setFavoriteCount(prev => Math.max(0, prev - 1))
+    window.dispatchEvent(new CustomEvent('favorites_updated', {
+      detail: {
+        action: 'remove',
+        productId,
+        source: 'header'
+      }
+    }))
     try {
       await favoriteApi.toggle(productId)
-      setFavorites(favorites.filter(f => f.id !== productId))
-      setFavoriteCount(prev => Math.max(0, prev - 1))
     } catch (error) {
       console.error('Error removing favorite:', error)
+      removedFavoriteIdsRef.current.delete(productId)
+      setFavorites(previousFavorites)
+      setFavoriteCount(previousCount)
+      const previousProduct = previousFavorites.find(f => f.id === productId)
+      window.dispatchEvent(new CustomEvent('favorites_updated', {
+        detail: {
+          action: 'add',
+          productId,
+          product: previousProduct || null,
+          source: 'header'
+        }
+      }))
     }
   }
 

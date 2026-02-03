@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { productApi, productCategoryApi, favoriteApi, resolveMediaUrl } from '../services/api'
@@ -21,6 +21,7 @@ function ProductsPage() {
   const [user, setUser] = useState(null)
   const [searchInput, setSearchInput] = useState(searchParams.get('q') || '')
   const [debouncedSearch, setDebouncedSearch] = useState(searchParams.get('q') || '')
+  const favoriteIdsVersionRef = useRef(0)
 
   // Pagination
   const pageSize = 8
@@ -65,6 +66,32 @@ function ProductsPage() {
   }, [user])
 
   useEffect(() => {
+    const handleFavoritesUpdated = (event) => {
+      const detail = event?.detail || {}
+      const action = detail.action
+      const productId = detail.productId ?? detail.product?.id
+
+      if (!action || !productId) return
+
+      favoriteIdsVersionRef.current += 1
+
+      setFavoriteIds((prev) => {
+        const exists = prev.includes(productId)
+        if (action === 'add') {
+          return exists ? prev : [...prev, productId]
+        }
+        if (action === 'remove') {
+          return exists ? prev.filter(id => id !== productId) : prev
+        }
+        return prev
+      })
+    }
+
+    window.addEventListener('favorites_updated', handleFavoritesUpdated)
+    return () => window.removeEventListener('favorites_updated', handleFavoritesUpdated)
+  }, [])
+
+  useEffect(() => {
     loadProducts()
     setCurrentPage(0) // Reset page when filter changes
   }, [activeCategory, debouncedSearch])
@@ -101,7 +128,11 @@ function ProductsPage() {
 
   const loadFavoriteIds = async () => {
     try {
+      const versionAtStart = favoriteIdsVersionRef.current
       const response = await favoriteApi.getIds()
+      if (favoriteIdsVersionRef.current !== versionAtStart) {
+        return
+      }
       setFavoriteIds(response.data || [])
     } catch (error) {
       console.error('Error loading favorites:', error)
@@ -205,7 +236,7 @@ function ProductsPage() {
     }
   }
 
-  const toggleFavorite = async (productId, e) => {
+  const toggleFavorite = async (product, e) => {
     e.stopPropagation()
 
     if (!user) {
@@ -213,17 +244,69 @@ function ProductsPage() {
       return
     }
 
+    favoriteIdsVersionRef.current += 1
+
+    const productId = product.id
+    const wasFavorite = favoriteIds.includes(productId)
+    const nextIsFavorite = !wasFavorite
+
+    setFavoriteIds((prev) => {
+      if (nextIsFavorite) {
+        return prev.includes(productId) ? prev : [...prev, productId]
+      }
+      return prev.filter(id => id !== productId)
+    })
+
+    window.dispatchEvent(new CustomEvent('favorites_updated', {
+      detail: {
+        action: nextIsFavorite ? 'add' : 'remove',
+        productId,
+        product: nextIsFavorite ? product : null
+      }
+    }))
+
     try {
       const response = await favoriteApi.toggle(productId)
-      if (response.data.isFavorite) {
-        setFavoriteIds([...favoriteIds, productId])
+      const serverIsFavorite = response?.data?.isFavorite
+      const finalIsFavorite = typeof serverIsFavorite === 'boolean' ? serverIsFavorite : nextIsFavorite
+
+      if (typeof serverIsFavorite === 'boolean' && serverIsFavorite !== nextIsFavorite) {
+        setFavoriteIds((prev) => {
+          if (serverIsFavorite) {
+            return prev.includes(productId) ? prev : [...prev, productId]
+          }
+          return prev.filter(id => id !== productId)
+        })
+
+        window.dispatchEvent(new CustomEvent('favorites_updated', {
+          detail: {
+            action: serverIsFavorite ? 'add' : 'remove',
+            productId,
+            product: serverIsFavorite ? product : null
+          }
+        }))
+      }
+
+      if (finalIsFavorite) {
         addToast('Đã thêm vào danh sách yêu thích!')
       } else {
-        setFavoriteIds(favoriteIds.filter(id => id !== productId))
         addToast('Đã xóa khỏi danh sách yêu thích!')
       }
     } catch (error) {
       console.error('Error toggling favorite:', error)
+      setFavoriteIds((prev) => {
+        if (wasFavorite) {
+          return prev.includes(productId) ? prev : [...prev, productId]
+        }
+        return prev.filter(id => id !== productId)
+      })
+      window.dispatchEvent(new CustomEvent('favorites_updated', {
+        detail: {
+          action: wasFavorite ? 'add' : 'remove',
+          productId,
+          product: wasFavorite ? product : null
+        }
+      }))
     }
   }
 
@@ -355,7 +438,7 @@ function ProductsPage() {
                   <div className="product-actions">
                     <button
                       className={`favorite-btn ${isFavorite(product.id) ? 'active' : ''}`}
-                      onClick={(e) => toggleFavorite(product.id, e)}
+                      onClick={(e) => toggleFavorite(product, e)}
                       title={isFavorite(product.id) ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
                     >
                       <svg viewBox="0 0 24 24" fill={isFavorite(product.id) ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
