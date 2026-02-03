@@ -19,6 +19,7 @@ const STATUS_LABELS = {
 function AdminRevenuePage() {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
+    const [isFirstLoad, setIsFirstLoad] = useState(true)
     const [stats, setStats] = useState(null)
     const [userStats, setUserStats] = useState(null)
     const [timeRange, setTimeRange] = useState('30')
@@ -42,7 +43,10 @@ function AdminRevenuePage() {
     }, [timeRange])
 
     const loadStats = async () => {
-        setLoading(true)
+        // Only show loading on first load, not when changing time range
+        if (isFirstLoad) {
+            setLoading(true)
+        }
         try {
             const endDate = new Date()
             const startDate = new Date()
@@ -68,6 +72,7 @@ function AdminRevenuePage() {
             console.error('Error loading stats:', error)
         } finally {
             setLoading(false)
+            setIsFirstLoad(false)
         }
     }
 
