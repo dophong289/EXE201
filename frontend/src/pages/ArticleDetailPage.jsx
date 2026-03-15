@@ -42,11 +42,30 @@ function ArticleDetailPage() {
     }
   }
 
-  const formatDate = (dateString) => {
-    if (!dateString) return ''
-    const date = new Date(dateString)
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return date.toLocaleDateString('vi-VN', options)
+  // Render nội dung bài viết:
+  // - Nếu trong content đã có thẻ HTML (<p>, <br>, <h1>...) thì giữ nguyên như cũ
+  // - Nếu chỉ là text thường (xuống dòng bằng Enter), tự tách thành các đoạn & xuống dòng.
+  const renderContent = (content) => {
+    if (!content) return null
+    const hasHtml = /<\/?(p|br|h[1-6]|ul|ol|li|strong|em|span)[\s>]/i.test(content)
+    if (hasHtml) {
+      return <div className="article-content" dangerouslySetInnerHTML={{ __html: content }} />
+    }
+    const paragraphs = content.split(/\n\s*\n/)
+    return (
+      <div className="article-content">
+        {paragraphs.map((para, idx) => (
+          <p key={idx}>
+            {para.split('\n').map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < para.split('\n').length - 1 && <br />}
+              </span>
+            ))}
+          </p>
+        ))}
+      </div>
+    )
   }
 
   if (loading) {
@@ -118,12 +137,12 @@ function ArticleDetailPage() {
         <div className="article-body">
           <div className="container">
             <motion.div 
-              className="article-content"
-              dangerouslySetInnerHTML={{ __html: article.content }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-            />
+            >
+              {renderContent(article.content)}
+            </motion.div>
 
             {/* Share Buttons */}
             <div className="share-section">
