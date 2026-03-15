@@ -51,10 +51,9 @@ function ArticlesPage() {
       console.error('Error loading categories:', error)
       setCategories([
         { id: 1, name: 'Làng nghề', slug: 'lang-nghe' },
-        { id: 2, name: 'Nghệ nhân', slug: 'nghe-nhan' },
-        { id: 3, name: 'Đặc sản', slug: 'dac-san' },
-        { id: 4, name: 'Set quà', slug: 'set-qua' },
-        { id: 5, name: 'Văn hóa Việt', slug: 'van-hoa-viet' }
+        { id: 2, name: 'Đặc sản', slug: 'dac-san' },
+        { id: 3, name: 'Văn hóa Việt', slug: 'van-hoa-viet' },
+        { id: 4, name: 'Set quà', slug: 'set-qua' }
       ])
     }
     loadArticles()
@@ -156,6 +155,19 @@ function ArticlesPage() {
   const featuredArticle = articles[0]
   const regularArticles = articles.slice(1)
 
+  // Thứ tự danh mục hiển thị: bỏ Nghệ nhân, Set quà sau Văn hóa Việt
+  const categoryOrder = ['lang-nghe', 'dac-san', 'van-hoa-viet', 'set-qua']
+  const displayCategories = categories
+    .filter(c => c.slug !== 'nghe-nhan')
+    .sort((a, b) => {
+      const i = categoryOrder.indexOf(a.slug)
+      const j = categoryOrder.indexOf(b.slug)
+      if (i === -1 && j === -1) return 0
+      if (i === -1) return 1
+      if (j === -1) return -1
+      return i - j
+    })
+
   return (
     <div className="articles-page">
       {/* Page Header */}
@@ -183,7 +195,7 @@ function ArticlesPage() {
             >
               Tất cả
             </button>
-            {categories.map(cat => (
+            {displayCategories.map(cat => (
               <button
                 key={cat.id}
                 className={`category-tab ${activeCategory === cat.slug ? 'active' : ''}`}
