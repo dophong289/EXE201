@@ -209,14 +209,6 @@ function AboutPage() {
               />
               <h4>Gỗ tre</h4>
             </div>
-            <div className="ingredient-item">
-              <ImageWithFallback
-                src={getImage('about_material_4', 'https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300')}
-                alt="Lá chuối khô"
-                fallbackSrc="https://images.unsplash.com/photo-1544457070-4cd773b4d71e?w=300"
-              />
-              <h4>Lá chuối khô</h4>
-            </div>
           </div>
         </div>
       </section>
