@@ -66,7 +66,6 @@ function ArticleCard({ article, featured = false }) {
         <div className="article-content">
           <div className="article-meta">
             <span className="article-category">{article.categoryName || 'Làm đẹp'}</span>
-            <span className="article-date">{formatDate(article.publishedAt)}</span>
           </div>
           <h3 className="article-title">{article.title}</h3>
           <p className="article-summary">{article.summary}</p>
