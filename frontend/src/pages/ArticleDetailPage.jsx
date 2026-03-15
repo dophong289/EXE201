@@ -95,8 +95,6 @@ function ArticleDetailPage() {
             
             <div className="article-meta">
               <span className="category">{article.categoryName || 'Gói Mây'}</span>
-              <span className="date">{formatDate(article.publishedAt)}</span>
-              {article.author && <span className="author">bởi {article.author}</span>}
             </div>
           </div>
         </header>

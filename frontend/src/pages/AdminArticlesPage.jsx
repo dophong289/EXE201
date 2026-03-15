@@ -328,7 +328,6 @@ function AdminArticlesPage() {
                 <th>Tiêu đề</th>
                 <th>Danh mục</th>
                 <th>Tác giả</th>
-                <th>Ngày đăng</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
               </tr>
@@ -336,7 +335,7 @@ function AdminArticlesPage() {
             <tbody>
               {articles.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="empty-state">
+                  <td colSpan="6" className="empty-state">
                     <div className="empty-content">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
@@ -378,7 +377,6 @@ function AdminArticlesPage() {
                       </span>
                     </td>
                     <td>{article.author || '-'}</td>
-                    <td>{formatDate(article.publishedAt)}</td>
                     <td>
                       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span className={`status-badge ${article.published ? 'active' : 'inactive'}`}>
