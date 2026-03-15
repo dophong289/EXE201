@@ -231,17 +231,15 @@ function AdminAccountsPage() {
                             <tr>
                                 <th>ID</th>
                                 <th>Họ tên</th>
-                                <th>Email</th>
                                 <th>Điện thoại</th>
                                 <th>Quyền</th>
-                                <th>Ngày tạo</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
                                 <tr>
-                                    <td colSpan="7" className="empty-state">
+                                    <td colSpan="5" className="empty-state">
                                         <div className="empty-content">
                                             <div className="loading-spinner" />
                                             <p>Đang tải dữ liệu...</p>
@@ -250,7 +248,7 @@ function AdminAccountsPage() {
                                 </tr>
                             ) : users.length === 0 ? (
                                 <tr>
-                                    <td colSpan="7" className="empty-state">
+                                    <td colSpan="5" className="empty-state">
                                         <div className="empty-content">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                                 <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
@@ -278,14 +276,12 @@ function AdminAccountsPage() {
                                                 <div className="product-slug">Google Account</div>
                                             )}
                                         </td>
-                                        <td>{user.email}</td>
                                         <td>{user.phone || '-'}</td>
                                         <td>
                                             <span className={`status-badge ${getRoleBadgeClass(user.role)}`}>
                                                 {getRoleLabel(user.role)}
                                             </span>
                                         </td>
-                                        <td>{formatDate(user.createdAt)}</td>
                                         <td>
                                             <div className="action-buttons">
                                                 <button
@@ -405,9 +401,8 @@ function AdminAccountsPage() {
                                         borderRadius: '10px'
                                     }}>
                                         <strong>{selectedUser.fullName}</strong>
-                                        <div style={{ fontSize: '0.9rem', color: 'var(--color-text-light)' }}>
-                                            {selectedUser.email}
-                                        </div>
+                                        {/* Email vẫn tồn tại trong backend nhưng được ẩn khỏi giao diện chính;
+                                            nếu cần hiển thị lại có thể dùng selectedUser.email tại đây. */}
                                     </div>
                                 </div>
 
