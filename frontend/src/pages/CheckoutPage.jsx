@@ -258,18 +258,18 @@ function CheckoutPage() {
                 <div className="bank-box">
                   <div className="bank-row">
                     <span>Ngân hàng</span>
-                    <strong>Vietcombank</strong>
+                    <strong>MBBank</strong>
                   </div>
                   <div className="bank-row">
                     <span>Số tài khoản</span>
-                    <strong>0123456789</strong>
+                    <strong>2601221102004</strong>
                   </div>
                   <div className="bank-row">
                     <span>Chủ tài khoản</span>
-                    <strong>GOI MAY</strong>
+                    <strong>Vũ Dương Thu Huyền</strong>
                   </div>
                   <p className="bank-note">
-                    Nội dung chuyển khoản: <strong>HỌ TÊN - SĐT</strong>
+                    Nội dung chuyển khoản: <strong>Set quà + Tên + Sđt</strong>
                   </p>
                 </div>
               )}
