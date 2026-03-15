@@ -6,12 +6,12 @@ const testimonials = [
   {
     id: 1,
     quote: '"Gói Mây – Quà tặng văn hóa Việt Nam, gói trọn yêu thương và bản sắc dân tộc"',
-    source: 'VnExpress'
+    source: ''
   },
   {
     id: 2,
     quote: '"Mỗi set quà từ Gói Mây không chỉ là món quà – mà là câu chuyện của làng nghề, của nghệ nhân, của văn hóa Việt"',
-    source: 'Thanh Niên'
+    source: ''
   },
 ]
 
@@ -40,9 +40,11 @@ function TestimonialSlider() {
             <blockquote className="testimonial-quote">
               {testimonials[currentIndex].quote}
             </blockquote>
-            <cite className="testimonial-source">
-              {testimonials[currentIndex].source}
-            </cite>
+            {testimonials[currentIndex].source && (
+              <cite className="testimonial-source">
+                {testimonials[currentIndex].source}
+              </cite>
+            )}
           </motion.div>
         </AnimatePresence>
 
