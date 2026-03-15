@@ -18,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -47,6 +49,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         initAdminUser();
+        initFakeUsersIfNeeded();
         // Import tất cả dữ liệu từ file nếu có (để đồng bộ giữa các máy)
         dataExportImportService.importAllData();
         // Import site settings riêng (nếu chưa có trong all-data.json)
@@ -83,6 +86,38 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("Email: " + adminEmail);
             System.out.println("Password: " + adminPassword);
             System.out.println("========================================");
+        }
+    }
+
+    /** Tạo thêm tối đa 33 tài khoản giống người thật khi số user < 50 (ví dụ đang có 17 thì thêm 33 thành 50). */
+    private void initFakeUsersIfNeeded() {
+        long count = userRepository.count();
+        if (count >= 50) return;
+        int toAdd = (int) Math.min(33, 50 - count);
+        String encodedPassword = passwordEncoder.encode("User@123");
+        List<FakeUserData> list = FakeUserData.list33();
+        int added = 0;
+        for (int i = 0; i < toAdd && i < list.size(); i++) {
+            FakeUserData d = list.get(i);
+            String email = "seeduser" + (count + i + 1) + "@goimay.vn";
+            if (userRepository.existsByEmail(email)) continue;
+            User u = User.builder()
+                    .fullName(d.fullName)
+                    .email(email)
+                    .password(encodedPassword)
+                    .phone(d.phone)
+                    .address(d.address)
+                    .birthDate(d.birthDate)
+                    .gender(d.gender)
+                    .provider("local")
+                    .role(Role.USER)
+                    .enabled(true)
+                    .build();
+            userRepository.save(u);
+            added++;
+        }
+        if (added > 0) {
+            System.out.println("[DataInitializer] Đã tạo " + added + " tài khoản người dùng mẫu (mật khẩu: User@123).");
         }
     }
     
@@ -340,6 +375,62 @@ public class DataInitializer implements CommandLineRunner {
             product8.setStock(70);
             product8.setActive(true);
             productRepository.save(product8);
+        }
+    }
+
+    /** Dữ liệu mẫu cho 33 tài khoản giống người thật (chỉ dùng khi seed). */
+    private static final class FakeUserData {
+        final String fullName;
+        final String phone;
+        final String address;
+        final LocalDate birthDate;
+        final String gender;
+
+        FakeUserData(String fullName, String phone, String address, LocalDate birthDate, String gender) {
+            this.fullName = fullName;
+            this.phone = phone;
+            this.address = address;
+            this.birthDate = birthDate;
+            this.gender = gender;
+        }
+
+        static List<FakeUserData> list33() {
+            return List.of(
+                    new FakeUserData("Nguyễn Minh Tuấn", "0912345001", "123 Láng Hạ, Đống Đa, Hà Nội", LocalDate.of(1992, 3, 15), "MALE"),
+                    new FakeUserData("Trần Thị Hương", "0987654002", "45 Nguyễn Huệ, Quận 1, TP.HCM", LocalDate.of(1995, 7, 22), "FEMALE"),
+                    new FakeUserData("Lê Văn Đức", "0901234503", "78 Trần Phú, Hải Châu, Đà Nẵng", LocalDate.of(1988, 11, 8), "MALE"),
+                    new FakeUserData("Phạm Thị Mai", "0913456004", "22 Lê Lợi, Thành phố Huế", LocalDate.of(1997, 1, 30), "FEMALE"),
+                    new FakeUserData("Hoàng Minh Quân", "0924567005", "56 Bà Triệu, Ninh Kiều, Cần Thơ", LocalDate.of(1990, 5, 12), "MALE"),
+                    new FakeUserData("Vũ Thị Lan", "0935678006", "88 Hai Bà Trưng, Hoàn Kiếm, Hà Nội", LocalDate.of(1993, 9, 4), "FEMALE"),
+                    new FakeUserData("Đặng Văn Hùng", "0946789007", "15 Ngô Quyền, Hải Phòng", LocalDate.of(1985, 2, 18), "MALE"),
+                    new FakeUserData("Bùi Thị Nga", "0957890008", "34 Lý Tự Trọng, Thanh Khê, Đà Nẵng", LocalDate.of(1998, 6, 25), "FEMALE"),
+                    new FakeUserData("Đỗ Minh Khôi", "0968901009", "67 Nguyễn Văn Linh, Ninh Kiều, Cần Thơ", LocalDate.of(1991, 12, 10), "MALE"),
+                    new FakeUserData("Ngô Thị Hà", "0979012010", "90 Phan Chu Trinh, Quận 1, TP.HCM", LocalDate.of(1994, 4, 7), "FEMALE"),
+                    new FakeUserData("Dương Văn Thành", "0980123011", "12 Trần Hưng Đạo, Quận 5, TP.HCM", LocalDate.of(1989, 8, 19), "MALE"),
+                    new FakeUserData("Lý Thị Thảo", "0991234012", "23 Lê Duẩn, Đống Đa, Hà Nội", LocalDate.of(1996, 10, 3), "FEMALE"),
+                    new FakeUserData("Trương Minh Đạt", "0902345013", "45 Hoàng Văn Thụ, Phú Nhuận, TP.HCM", LocalDate.of(1992, 2, 28), "MALE"),
+                    new FakeUserData("Chu Thị Ngọc", "0913456024", "78 Nguyễn Trãi, Thanh Xuân, Hà Nội", LocalDate.of(1997, 6, 14), "FEMALE"),
+                    new FakeUserData("Tạ Văn Bình", "0924567015", "56 Cầu Giấy, Cầu Giấy, Hà Nội", LocalDate.of(1987, 11, 21), "MALE"),
+                    new FakeUserData("Hồ Thị Kim", "0935678026", "89 Xô Viết Nghệ Tĩnh, Bình Thạnh, TP.HCM", LocalDate.of(1995, 3, 9), "FEMALE"),
+                    new FakeUserData("Phan Văn Cường", "0946789037", "11 Lý Thường Kiệt, Đà Nẵng", LocalDate.of(1990, 7, 16), "MALE"),
+                    new FakeUserData("Võ Thị Diễm", "0957890048", "32 Hùng Vương, Nha Trang", LocalDate.of(1993, 1, 5), "FEMALE"),
+                    new FakeUserData("Tăng Minh Phong", "0968901059", "44 Trần Hưng Đạo, Vũng Tàu", LocalDate.of(1988, 9, 27), "MALE"),
+                    new FakeUserData("Cao Thị Yến", "0979012060", "66 Lê Hồng Phong, Quận 10, TP.HCM", LocalDate.of(1996, 5, 11), "FEMALE"),
+                    new FakeUserData("Lâm Văn Tâm", "0980123071", "77 Nguyễn Thị Minh Khai, Quận 3, TP.HCM", LocalDate.of(1991, 12, 30), "MALE"),
+                    new FakeUserData("Kiều Thị Hằng", "0991234082", "88 Điện Biên Phủ, Bình Thạnh, TP.HCM", LocalDate.of(1994, 4, 18), "FEMALE"),
+                    new FakeUserData("Hà Minh Tuấn", "0902345093", "99 Nam Kỳ Khởi Nghĩa, Quận 3, TP.HCM", LocalDate.of(1986, 8, 2), "MALE"),
+                    new FakeUserData("Tô Thị Linh", "0913456104", "21 Cộng Hòa, Tân Bình, TP.HCM", LocalDate.of(1998, 10, 23), "FEMALE"),
+                    new FakeUserData("Sơn Văn Khoa", "0924567115", "33 Âu Cơ, Tây Hồ, Hà Nội", LocalDate.of(1989, 2, 14), "MALE"),
+                    new FakeUserData("Quách Thị Trang", "0935678126", "55 Tô Hiến Thành, Hai Bà Trưng, Hà Nội", LocalDate.of(1992, 6, 7), "FEMALE"),
+                    new FakeUserData("Mai Văn Lực", "0946789137", "77 Giảng Võ, Ba Đình, Hà Nội", LocalDate.of(1985, 11, 19), "MALE"),
+                    new FakeUserData("Đinh Thị Phương", "0957890148", "12 Kim Mã, Ba Đình, Hà Nội", LocalDate.of(1995, 9, 1), "FEMALE"),
+                    new FakeUserData("Giang Minh Hoàng", "0968901159", "34 Đội Cấn, Ba Đình, Hà Nội", LocalDate.of(1990, 4, 26), "MALE"),
+                    new FakeUserData("Khổng Thị Hoa", "0979012160", "56 Trường Chinh, Đống Đa, Hà Nội", LocalDate.of(1993, 7, 12), "FEMALE"),
+                    new FakeUserData("La Văn Sơn", "0980123171", "89 Tây Sơn, Đống Đa, Hà Nội", LocalDate.of(1987, 1, 8), "MALE"),
+                    new FakeUserData("Mạc Thị Uyên", "0991234182", "11 Nguyễn Chí Thanh, Đống Đa, Hà Nội", LocalDate.of(1996, 12, 15), "FEMALE"),
+                    new FakeUserData("Nghiêm Minh Thắng", "0902345193", "22 Lạc Long Quân, Tây Hồ, Hà Nội", LocalDate.of(1991, 3, 22), "MALE"),
+                    new FakeUserData("Ôn Thị Vy", "0913456204", "45 Xuân Thủy, Cầu Giấy, Hà Nội", LocalDate.of(1994, 8, 6), "FEMALE")
+            );
         }
     }
 }
